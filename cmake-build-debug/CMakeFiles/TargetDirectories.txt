@@ -1,3 +1,0 @@
-/home/mahammad/DB_Imp_Seminar/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/mahammad/DB_Imp_Seminar/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/mahammad/DB_Imp_Seminar/cmake-build-debug/CMakeFiles/DB_Imp_Seminar.dir

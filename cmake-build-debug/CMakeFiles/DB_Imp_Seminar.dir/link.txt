@@ -1,1 +1,0 @@
-/usr/bin/c++   -g   CMakeFiles/DB_Imp_Seminar.dir/tests/main.cpp.o  -o DB_Imp_Seminar 
