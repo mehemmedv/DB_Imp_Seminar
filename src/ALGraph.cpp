@@ -3,3 +3,7 @@
 //
 
 #include "../include/ALGraph.h"
+
+void ALGraph::add_edge(int from, int to) {
+    edges[from].push_front(to);
+}

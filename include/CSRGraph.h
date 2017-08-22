@@ -7,13 +7,20 @@
 
 // 'Compressed sparse row' implementation of Graph
 class CSRGraph {
-    int v, e;
+    int v, e, cur_idx, last_vertex;
     int *edges, *offsets;
+
 public:
     CSRGraph(int v, int e) : v(v), e(e){
         edges = new int[e];
-        offsets = new int[v];
+        offsets = new int[v + 2];
+        cur_idx = 0;
+        last_vertex = -1;
     }
+
+    void add_edges(int from, int to);
+
+    void set_offset();
 };
 
 

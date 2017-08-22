@@ -14,6 +14,8 @@ public:
     ALGraph(int v) : v(v){
         edges = new list<int>[v];
     }
+
+    void add_edge(int from, int to);
 };
 
 
