@@ -9,9 +9,12 @@
 class CSRGraph {
     int v, e, cur_idx, last_vertex;
     int *edges, *offsets;
+    bool *used;
+
+    void dfs_recur(int v);
 
 public:
-    CSRGraph(int v, int e) : v(v), e(e){
+    CSRGraph(int v, int e) : v(v), e(e) {
         edges = new int[e];
         offsets = new int[v + 2];
         cur_idx = 0;
@@ -21,6 +24,10 @@ public:
     void add_edges(int from, int to);
 
     void set_offset();
+
+    void bfs(int v);
+
+    void dfs(int v);
 };
 
 

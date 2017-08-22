@@ -7,15 +7,21 @@
 
 // Adjacency list implementation of Graph
 class ALGraph {
-    list<int>* edges;
+    list<int> *edges;
     int v;
 
+    void dfs_recur(int v);
+
 public:
-    ALGraph(int v) : v(v){
+    ALGraph(int v) : v(v) {
         edges = new list<int>[v];
     }
 
     void add_edge(int from, int to);
+
+    void bfs(int v);
+
+    void dfs(int v);
 };
 
 
