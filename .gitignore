@@ -1,0 +1,10 @@
+# unnecessary folders including build folders
+# JetBrains IDE folder
+.idea/
+
+# Build
+build/
+
+# CMake
+cmake-build-debug/
+
