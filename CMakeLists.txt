@@ -4,4 +4,7 @@ project(DB_Imp_Seminar)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES tests/main.cpp)
+set(GENERATOR_FILES tests/random_graph_generator.cpp)
+
 add_executable(DB_Imp_Seminar ${SOURCE_FILES})
+add_executable(DB_Generator ${GENERATOR_FILES})
