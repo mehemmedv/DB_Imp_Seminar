@@ -6,28 +6,24 @@
 #define DB_IMP_SEMINAR_CSRGRAPH_H
 
 // 'Compressed sparse row' implementation of Graph
-class CSRGraph {
-    int v, e, cur_idx, last_vertex;
+class CSRGraph : public Graph {
     int *edges, *offsets;
-    bool *used;
-
-    void dfs_recur(int v);
+    int cur_idx, v, e;
+    int* idx;
 
 public:
     CSRGraph(int v, int e) : v(v), e(e) {
         edges = new int[e];
         offsets = new int[v + 2];
         cur_idx = 0;
-        last_vertex = -1;
+        idx = new int[v + 2];
     }
 
-    void add_edges(int from, int to);
+    void add_edge(int v, std::vector<int>& to);
 
-    void set_offset();
+    void finished();
 
-    void bfs(int v);
-
-    void dfs(int v);
+    bool next_neighbor(int v, int& to);
 };
 
 

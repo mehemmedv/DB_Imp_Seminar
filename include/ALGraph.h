@@ -5,23 +5,30 @@
 #ifndef DB_IMP_SEMINAR_ALGRAPH_H
 #define DB_IMP_SEMINAR_ALGRAPH_H
 
+#include <Graph.h>
+#include <list>
+#include <vector>
+
 // Adjacency list implementation of Graph
-class ALGraph {
-    list<int> *edges;
+class ALGraph : public Graph{
     int v;
-
-    void dfs_recur(int v);
-
+    std::list<int>* edges;
+    std::list<int>::iterator* its;
 public:
-    ALGraph(int v) : v(v) {
-        edges = new list<int>[v];
+    ALGraph(int v) : v(v){
+        std::list<int> x;
+
+        edges = new list<int>[v + 2];
+        its = new std::list<int>::iterator[v + 2];
+        for(int i = 0; i <= v; ++i)
+            edges[i].clear();
     }
 
-    void add_edge(int from, int to);
+    void add_edge(int v, std::vector<int>& to);
 
-    void bfs(int v);
+    void finished();
 
-    void dfs(int v);
+    bool next_neighbor(int v, int& to);
 };
 
 

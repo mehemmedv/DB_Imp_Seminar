@@ -4,37 +4,21 @@
 
 #include "../include/ALGraph.h"
 
-void ALGraph::add_edge(int from, int to) {
-    edges[from].push_front(to);
+void ALGraph::add_edge(int from, vector<int>& to) {
+    for(int i : to)
+        edges[from].push_back(i);
 }
 
-void ALGraph::bfs(int v) {
-    used = new bool[v + 2];
-    memset(used, 0, sizeof(int) * (v + 2));
+void ALGraph::finished() {
+    for(int i = 1; i <= v; ++i)
+        its[i] = edges[i].begin();
+}
 
-    std::queue<int> q;
-    q.push(v);
-
-    while (!q.empty()) {
-        int cur_vertex = q.front();
-        q.pop();
-        for (int to : edges[cur_vertex])
-            if (!used[to])
-                q.push(to), used[to] = true;
+bool ALGraph::next_neighbor(int v, int &to) {
+    if(its[v] != edges[v].end()){
+        to = *(its[v]);
+        ++its[v];
+        return true;
     }
-    delete[] used;
-}
-
-void ALGraph::dfs_recur(int v) {
-    used[v] = true;
-    for (int to : edges[v])
-        if (!used[to])
-            dfs_recur(to);
-}
-
-void ALGraph::dfs(int v) {
-    used = new bool[v + 2];
-    memset(used, 0, sizeof(int) * (v + 2));
-    dfs_recur(v);
-    delete[] used;
+    return false;
 }
