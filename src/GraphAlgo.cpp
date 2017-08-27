@@ -14,6 +14,7 @@ void GraphAlgo::bfs(int cur_vertex) {
     q.push(cur_vertex);
     used[cur_vertex] = true;
     while(!q.empty()){
+        cur_vertex = q.front();
         q.pop();
         int to;
         while(graph->next_neighbor(cur_vertex, to)){
