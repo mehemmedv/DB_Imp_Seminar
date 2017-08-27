@@ -6,15 +6,20 @@
 #define DB_IMP_SEMINAR_GRAPHALGO_H
 #include "Graph.h"
 
-
+template <class T>
 class GraphAlgo {
-    int v;
+    int v, e;
     bool* used;
-    Graph* graph;
+    T* graph;
 public:
-    GraphAlgo(int v, Graph* graph) : v(v), graph(graph){
+    GraphAlgo(int v, int e) : v(v), e(e){
         used = new bool[v + 2];
+        graph = new T(v, e);
     }
+
+    void add_edge(int v, std::vector<int>& to);
+
+    void finished();
 
     void dfs(int v);
 

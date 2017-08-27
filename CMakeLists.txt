@@ -2,16 +2,8 @@ cmake_minimum_required(VERSION 3.7)
 project(DB_Imp_Seminar)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD 14)
-SET(CMAKE_C_COMPILER gcc)
-SET(CMAKE_CXX_COMPILER g++)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fno-omit-frame-pointer -march=native")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -march=native")
-
-set(SOURCE_FILES tests/main.cpp include/Graph.h include/GraphAlgo.h include/ALGraph.h include/CSRGraph.h
-        src/GraphAlgo.cpp src/ALGraph.cpp src/CSRGraph.cpp src/Graph.cpp)
+set(SOURCE_FILES tests/main.cpp src/GraphAlgo.cpp src/ALGraph.cpp src/CSRGraph.cpp)
 set(GENERATOR_FILES tests/random_graph_generator.cpp)
 
 

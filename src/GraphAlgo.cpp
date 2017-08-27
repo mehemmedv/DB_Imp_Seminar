@@ -6,7 +6,8 @@
 #include <queue>
 #include "../include/GraphAlgo.h"
 
-void GraphAlgo::bfs(int cur_vertex) {
+template <class T>
+void GraphAlgo<T>::bfs(int cur_vertex) {
     //used = new bool[v + 2];
     std::memset(used, 0, sizeof(bool) * (v + 2));
 
@@ -25,7 +26,8 @@ void GraphAlgo::bfs(int cur_vertex) {
     //delete[] used;
 }
 
-void GraphAlgo::dfs_recursion(int v) {
+template <class T>
+void GraphAlgo<T>::dfs_recursion(int v) {
     used[v] = true;
     int to;
     while(graph->next_neighbor(v, to)){
@@ -34,10 +36,23 @@ void GraphAlgo::dfs_recursion(int v) {
     }
 }
 
-void GraphAlgo::dfs(int cur_vertex) {
+template <class T>
+void GraphAlgo<T>::dfs(int cur_vertex) {
     //used = new bool[v + 2];
     memset(used, 0, sizeof(bool) * (v + 2));
     dfs_recursion(cur_vertex);
     //delete[] used;
 }
+
+template <class T>
+void GraphAlgo<T>::add_edge(int v, std::vector<int>& to){
+    graph->add_edge(v, to);
+}
+
+template <class T>
+void GraphAlgo<T>::finished() {
+    graph->finished();
+}
+
+
 

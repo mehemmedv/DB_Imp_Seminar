@@ -1,20 +1,19 @@
 #include <iostream>
-#include "../include/Graph.h"
 #include "../include/ALGraph.h"
 #include "../include/GraphAlgo.h"
 #include "../include/CSRGraph.h"
 #include <sys/time.h>
-#pragma comment(linker, "/STACK:200000000")
-#pragma comment(linker, "/HEAP:200000000")
+#include "../src/GraphAlgo.cpp"
+
 
 int main() {
     freopen("out.txt", "r", stdin);
     int v, ssize, to, e;
     std::cin>>v>>e;
     std::vector<int> edges;
-    ALGraph* algraph = new ALGraph(v);
-    CSRGraph* csrgraph = new CSRGraph(v, e);
 
+    GraphAlgo<ALGraph> algos1(v, e);
+    GraphAlgo<CSRGraph> algos2(v, e);
     for(int i = 0; i < v; ++i){
         edges.clear();
         std::cin>>ssize;
@@ -22,28 +21,26 @@ int main() {
             std::cin>>to;
             edges.push_back(to);
         }
-        algraph->add_edge(i + 1, edges);
-        csrgraph->add_edge(i + 1, edges);
+        algos1.add_edge(i + 1, edges);
+        algos2.add_edge(i + 1, edges);
     }
 
-    algraph->finished();
-    csrgraph->finished();
-    GraphAlgo algos1(v, algraph);
-    GraphAlgo algos2(v, csrgraph);
+    algos1.finished();
+    algos2.finished();
 
     struct timeval tp1;
     gettimeofday(&tp1, NULL);
     long int ms1 = tp1.tv_sec * 1000 + tp1.tv_usec / 1000;
     std::cout<<"Search started"<<std::endl;
     for(int i = 1; i <= v; ++i)
-        algos1.bfs(i);
+        algos1.dfs(i);
 
     struct timeval tp2;
     gettimeofday(&tp2, NULL);
     long int ms2 = tp2.tv_sec * 1000 + tp2.tv_usec / 1000;
 
     for(int i = 1; i <= v; ++i)
-        algos2.bfs(i);
+        algos2.dfs(i);
 
     struct timeval tp3;
     gettimeofday(&tp3, NULL);
