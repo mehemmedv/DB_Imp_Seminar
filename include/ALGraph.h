@@ -5,9 +5,9 @@
 #ifndef DB_IMP_SEMINAR_ALGRAPH_H
 #define DB_IMP_SEMINAR_ALGRAPH_H
 
-#include <Graph.h>
 #include <list>
 #include <vector>
+#include "Graph.h"
 
 // Adjacency list implementation of Graph
 class ALGraph : public Graph{
@@ -17,8 +17,7 @@ class ALGraph : public Graph{
 public:
     ALGraph(int v) : v(v){
         std::list<int> x;
-
-        edges = new list<int>[v + 2];
+        edges = new std::list<int>[v + 2];
         its = new std::list<int>::iterator[v + 2];
         for(int i = 0; i <= v; ++i)
             edges[i].clear();

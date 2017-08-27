@@ -3,7 +3,8 @@ project(DB_Imp_Seminar)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES tests/main.cpp)
+set(SOURCE_FILES tests/main.cpp include/Graph.h include/GraphAlgo.h include/ALGraph.h include/CSRGraph.h
+        src/GraphAlgo.cpp src/ALGraph.cpp src/CSRGraph.cpp src/Graph.cpp)
 set(GENERATOR_FILES tests/random_graph_generator.cpp)
 
 add_executable(DB_Imp_Seminar ${SOURCE_FILES})

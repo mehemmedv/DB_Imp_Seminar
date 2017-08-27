@@ -5,6 +5,9 @@
 #ifndef DB_IMP_SEMINAR_CSRGRAPH_H
 #define DB_IMP_SEMINAR_CSRGRAPH_H
 
+#include <vector>
+#include "Graph.h"
+
 // 'Compressed sparse row' implementation of Graph
 class CSRGraph : public Graph {
     int *edges, *offsets;

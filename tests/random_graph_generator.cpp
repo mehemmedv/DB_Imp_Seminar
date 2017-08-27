@@ -6,17 +6,19 @@
 #include <fstream>
 #include <vector>
 
-#define MAXN 10
+#define MAXN 100000
 
 std::vector<int> edges[MAXN];
 
 int main() {
 
+    std::freopen("out.txt", "w", stdout);
+
     srand(time(NULL));
 
-    for (int i = 1; i <= 10; ++i) {
+    for (int i = 1; i <= MAXN; ++i) {
 
-        for (int k = edges[i].size() + 1; k <= 3; ++k) {
+        for (int k = edges[i].size() + 1; k <= 300; ++k) {
             bool flag = false;
             int x;
             while (!flag) {
@@ -39,9 +41,14 @@ int main() {
 
 
     }
+    int sum = 0;
+    for(int i = 1; i <= MAXN; ++i)
+        sum += edges[i].size();
+
+    std::cout<<MAXN<<" "<<sum<<std::endl;
 
     for(int i = 1; i <= MAXN; ++i){
-        std::cout<<i<<": ";
+        std::cout<<edges[i].size()<<" ";
         for(int j : edges[i])
             std::cout<<j<<" ";
         std::cout<<std::endl;

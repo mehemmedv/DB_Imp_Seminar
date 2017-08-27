@@ -4,7 +4,7 @@
 
 #include "../include/CSRGraph.h"
 
-void CSRGraph::add_edge(int from, vector<int>& to) {
+void CSRGraph::add_edge(int from, std::vector<int>& to) {
     offsets[from] = cur_idx;
     for(int i : to)
         edges[cur_idx++] = i;
@@ -16,7 +16,7 @@ void CSRGraph::finished() {
         idx[i] = offsets[i];
 }
 
-void CSRGraph::next_neighbor(int v, int &to) {
+bool CSRGraph::next_neighbor(int v, int &to) {
     if(idx[v] < offsets[v + 1]){
         to = edges[idx[v]++];
         return true;
