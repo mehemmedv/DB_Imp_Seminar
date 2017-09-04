@@ -11,11 +11,14 @@ class GraphAlgo {
     int v, e;
     bool* used;
     T* graph;
+
 public:
     GraphAlgo(int v, int e) : v(v), e(e){
         used = new bool[v + 2];
         graph = new T(v, e);
     }
+
+    typedef typename T::iterator iterator;
 
     void add_edge(int v, std::vector<int>& to);
 

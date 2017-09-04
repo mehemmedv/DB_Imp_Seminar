@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(DB_Imp_Seminar)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES tests/main.cpp src/GraphAlgo.cpp src/ALGraph.cpp src/CSRGraph.cpp)
 set(GENERATOR_FILES tests/random_graph_generator.cpp)

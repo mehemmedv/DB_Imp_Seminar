@@ -27,12 +27,18 @@ void GraphAlgo<T>::bfs(int cur_vertex) {
 }
 
 template <class T>
-void GraphAlgo<T>::dfs_recursion(int v) {
-    used[v] = true;
+void GraphAlgo<T>::dfs_recursion(int cur_vertex) {
+    used[cur_vertex] = true;
     int to;
-    while(graph->next_neighbor(v, to)){
+
+    /*while(graph->next_neighbor(cur_vertex, to)){
         if(!used[to])
             used[to] = true, dfs_recursion(to);
+    }*/
+
+    for(auto it = graph->begin(cur_vertex); it != graph->end(cur_vertex); ++it){
+        if(!used[*it])
+            used[*it] = true, dfs_recursion(*it);
     }
 }
 

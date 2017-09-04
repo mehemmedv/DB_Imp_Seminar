@@ -1,6 +1,5 @@
 #include <iostream>
 #include "../include/ALGraph.h"
-#include "../include/GraphAlgo.h"
 #include "../include/CSRGraph.h"
 #include <sys/time.h>
 #include "../src/GraphAlgo.cpp"
