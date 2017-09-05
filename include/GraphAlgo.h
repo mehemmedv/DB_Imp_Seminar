@@ -18,8 +18,6 @@ public:
         graph = new T(v, e);
     }
 
-    typedef typename T::iterator iterator;
-
     void add_edge(int v, std::vector<int>& to);
 
     void finished();

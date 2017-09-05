@@ -9,7 +9,8 @@
 template <class T>
 void GraphAlgo<T>::bfs(int cur_vertex) {
     //used = new bool[v + 2];
-    std::memset(used, 0, sizeof(bool) * (v + 2));
+    for(int i = 0; i < v + 2; ++i)
+        used[i] = false;
 
     std::queue<int> q;
     q.push(cur_vertex);
@@ -18,9 +19,14 @@ void GraphAlgo<T>::bfs(int cur_vertex) {
         cur_vertex = q.front();
         q.pop();
         int to;
-        while(graph->next_neighbor(cur_vertex, to)){
+        /*while(graph->next_neighbor(cur_vertex, to)){
             if(!used[to])
                 used[to] = true, q.push(to);
+        }*/
+        auto it_end = graph->end(cur_vertex);
+        for(auto it = graph->begin(cur_vertex); it != it_end; ++it){
+            if(!used[*it])
+                used[*it] = true, q.push(*it);
         }
     }
     //delete[] used;
@@ -35,10 +41,10 @@ void GraphAlgo<T>::dfs_recursion(int cur_vertex) {
         if(!used[to])
             used[to] = true, dfs_recursion(to);
     }*/
-
-    for(auto it = graph->begin(cur_vertex); it != graph->end(cur_vertex); ++it){
+    auto it_end = graph->end(cur_vertex);
+    for(auto it = graph->begin(cur_vertex); it != it_end; ++it){
         if(!used[*it])
-            used[*it] = true, dfs_recursion(*it);
+            dfs_recursion(*it);
     }
 }
 

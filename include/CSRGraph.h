@@ -64,14 +64,12 @@ public:
 
     bool next_neighbor(int v, int &to);
 
-    iterator begin(int cur_vertex){
-        iterator it(&(edges[offsets[cur_vertex]]));
-        return it;
+    int* begin(int cur_vertex){
+        return &(edges[offsets[cur_vertex]]);
     }
 
-    iterator end(int cur_vertex){
-        iterator it(&(edges[offsets[cur_vertex + 1]]));
-        return it;
+    int* end(int cur_vertex){
+        return &(edges[offsets[cur_vertex + 1]]);
     }
 
 };
