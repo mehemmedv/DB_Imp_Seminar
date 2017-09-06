@@ -29,13 +29,10 @@ public:
 
     bool next_neighbor(int v, int& to);
 
-    std::list<int>::iterator begin(int cur_vertex){
-        return edges[cur_vertex].begin();
-    }
 
-    std::list<int>::iterator end(int cur_vertex){
-        return edges[cur_vertex].end();
-    }
+    std::list<int>::iterator begin(int cur_vertex);
+
+    std::list<int>::iterator end(int cur_vertex);
 };
 
 

@@ -4,7 +4,6 @@
 #include <sys/time.h>
 #include "../src/GraphAlgo.cpp"
 
-
 int main() {
     freopen("out.txt", "r", stdin);
     int v, ssize, to, e;
@@ -31,7 +30,7 @@ int main() {
     gettimeofday(&tp1, NULL);
     long int ms1 = tp1.tv_sec * 1000 + tp1.tv_usec / 1000;
     std::cout<<"Search started"<<std::endl;
-    for(int i = 1; i <= 10; ++i)
+    for(int i = 1; i <= 30; ++i)
         algos1.dfs(i);
 
     std::cout<<"algo 1 ended"<<std::endl;
@@ -39,7 +38,7 @@ int main() {
     gettimeofday(&tp2, NULL);
     long int ms2 = tp2.tv_sec * 1000 + tp2.tv_usec / 1000;
 
-    for(int i = 1; i <= 10; ++i)
+    for(int i = 1; i <= 30; ++i)
         algos2.dfs(i);
 
     struct timeval tp3;

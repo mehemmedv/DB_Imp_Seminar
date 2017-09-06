@@ -23,3 +23,11 @@ bool ALGraph::next_neighbor(int from, int &to) {
     }
     return false;
 }
+
+std::list<int>::iterator ALGraph::begin(int cur_vertex) {
+    return edges[cur_vertex].begin();
+}
+
+std::list<int>::iterator ALGraph::end(int cur_vertex){
+    return edges[cur_vertex].end();
+}

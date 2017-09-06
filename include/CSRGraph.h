@@ -64,14 +64,9 @@ public:
 
     bool next_neighbor(int v, int &to);
 
-    int* begin(int cur_vertex){
-        return &(edges[offsets[cur_vertex]]);
-    }
+    int* begin(int cur_vertex);
 
-    int* end(int cur_vertex){
-        return &(edges[offsets[cur_vertex + 1]]);
-    }
-
+    int* end(int cur_vertex);
 };
 
 

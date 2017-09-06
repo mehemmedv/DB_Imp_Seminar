@@ -23,3 +23,11 @@ bool CSRGraph::next_neighbor(int v, int &to) {
     }
     return false;
 }
+
+int* CSRGraph::begin(int cur_vertex){
+    return &(edges[offsets[cur_vertex]]);
+}
+
+int* CSRGraph::end(int cur_vertex){
+    return &(edges[offsets[cur_vertex + 1]]);
+}
