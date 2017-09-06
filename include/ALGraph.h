@@ -23,12 +23,13 @@ public:
             edges[i].clear();
     }
 
-    void add_edge(int v, std::vector<int>& to);
+    void add_edge(int from, std::vector<int>& to);
+
+    void add_edge(int from, int to, int weight = 0);
 
     void finished();
 
     bool next_neighbor(int v, int& to);
-
 
     std::list<int>::iterator begin(int cur_vertex);
 

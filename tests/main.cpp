@@ -31,7 +31,7 @@ int main() {
     long int ms1 = tp1.tv_sec * 1000 + tp1.tv_usec / 1000;
     std::cout<<"Search started"<<std::endl;
     for(int i = 1; i <= 30; ++i)
-        algos1.dfs(i);
+        algos1.bfs(i);
 
     std::cout<<"algo 1 ended"<<std::endl;
     struct timeval tp2;
@@ -39,7 +39,7 @@ int main() {
     long int ms2 = tp2.tv_sec * 1000 + tp2.tv_usec / 1000;
 
     for(int i = 1; i <= 30; ++i)
-        algos2.dfs(i);
+        algos2.bfs(i);
 
     struct timeval tp3;
     gettimeofday(&tp3, NULL);
