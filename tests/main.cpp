@@ -1,8 +1,8 @@
 #include <iostream>
 #include "../include/ALGraph.h"
 #include "../include/CSRGraph.h"
-#include <sys/time.h>
 #include "../src/GraphAlgo.cpp"
+#include <chrono>
 
 int main() {
     freopen("out.txt", "r", stdin);
@@ -26,27 +26,22 @@ int main() {
     algos1.finished();
     algos2.finished();
 
-    struct timeval tp1;
-    gettimeofday(&tp1, NULL);
-    long int ms1 = tp1.tv_sec * 1000 + tp1.tv_usec / 1000;
     std::cout<<"Search started"<<std::endl;
-    for(int i = 1; i <= 30; ++i)
+
+    auto begin1 = std::chrono::high_resolution_clock::now();
+
+    for(int i = 1; i <= 40; ++i)
         algos1.bfs(i);
 
-    std::cout<<"algo 1 ended"<<std::endl;
-    struct timeval tp2;
-    gettimeofday(&tp2, NULL);
-    long int ms2 = tp2.tv_sec * 1000 + tp2.tv_usec / 1000;
-
-    for(int i = 1; i <= 30; ++i)
+    auto end = std::chrono::high_resolution_clock::now();
+    auto passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
+    std::cout << "Adjacency list Time: " << passed.count() << std::endl;
+    auto begin2 = std::chrono::high_resolution_clock::now();
+    for(int i = 1; i <= 40; ++i)
         algos2.bfs(i);
-
-    struct timeval tp3;
-    gettimeofday(&tp3, NULL);
-    long int ms3 = tp3.tv_sec * 1000 + tp3.tv_usec / 1000;
-
-
-    std::cout<<"CSR TIME: "<<ms3 - ms2<<std::endl<<"Adjacency List:"<<ms2 - ms1<<std::endl;
+    end = std::chrono::high_resolution_clock::now();
+    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
+    std::cout << "CSR Time: " << passed.count() << std::endl;
 
     return 0;
 }
