@@ -11,6 +11,7 @@
 // 'Compressed sparse row' implementation of Graph
 class CSRGraph : public Graph {
     int *edges, *offsets;
+    int* weights;
     int *delta1, *delta2;
     int cur_idx, v, e;
     int *idx;
@@ -35,6 +36,8 @@ public:
     int* begin(int cur_vertex);
 
     int* end(int cur_vertex);
+
+    int* begin_weights(int cur_vertex);
 };
 
 

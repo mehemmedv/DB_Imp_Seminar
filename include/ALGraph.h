@@ -13,6 +13,8 @@
 class ALGraph : public Graph{
     int v, e;
     std::list<int>* edges;
+    std::list<int>* weights;
+
     std::list<int>::iterator* its;
 public:
     ALGraph(int v, int e) : v(v), e(e){
@@ -34,6 +36,8 @@ public:
     std::list<int>::iterator begin(int cur_vertex);
 
     std::list<int>::iterator end(int cur_vertex);
+
+    std::list<int>::iterator begin_weights(int cur_vertex);
 };
 
 

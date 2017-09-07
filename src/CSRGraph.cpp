@@ -33,6 +33,10 @@ int* CSRGraph::end(int cur_vertex){
     return &(edges[offsets[cur_vertex + 1]]);
 }
 
+int* CSRGraph::begin_weights(int cur_vertex){
+    return &(weights[offsets[cur_vertex]]);
+}
+
 void CSRGraph::add_edge(int from, int to, int weight) {
     delta2 = new int[e+1];
 

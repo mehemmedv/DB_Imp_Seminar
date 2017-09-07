@@ -27,6 +27,8 @@ public:
     void bfs(int v);
 
     void dfs_recursion(int v);
+
+    long long dijiksta(int from, int to);
 };
 
 
