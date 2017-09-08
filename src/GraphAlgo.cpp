@@ -73,22 +73,19 @@ long long GraphAlgo<T>::dijiksta(int from, int to) {
         auto it_end = graph->end(cur_vertex);
         auto it_w = graph->begin_weights(cur_vertex);
         int cnt = 0;
-        for(auto it = graph->begin(cur_vertex); it != it_end; ++it){
+        for(auto it = graph->begin(cur_vertex); it != it_end; ++it, ++it_w){
             int cur_weight = *it_w;
             int to_vertex = *it;
+            //std::cout<<cur_vertex<<" "<<to_vertex<<" "<<*it_w<<std::endl;
             ++cnt;
             if(distance + cur_weight < dist[to_vertex]){
                 if(min_heap.find(std::make_pair(dist[to_vertex], to_vertex)) != min_heap.end())
                     min_heap.erase(min_heap.find(std::make_pair(dist[to_vertex], to_vertex)));
                 dist[to_vertex] = distance + cur_weight;
                 min_heap.insert(std::make_pair(dist[to_vertex], to_vertex));
-                ++it_w;
             }
         }
     }
 
     return dist[to];
 }
-
-
-

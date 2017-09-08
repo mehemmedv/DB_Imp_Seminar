@@ -6,7 +6,7 @@
 #include <fstream>
 #include <vector>
 
-#define MAXN 50000
+#define MAXN 1000
 
 std::vector<int> edges[MAXN];
 
@@ -18,7 +18,7 @@ int main() {
 
     for (int i = 1; i <= MAXN; ++i) {
 
-        for (int k = edges[i].size() + 1; k <= 500; ++k) {
+        for (int k = edges[i].size() + 1; k <= 100; ++k) {
             bool flag = false;
             int x;
             while (!flag) {

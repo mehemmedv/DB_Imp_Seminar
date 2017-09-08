@@ -14,7 +14,7 @@ void CSRGraph::add_edge(int from, std::vector<int>& to, std::vector<int>& w) {
         edges[cur_idx++] = i;
     }
     for(int i : w){
-        weights[temp_cur_idx++] = w[i];
+        weights[temp_cur_idx++] = i;
     }
 }
 
