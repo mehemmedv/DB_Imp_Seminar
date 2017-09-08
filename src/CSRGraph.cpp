@@ -4,11 +4,18 @@
 
 #include "../include/CSRGraph.h"
 #include <string.h>
+#include <iostream>
 
-void CSRGraph::add_edge(int from, std::vector<int>& to) {
+void CSRGraph::add_edge(int from, std::vector<int>& to, std::vector<int>& w) {
     offsets[from] = cur_idx;
-    for(int i : to)
+    int temp_cur_idx = cur_idx;
+    //for(int i : to)
+    for(int i : to){
         edges[cur_idx++] = i;
+    }
+    for(int i : w){
+        weights[temp_cur_idx++] = w[i];
+    }
 }
 
 void CSRGraph::finished() {

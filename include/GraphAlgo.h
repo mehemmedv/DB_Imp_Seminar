@@ -18,7 +18,7 @@ public:
         graph = new T(v, e);
     }
 
-    void add_edge(int v, std::vector<int>& to);
+    void add_edge(int v, std::vector<int>& to, std::vector<int>& weights);
 
     void finished();
 

@@ -6,6 +6,7 @@
 #include <queue>
 #include <climits>
 #include <set>
+#include <iostream>
 #include "../include/GraphAlgo.h"
 
 template <class T>
@@ -43,8 +44,8 @@ void GraphAlgo<T>::dfs(int cur_vertex) {
 }
 
 template <class T>
-void GraphAlgo<T>::add_edge(int v, std::vector<int>& to){
-    graph->add_edge(v, to);
+void GraphAlgo<T>::add_edge(int v, std::vector<int>& to, std::vector<int>& weights){
+    graph->add_edge(v, to, weights);
 }
 
 template <class T>
@@ -53,7 +54,7 @@ void GraphAlgo<T>::finished() {
 }
 
 template <class T>
-long long GraphAlgo::dijiksta(int from, int to) {
+long long GraphAlgo<T>::dijiksta(int from, int to) {
     long long* dist = new long long [v + 2];
     for(int i = 0; i < v + 2; ++i)
         dist[i] = LONG_LONG_MAX;
@@ -63,19 +64,25 @@ long long GraphAlgo::dijiksta(int from, int to) {
     min_heap.insert(std::make_pair(0, from));
 
     while(!min_heap.empty()){
+
         std::pair<long long, int> temp = *(min_heap.begin());
         min_heap.erase(min_heap.begin());
         long long distance = temp.first;
         int cur_vertex = temp.second;
+        //std::cout<<cur_vertex<<std::endl;
         auto it_end = graph->end(cur_vertex);
         auto it_w = graph->begin_weights(cur_vertex);
-        for(auto it = graph->begin(cur_vertex); it != it_end; ++it, ++it_w){
+        int cnt = 0;
+        for(auto it = graph->begin(cur_vertex); it != it_end; ++it){
             int cur_weight = *it_w;
             int to_vertex = *it;
+            ++cnt;
             if(distance + cur_weight < dist[to_vertex]){
-                min_heap.erase(min_heap.find(std::make_pair(dist[to_vertex], to_vertex)));
+                if(min_heap.find(std::make_pair(dist[to_vertex], to_vertex)) != min_heap.end())
+                    min_heap.erase(min_heap.find(std::make_pair(dist[to_vertex], to_vertex)));
                 dist[to_vertex] = distance + cur_weight;
                 min_heap.insert(std::make_pair(dist[to_vertex], to_vertex));
+                ++it_w;
             }
         }
     }

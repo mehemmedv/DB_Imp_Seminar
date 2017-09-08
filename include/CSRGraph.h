@@ -23,9 +23,10 @@ public:
         offsets = new int[v + 2];
         cur_idx = 0;
         idx = new int[v + 2];
+        weights = new int[e];
     }
 
-    void add_edge(int from, std::vector<int> &to);
+    void add_edge(int from, std::vector<int> &to, std::vector<int>& w);
 
     void add_edge(int from, int to, int weight = 0);
 

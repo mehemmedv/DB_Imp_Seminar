@@ -20,12 +20,13 @@ public:
     ALGraph(int v, int e) : v(v), e(e){
         std::list<int> x;
         edges = new std::list<int>[v + 2];
+        weights = new std::list<int>[v + 2];
         its = new std::list<int>::iterator[v + 2];
         for(int i = 0; i <= v; ++i)
-            edges[i].clear();
+            edges[i].clear(), weights[i].clear();
     }
 
-    void add_edge(int from, std::vector<int>& to);
+    void add_edge(int from, std::vector<int>& to, std::vector<int>& w);
 
     void add_edge(int from, int to, int weight = 0);
 
