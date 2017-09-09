@@ -13,17 +13,6 @@ void ALGraph::add_edge(int from, std::vector<int>& to, std::vector<int>& w) {
 }
 
 void ALGraph::finished() {
-    for(int i = 1; i <= v; ++i)
-        its[i] = edges[i].begin();
-}
-
-bool ALGraph::next_neighbor(int from, int &to) {
-    if(its[from] != edges[from].end()){
-        to = *(its[from]);
-        ++its[from];
-        return true;
-    }
-    return false;
 }
 
 std::list<int>::iterator ALGraph::begin(int cur_vertex) {

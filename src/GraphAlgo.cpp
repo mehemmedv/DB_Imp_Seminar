@@ -55,7 +55,6 @@ void GraphAlgo<T>::finished() {
 
 template <class T>
 long long GraphAlgo<T>::dijiksta(int from, int to) {
-    long long* dist = new long long [v + 2];
     for(int i = 0; i < v + 2; ++i)
         dist[i] = LONG_LONG_MAX;
     dist[from] = 0;
@@ -69,14 +68,12 @@ long long GraphAlgo<T>::dijiksta(int from, int to) {
         min_heap.erase(min_heap.begin());
         long long distance = temp.first;
         int cur_vertex = temp.second;
-        //std::cout<<cur_vertex<<std::endl;
         auto it_end = graph->end(cur_vertex);
         auto it_w = graph->begin_weights(cur_vertex);
         int cnt = 0;
         for(auto it = graph->begin(cur_vertex); it != it_end; ++it, ++it_w){
             int cur_weight = *it_w;
             int to_vertex = *it;
-            //std::cout<<cur_vertex<<" "<<to_vertex<<" "<<*it_w<<std::endl;
             ++cnt;
             if(distance + cur_weight < dist[to_vertex]){
                 if(min_heap.find(std::make_pair(dist[to_vertex], to_vertex)) != min_heap.end())

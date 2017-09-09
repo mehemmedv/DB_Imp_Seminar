@@ -20,16 +20,6 @@ void CSRGraph::add_edge(int from, std::vector<int>& to, std::vector<int>& w) {
 
 void CSRGraph::finished() {
     offsets[v+1] = e;
-    for(int i = 1; i <= v; ++i)
-        idx[i] = offsets[i];
-}
-
-bool CSRGraph::next_neighbor(int v, int &to) {
-    if(idx[v] < offsets[v + 1]){
-        to = edges[idx[v]++];
-        return true;
-    }
-    return false;
 }
 
 int* CSRGraph::begin(int cur_vertex){

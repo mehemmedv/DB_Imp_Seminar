@@ -6,15 +6,13 @@
 #define DB_IMP_SEMINAR_CSRGRAPH_H
 
 #include <vector>
-#include "Graph.h"
 
 // 'Compressed sparse row' implementation of Graph
-class CSRGraph : public Graph {
+class CSRGraph {
     int *edges, *offsets;
     int* weights;
     int *delta1, *delta2;
     int cur_idx, v, e;
-    int *idx;
 
 public:
     CSRGraph(int v, int e) : v(v), e(e) {
@@ -22,7 +20,6 @@ public:
         edges = delta1;
         offsets = new int[v + 2];
         cur_idx = 0;
-        idx = new int[v + 2];
         weights = new int[e];
     }
 
@@ -31,8 +28,6 @@ public:
     void add_edge(int from, int to, int weight = 0);
 
     void finished();
-
-    bool next_neighbor(int v, int &to);
 
     int* begin(int cur_vertex);
 

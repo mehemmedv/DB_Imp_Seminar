@@ -4,11 +4,11 @@
 
 #ifndef DB_IMP_SEMINAR_GRAPHALGO_H
 #define DB_IMP_SEMINAR_GRAPHALGO_H
-#include "Graph.h"
 
 template <class T>
 class GraphAlgo {
     int v, e;
+    long long* dist;
     bool* used;
     T* graph;
 
@@ -16,6 +16,7 @@ public:
     GraphAlgo(int v, int e) : v(v), e(e){
         used = new bool[v + 2];
         graph = new T(v, e);
+        dist = new long long [v + 2];
     }
 
     void add_edge(int v, std::vector<int>& to, std::vector<int>& weights);
