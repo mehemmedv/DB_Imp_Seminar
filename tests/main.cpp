@@ -39,13 +39,13 @@ int main() {
     //for(int i = 1; i <= 100; ++i)
     //    algos1.dijiksta(1, i);
 
-    std::cout<<algos1.dijiksta(1, 5)<<" "<<algos2.dijiksta(1, 5)<<std::endl;
+    std::cout<<algos1.dijiksta(1, 1000)<<" "<<algos2.dijiksta(1, 1000)<<std::endl;
     algos1.add_edge(1, 10000, 4);
-    algos1.add_edge(10000, 5, 10);
+    algos1.add_edge(10000, 1000, 10);
     algos2.add_edge(1, 10000, 4);
-    algos2.add_edge(10000, 5, 10);
+    algos2.add_edge(10000, 1000, 10);
 
-    std::cout<<algos1.dijiksta(1, 5)<<" "<<algos2.dijiksta(1, 5)<<std::endl;
+    std::cout<<algos1.dijiksta(1, 1000)<<" "<<algos2.dijiksta(1, 1000)<<std::endl;
 
 
     auto end = std::chrono::high_resolution_clock::now();
@@ -57,6 +57,20 @@ int main() {
     end = std::chrono::high_resolution_clock::now();
     passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
     std::cout << "CSR Time: " << passed.count() << std::endl;
+
+    // verification of bfs, check the results of both approaches
+
+    std::vector<int> res1 = algos1.bfs(2);
+    std::vector<int> res2 = algos2.bfs(2);
+
+    std::cout<<(res1 == res2)<<std::endl;
+
+    // verification of bfs, check the results of both approaches
+
+    std::vector<int> res3 = algos1.dfs(2);
+    std::vector<int> res4 = algos2.dfs(2);
+
+    std::cout<<(res3 == res4)<<std::endl;
 
     return 0;
 }

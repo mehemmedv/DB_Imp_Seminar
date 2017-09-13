@@ -10,14 +10,18 @@
 #include "../include/GraphAlgo.h"
 
 template <class T>
-void GraphAlgo<T>::bfs(int cur_vertex) {
+//void GraphAlgo<T>::bfs(int cur_vertex) {
+std::vector<int> GraphAlgo<T>::bfs(int cur_vertex) {
     memset(used, 0, sizeof(bool) * (v + 2));
+
+    std::vector<int> res;
 
     std::queue<int> q;
     q.push(cur_vertex);
     used[cur_vertex] = true;
     while(!q.empty()){
         cur_vertex = q.front();
+        res.push_back(cur_vertex);
         q.pop();
         auto it_end = graph->end(cur_vertex);
         for(auto it = graph->begin(cur_vertex); it != it_end; ++it){
@@ -25,22 +29,29 @@ void GraphAlgo<T>::bfs(int cur_vertex) {
                 used[*it] = true, q.push(*it);
         }
     }
+    return res;
 }
 
 template <class T>
-void GraphAlgo<T>::dfs_recursion(int cur_vertex) {
+//void GraphAlgo<T>::dfs_recursion(int cur_vertex) {
+void GraphAlgo<T>::dfs_recursion(int cur_vertex, std::vector<int>& res) {
+    res.push_back(cur_vertex);
     used[cur_vertex] = true;
     auto it_end = graph->end(cur_vertex);
     for(auto it = graph->begin(cur_vertex); it != it_end; ++it){
         if(!used[*it])
-            dfs_recursion(*it);
+            //dfs_recursion(*it);
+            dfs_recursion(*it, res);
     }
 }
 
 template <class T>
-void GraphAlgo<T>::dfs(int cur_vertex) {
+//void GraphAlgo<T>::dfs(int cur_vertex) {
+std::vector<int> GraphAlgo<T>::dfs(int cur_vertex) {
+    std::vector<int> res;
     memset(used, 0, sizeof(bool) * (v + 2));
-    dfs_recursion(cur_vertex);
+    dfs_recursion(cur_vertex, res);
+    return res;
 }
 
 template <class T>
@@ -68,7 +79,6 @@ long long GraphAlgo<T>::dijiksta(int from, int to) {
     min_heap.insert(std::make_pair(0, from));
 
     while(!min_heap.empty()){
-
         std::pair<long long, int> temp = *(min_heap.begin());
         min_heap.erase(min_heap.begin());
         long long distance = temp.first;

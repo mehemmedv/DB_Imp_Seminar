@@ -25,11 +25,14 @@ public:
 
     void finished();
 
-    void dfs(int v);
+    //void dfs(int v);
+    std::vector<int> dfs(int v);
 
-    void bfs(int v);
+    //void bfs(int v);
+    std::vector<int> bfs(int v);
 
-    void dfs_recursion(int v);
+    //void dfs_recursion(int v);
+    void dfs_recursion(int v, std::vector<int>& res);
 
     long long dijiksta(int from, int to);
 };
