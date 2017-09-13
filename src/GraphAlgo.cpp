@@ -8,6 +8,7 @@
 #include <set>
 #include <iostream>
 #include "../include/GraphAlgo.h"
+
 template <class T>
 #if VERIFY_ENABLED == false
 void GraphAlgo<T>::bfs(int cur_vertex) {
