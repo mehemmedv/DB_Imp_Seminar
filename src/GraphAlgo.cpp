@@ -10,17 +10,12 @@
 #include "../include/GraphAlgo.h"
 template <class T>
 #if VERIFY_ENABLED == false
-
 void GraphAlgo<T>::bfs(int cur_vertex) {
 #else
-
 std::vector<int> GraphAlgo<T>::bfs(int cur_vertex) {
     std::vector<int> res;
-
 #endif
-
     memset(used, 0, sizeof(bool) * (v + 2));
-
     std::queue<int> q;
     q.push(cur_vertex);
     used[cur_vertex] = true;
