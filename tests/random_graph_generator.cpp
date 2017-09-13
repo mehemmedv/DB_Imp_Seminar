@@ -53,7 +53,7 @@ int main() {
             std::cout<<j<<" ";
         std::cout<<std::endl;
         for(int j : edges[i])
-            std::cout<<rand() % 100 + 1<<" ";
+            std::cout<<rand() % 100 + 20<<" ";
         std::cout<<std::endl;
         
     }

@@ -29,4 +29,5 @@ std::list<int>::iterator ALGraph::begin_weights(int cur_vertex) {
 
 void ALGraph::add_edge(int from, int to, int weight) {
     edges[from].push_back(to);
+    weights[from].push_back(weight);
 }

@@ -11,16 +11,20 @@
 class CSRGraph {
     int *edges, *offsets;
     int* weights;
-    int *delta1, *delta2;
+    int *delta_edge_1, *delta_edge_2;
+    int *delta_w_1, *delta_w_2;
     int cur_idx, v, e;
+    bool even; // true if number of new edge is even
 
 public:
     CSRGraph(int v, int e) : v(v), e(e) {
-        delta1 = new int[e];
-        edges = delta1;
+        delta_edge_1 = new int[e];
+        edges = delta_edge_1;
         offsets = new int[v + 2];
         cur_idx = 0;
-        weights = new int[e];
+        delta_w_1 = new int[e];
+        weights = delta_w_1;
+        even = true; // there is 0 new edge so far
     }
 
     void add_edge(int from, std::vector<int> &to, std::vector<int>& w);

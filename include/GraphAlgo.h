@@ -21,6 +21,8 @@ public:
 
     void add_edge(int v, std::vector<int>& to, std::vector<int>& weights);
 
+    void add_edge(int from, int to, int weight);
+
     void finished();
 
     void dfs(int v);

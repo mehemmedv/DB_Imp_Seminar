@@ -49,6 +49,11 @@ void GraphAlgo<T>::add_edge(int v, std::vector<int>& to, std::vector<int>& weigh
 }
 
 template <class T>
+void GraphAlgo<T>::add_edge(int from, int to, int weight) {
+    graph->add_edge(from, to, weight);
+}
+
+template <class T>
 void GraphAlgo<T>::finished() {
     graph->finished();
 }

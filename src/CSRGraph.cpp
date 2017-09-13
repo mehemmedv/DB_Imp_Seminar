@@ -35,16 +35,49 @@ int* CSRGraph::begin_weights(int cur_vertex){
 }
 
 void CSRGraph::add_edge(int from, int to, int weight) {
-    delta2 = new int[e+1];
+    if(even){
+        delta_edge_2 = new int[e+1];
+        edges = delta_edge_2;
+        memcpy(delta_edge_2, delta_edge_1, sizeof(int) * offsets[from + 1]);
+        delta_edge_2[offsets[from + 1]] = to;
+        memcpy(delta_edge_2 + offsets[from + 1] + 1, delta_edge_1 + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
 
-    memcpy(&delta2, &delta1, sizeof(int) * offsets[from + 1]);
-    delta2[offsets[from + 1]] = to;
-    memcpy(&delta2[offsets[from + 1] + 1], &delta1[offsets[from + 1]], sizeof(int) * (e - offsets[from + 1]));
+        delete[] delta_edge_1;
+        edges = delta_edge_2;
 
-    for(int i = from + 1; i <= v; ++i)
-        ++offsets[i];
+        delta_w_2 = new int[e+1];
+        weights = delta_w_2;
+
+        memcpy(delta_w_2, delta_w_1, sizeof(int) * offsets[from + 1]);
+        delta_w_2[offsets[from + 1]] = weight;
+        memcpy(delta_w_2 + offsets[from + 1] + 1, delta_w_1 + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
+
+        delete[] delta_w_1;
+        weights = delta_w_2;
+
+    } else{
+        delta_edge_1 = new int[e+1];
+        edges = delta_edge_1;
+
+        memcpy(delta_edge_1, delta_edge_2, sizeof(int) * offsets[from + 1]);
+        delta_edge_1[offsets[from + 1]] = to;
+        memcpy(delta_edge_1 + offsets[from + 1] + 1, delta_edge_2 + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
+
+        delete[] delta_edge_2;
+        edges = delta_edge_1;
+        delta_w_1 = new int[e+1];
+        weights = delta_w_1;
+        memcpy(delta_w_1, delta_w_2, sizeof(int) * offsets[from + 1]);
+        delta_w_1[offsets[from + 1]] = weight;
+        //memcpy(&delta2[offsets[from + 1] + 1], &delta1[offsets[from + 1]], sizeof(int) * (e - offsets[from + 1]));
+        memcpy(delta_w_1 + offsets[from + 1] + 1, delta_w_2 + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
+
+        delete[] delta_w_2;
+        weights = delta_w_1;
+    }
+
     ++e;
-    edges = delta2;
-    delete[] delta1;
-    delta1 = delta2;
+    even ^= true;
+    for(int i = from + 1; i <= v + 1; ++i)
+        ++offsets[i];
 }
