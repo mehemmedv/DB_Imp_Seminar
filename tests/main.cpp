@@ -4,6 +4,10 @@
 #include "../src/GraphAlgo.cpp"
 #include <chrono>
 
+#define CMP_DFS_ENABLED true
+#define CMP_BFS_ENABLED true
+#define CMP_DIJIKSTRA_ENABLED true
+
 std::vector<int> edges;
 std::vector<int> weights;
 
@@ -32,32 +36,53 @@ int main() {
     algos1.finished();
     algos2.finished();
 
-    std::cout<<"Search started"<<std::endl;
-
+#if CMP_DFS_ENABLED == true
     auto begin1 = std::chrono::high_resolution_clock::now();
-
-    //for(int i = 1; i <= 100; ++i)
-    //    algos1.dijiksta(1, i);
-
-    std::cout<<algos1.dijiksta(1, 1000)<<" "<<algos2.dijiksta(1, 1000)<<std::endl;
-    algos1.add_edge(1, 10000, 4);
-    algos1.add_edge(10000, 1000, 10);
-    algos2.add_edge(1, 10000, 4);
-    algos2.add_edge(10000, 1000, 10);
-
-    std::cout<<algos1.dijiksta(1, 1000)<<" "<<algos2.dijiksta(1, 1000)<<std::endl;
-
-
+    for(int i = 1; i <= 200; ++i)
+        algos1.dfs(i);
     auto end = std::chrono::high_resolution_clock::now();
     auto passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
     std::cout << "Adjacency list Time: " << passed.count() << std::endl;
     auto begin2 = std::chrono::high_resolution_clock::now();
-    //for(int i = 1; i <= 100; ++i)
-    //    algos2.dijiksta(1, i);
+    for(int i = 1; i <= 200; ++i)
+        algos2.dfs(i);
     end = std::chrono::high_resolution_clock::now();
     passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
     std::cout << "CSR Time: " << passed.count() << std::endl;
+#endif
 
+#if CMP_BFS_ENABLED == true
+    begin1 = std::chrono::high_resolution_clock::now();
+    for(int i = 1; i <= 200; ++i)
+        algos1.bfs(i);
+    end = std::chrono::high_resolution_clock::now();
+    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
+    std::cout << "Adjacency list Time: " << passed.count() << std::endl;
+    begin2 = std::chrono::high_resolution_clock::now();
+    for(int i = 1; i <= 200; ++i)
+        algos2.bfs(i);
+    end = std::chrono::high_resolution_clock::now();
+    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
+    std::cout << "CSR Time: " << passed.count() << std::endl;
+#endif
+
+#if CMP_DIJIKSTRA_ENABLED == true
+    begin1 = std::chrono::high_resolution_clock::now();
+    for(int i = 1; i <= 100; ++i)
+        algos1.dijiksta(2, i);
+    end = std::chrono::high_resolution_clock::now();
+    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
+    std::cout << "Adjacency list Time: " << passed.count() << std::endl;
+    begin2 = std::chrono::high_resolution_clock::now();
+    for(int i = 1; i <= 100; ++i)
+        algos2.dijiksta(2, i);
+    end = std::chrono::high_resolution_clock::now();
+    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
+    std::cout << "CSR Time: " << passed.count() << std::endl;
+#endif
+
+
+#if VERIFY_ENABLED == true
     // verification of bfs, check the results of both approaches
 
     std::vector<int> res1 = algos1.bfs(2);
@@ -71,6 +96,15 @@ int main() {
     std::vector<int> res4 = algos2.dfs(2);
 
     std::cout<<(res3 == res4)<<std::endl;
+
+    std::cout<<(algos1.dijiksta(1, 1000) == algos2.dijiksta(1, 1000))<<std::endl;
+    algos1.add_edge(1, 10000, 4);
+    algos1.add_edge(10000, 1000, 10);
+    algos2.add_edge(1, 10000, 4);
+    algos2.add_edge(10000, 1000, 10);
+
+    std::cout<<(algos1.dijiksta(1, 1000) == algos2.dijiksta(1, 1000))<<std::endl;
+#endif
 
     return 0;
 }

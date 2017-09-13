@@ -8,20 +8,27 @@
 #include <set>
 #include <iostream>
 #include "../include/GraphAlgo.h"
-
 template <class T>
-//void GraphAlgo<T>::bfs(int cur_vertex) {
-std::vector<int> GraphAlgo<T>::bfs(int cur_vertex) {
-    memset(used, 0, sizeof(bool) * (v + 2));
+#if VERIFY_ENABLED == false
 
+void GraphAlgo<T>::bfs(int cur_vertex) {
+#else
+
+std::vector<int> GraphAlgo<T>::bfs(int cur_vertex) {
     std::vector<int> res;
+
+#endif
+
+    memset(used, 0, sizeof(bool) * (v + 2));
 
     std::queue<int> q;
     q.push(cur_vertex);
     used[cur_vertex] = true;
     while(!q.empty()){
         cur_vertex = q.front();
+#if VERIFY_ENABLED == true
         res.push_back(cur_vertex);
+#endif
         q.pop();
         auto it_end = graph->end(cur_vertex);
         for(auto it = graph->begin(cur_vertex); it != it_end; ++it){
@@ -29,29 +36,45 @@ std::vector<int> GraphAlgo<T>::bfs(int cur_vertex) {
                 used[*it] = true, q.push(*it);
         }
     }
+#if VERIFY_ENABLED == true
     return res;
+#endif
 }
 
 template <class T>
-//void GraphAlgo<T>::dfs_recursion(int cur_vertex) {
-void GraphAlgo<T>::dfs_recursion(int cur_vertex, std::vector<int>& res) {
+#if VERIFY_ENABLED == false
+    void GraphAlgo<T>::dfs_recursion(int cur_vertex) {
+#else
+    void GraphAlgo<T>::dfs_recursion(int cur_vertex, std::vector<int>& res) {
     res.push_back(cur_vertex);
+#endif
     used[cur_vertex] = true;
     auto it_end = graph->end(cur_vertex);
     for(auto it = graph->begin(cur_vertex); it != it_end; ++it){
-        if(!used[*it])
-            //dfs_recursion(*it);
+        if(!used[*it]){
+#if VERIFY_ENABLED == false
+            dfs_recursion(*it);
+#else
             dfs_recursion(*it, res);
+#endif
+        }
     }
 }
 
 template <class T>
-//void GraphAlgo<T>::dfs(int cur_vertex) {
-std::vector<int> GraphAlgo<T>::dfs(int cur_vertex) {
+#if VERIFY_ENABLED == false
+void GraphAlgo<T>::dfs(int cur_vertex) {
+#else
+    std::vector<int> GraphAlgo<T>::dfs(int cur_vertex) {
     std::vector<int> res;
+#endif
     memset(used, 0, sizeof(bool) * (v + 2));
+#if VERIFY_ENABLED == false
+    dfs_recursion(cur_vertex);
+#else
     dfs_recursion(cur_vertex, res);
     return res;
+#endif
 }
 
 template <class T>

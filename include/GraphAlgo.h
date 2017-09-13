@@ -5,6 +5,8 @@
 #ifndef DB_IMP_SEMINAR_GRAPHALGO_H
 #define DB_IMP_SEMINAR_GRAPHALGO_H
 
+#define VERIFY_ENABLED false
+
 template <class T>
 class GraphAlgo {
     int v, e;
@@ -25,14 +27,21 @@ public:
 
     void finished();
 
-    //void dfs(int v);
+#if VERIFY_ENABLED == false
+    void dfs(int v);
+    void bfs(int v);
+    void dfs_recursion(int v);
+#else
     std::vector<int> dfs(int v);
+    std::vector<int> bfs(int v);
+    void dfs_recursion(int v, std::vector<int>& res);
+#endif
 
     //void bfs(int v);
-    std::vector<int> bfs(int v);
+    //std::vector<int> bfs(int v);
 
     //void dfs_recursion(int v);
-    void dfs_recursion(int v, std::vector<int>& res);
+    //void dfs_recursion(int v, std::vector<int>& res);
 
     long long dijiksta(int from, int to);
 };
