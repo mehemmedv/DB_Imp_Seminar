@@ -11,18 +11,16 @@
 class CSRGraph {
     int *edges, *offsets;
     int* weights;
-    int *delta_edge_1, *delta_edge_2;
-    int *delta_w_1, *delta_w_2;
+    int *delta_e;
+    int *delta_w;
     int cur_idx, v, e;
 
 public:
     CSRGraph(int v, int e) : v(v), e(e) {
-        delta_edge_1 = new int[e];
-        edges = delta_edge_1;
+        edges = new int[e];
         offsets = new int[v + 2];
         cur_idx = 0;
-        delta_w_1 = new int[e];
-        weights = delta_w_1;
+        weights = new int[e];
     }
 
     void add_edge(int from, std::vector<int> &to, std::vector<int>& w);

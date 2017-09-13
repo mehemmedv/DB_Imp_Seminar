@@ -35,25 +35,20 @@ int* CSRGraph::begin_weights(int cur_vertex){
 }
 
 void CSRGraph::add_edge(int from, int to, int weight) {
-    delta_edge_2 = new int[e+1];
-    edges = delta_edge_2;
-    memcpy(delta_edge_2, delta_edge_1, sizeof(int) * offsets[from + 1]);
-    delta_edge_2[offsets[from + 1]] = to;
-    memcpy(delta_edge_2 + offsets[from + 1] + 1, delta_edge_1 + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
+    delta_e = new int[e+1];
+    memcpy(delta_e, edges, sizeof(int) * offsets[from + 1]);
+    delta_e[offsets[from + 1]] = to;
+    memcpy(delta_e + offsets[from + 1] + 1, edges + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
+    delete[] edges;
+    edges = delta_e;
 
-    delete[] delta_edge_1;
-    edges = delta_edge_2;
-    delta_edge_1 = delta_edge_2;
+    delta_w = new int[e+1];
+    memcpy(delta_w, weights, sizeof(int) * offsets[from + 1]);
+    delta_w[offsets[from + 1]] = weight;
+    memcpy(delta_w + offsets[from + 1] + 1, weights + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
+    delete[] weights;
+    weights = delta_w;
 
-    delta_w_2 = new int[e+1];
-    weights = delta_w_2;
-    memcpy(delta_w_2, delta_w_1, sizeof(int) * offsets[from + 1]);
-    delta_w_2[offsets[from + 1]] = weight;
-    memcpy(delta_w_2 + offsets[from + 1] + 1, delta_w_1 + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
-
-    delete[] delta_w_1;
-    weights = delta_w_2;
-    delta_w_1 = delta_w_2;
     ++e;
     for(int i = from + 1; i <= v + 1; ++i)
         ++offsets[i];
