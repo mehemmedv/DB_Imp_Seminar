@@ -4,9 +4,9 @@
 #include "../src/GraphAlgo.cpp"
 #include <chrono>
 
-#define CMP_DFS_ENABLED true
-#define CMP_BFS_ENABLED true
-#define CMP_DIJIKSTRA_ENABLED true
+#define CMP_DFS_ENABLED true // compare dfs latencies
+#define CMP_BFS_ENABLED true // compare bfs latencies
+#define CMP_DIJIKSTRA_ENABLED true // compare dijikstra latencies
 
 std::vector<int> edges;
 std::vector<int> weights;
@@ -83,21 +83,17 @@ int main() {
 
 
 #if VERIFY_ENABLED == true
-    // verification of bfs, check the results of both approaches
-
     std::vector<int> res1 = algos1.bfs(2);
     std::vector<int> res2 = algos2.bfs(2);
 
     std::cout<<(res1 == res2)<<std::endl;
 
-    // verification of bfs, check the results of both approaches
-
     std::vector<int> res3 = algos1.dfs(2);
     std::vector<int> res4 = algos2.dfs(2);
 
     std::cout<<(res3 == res4)<<std::endl;
-
     std::cout<<(algos1.dijiksta(1, 1000) == algos2.dijiksta(1, 1000))<<std::endl;
+
     algos1.add_edge(1, 10000, 4);
     algos1.add_edge(10000, 1000, 10);
     algos2.add_edge(1, 10000, 4);

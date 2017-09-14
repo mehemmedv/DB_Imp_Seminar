@@ -37,14 +37,7 @@ public:
     void dfs_recursion(int v, std::vector<int>& res);
 #endif
 
-    //void bfs(int v);
-    //std::vector<int> bfs(int v);
-
-    //void dfs_recursion(int v);
-    //void dfs_recursion(int v, std::vector<int>& res);
-
     long long dijiksta(int from, int to);
 };
-
 
 #endif //DB_IMP_SEMINAR_GRAPHALGO_H
