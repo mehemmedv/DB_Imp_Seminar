@@ -37,7 +37,7 @@ public:
     void dfs_recursion(int v, std::vector<int>& res);
 #endif
 
-    long long dijiksta(int from, int to);
+    uint64_t dijkstra(int from, int to);
 };
 
 #endif //DB_IMP_SEMINAR_GRAPHALGO_H

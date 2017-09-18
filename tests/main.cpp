@@ -69,13 +69,13 @@ int main() {
 #if CMP_DIJIKSTRA_ENABLED == true
     begin1 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 100; ++i)
-        algos1.dijiksta(2, i);
+        algos1.dijkstra(2, i);
     end = std::chrono::high_resolution_clock::now();
     passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
     std::cout << "Adjacency list Time: " << passed.count() << std::endl;
     begin2 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 100; ++i)
-        algos2.dijiksta(2, i);
+        algos2.dijkstra(2, i);
     end = std::chrono::high_resolution_clock::now();
     passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
     std::cout << "CSR Time: " << passed.count() << std::endl;

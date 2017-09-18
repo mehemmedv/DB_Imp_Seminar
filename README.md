@@ -5,6 +5,8 @@
 
 Description
 -----------
+Seminar: How good is CSR really? 
+
 In this seminar I have implemented several Graph algorithms to compare 2 different graph representations(Adjacency list and CSR) on all the algorithms. 
 
 

@@ -89,7 +89,7 @@ void GraphAlgo<T>::finished() {
 }
 
 template <class T>
-long long GraphAlgo<T>::dijiksta(int from, int to) {
+uint64_t GraphAlgo<T>::dijkstra(int from, int to) {
     for(int i = 0; i < v + 2; ++i)
         dist[i] = LONG_LONG_MAX;
     dist[from] = 0;
