@@ -10,7 +10,7 @@
 template <class T>
 class GraphAlgo {
     int v, e;
-    long long* dist;
+    uint64_t* dist;
     bool* used;
     T* graph;
 
@@ -18,7 +18,7 @@ public:
     GraphAlgo(int v, int e) : v(v), e(e){
         used = new bool[v + 2];
         graph = new T(v, e);
-        dist = new long long [v + 2];
+        dist = new uint64_t[v + 2];
     }
 
     ~GraphAlgo(){

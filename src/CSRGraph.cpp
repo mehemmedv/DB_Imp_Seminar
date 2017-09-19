@@ -21,21 +21,21 @@ void CSRGraph::finished() {
     offsets[v+1] = e;
 }
 
-int* CSRGraph::begin(int cur_vertex){
+uint64_t* CSRGraph::begin(int cur_vertex){
     return &(edges[offsets[cur_vertex]]);
 }
 
-int* CSRGraph::end(int cur_vertex){
+uint64_t* CSRGraph::end(int cur_vertex){
     return &(edges[offsets[cur_vertex + 1]]);
 }
 
-int* CSRGraph::begin_weights(int cur_vertex){
+uint64_t* CSRGraph::begin_weights(int cur_vertex){
     return &(weights[offsets[cur_vertex]]);
 }
 
 void CSRGraph::add_edge(int from, int to, int weight) {
     // adding a new edge
-    delta_e = new int[e+1];
+    delta_e = new uint64_t[e+1];
     memcpy(delta_e, edges, sizeof(int) * offsets[from + 1]);
     delta_e[offsets[from + 1]] = to;
     memcpy(delta_e + offsets[from + 1] + 1, edges + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
@@ -43,7 +43,7 @@ void CSRGraph::add_edge(int from, int to, int weight) {
     edges = delta_e;
 
     // adding weight for the new edge
-    delta_w = new int[e+1];
+    delta_w = new uint64_t[e+1];
     memcpy(delta_w, weights, sizeof(int) * offsets[from + 1]);
     delta_w[offsets[from + 1]] = weight;
     memcpy(delta_w + offsets[from + 1] + 1, weights + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
