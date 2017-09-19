@@ -21,6 +21,13 @@ public:
         dist = new long long [v + 2];
     }
 
+    ~GraphAlgo(){
+        std::cout<<"Graph Algo delete"<<std::endl;
+        delete[] dist;
+        delete[] used;
+        delete graph;
+    }
+
     void add_edge(int v, std::vector<int>& to, std::vector<int>& weights);
 
     void add_edge(int from, int to, int weight);

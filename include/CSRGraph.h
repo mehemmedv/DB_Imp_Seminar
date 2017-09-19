@@ -6,6 +6,7 @@
 #define DB_IMP_SEMINAR_CSRGRAPH_H
 
 #include <vector>
+#include <iostream>
 
 // 'Compressed sparse row' implementation of Graph
 class CSRGraph {
@@ -21,6 +22,13 @@ public:
         offsets = new int[v + 2];
         cur_idx = 0;
         weights = new int[e];
+    }
+
+    ~CSRGraph(){
+        delete[] edges;
+        delete[] offsets;
+        delete[] weights;
+        std::cout<<"CSRGraph delete"<<std::endl;
     }
 
     void add_edge(int from, std::vector<int> &to, std::vector<int>& w);
