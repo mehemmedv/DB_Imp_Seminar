@@ -16,6 +16,7 @@ void GraphAlgo<T>::bfs(int cur_vertex) {
 std::vector<int> GraphAlgo<T>::bfs(int cur_vertex) {
     std::vector<int> res;
 #endif
+    uint64_t sum = 0;
     memset(used, 0, sizeof(bool) * (v + 2));
     std::queue<int> q;
     q.push(cur_vertex);
@@ -27,9 +28,10 @@ std::vector<int> GraphAlgo<T>::bfs(int cur_vertex) {
 #endif
         q.pop();
         auto it_end = graph->end(cur_vertex);
-        for(auto it = graph->begin(cur_vertex); it != it_end; ++it){
+        auto it_weight = graph->begin_weights(cur_vertex);
+        for(auto it = graph->begin(cur_vertex); it != it_end; ++it, ++it_weight){
             if(!used[*it])
-                used[*it] = true, q.push(*it);
+                used[*it] = true, q.push(*it), sum += *it_weight;
         }
     }
 #if VERIFY_ENABLED == true
@@ -44,12 +46,14 @@ template <class T>
     void GraphAlgo<T>::dfs_recursion(int cur_vertex, std::vector<int>& res) {
     res.push_back(cur_vertex);
 #endif
+    uint64_t sum = 0;
     used[cur_vertex] = true;
     auto it_end = graph->end(cur_vertex);
-    for(auto it = graph->begin(cur_vertex); it != it_end; ++it){
+    auto it_weight = graph->begin_weights(cur_vertex);
+    for(auto it = graph->begin(cur_vertex); it != it_end; ++it, ++it_weight){
         if(!used[*it]){
 #if VERIFY_ENABLED == false
-            dfs_recursion(*it);
+            dfs_recursion(*it), sum += *it_weight;
 #else
             dfs_recursion(*it, res);
 #endif
