@@ -8,7 +8,7 @@
 
 #define MAXN 10000
 
-std::vector<int> edges[MAXN];
+std::vector<int> edges[MAXN + 1];
 
 int main() {
 
