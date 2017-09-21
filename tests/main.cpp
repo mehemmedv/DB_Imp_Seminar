@@ -38,13 +38,13 @@ int main() {
 
 #if CMP_DFS_ENABLED == true
     auto begin1 = std::chrono::high_resolution_clock::now();
-    for(int i = 1; i <= 200; ++i)
+    for(int i = 1; i <= 50; ++i)
         algos1->dfs(i);
     auto end = std::chrono::high_resolution_clock::now();
     auto passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
     std::cout << "Adjacency list Time: " << passed.count() << std::endl;
     auto begin2 = std::chrono::high_resolution_clock::now();
-    for(int i = 1; i <= 200; ++i)
+    for(int i = 1; i <= 50; ++i)
         algos2->dfs(i);
     end = std::chrono::high_resolution_clock::now();
     passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
@@ -80,7 +80,6 @@ int main() {
     passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
     std::cout << "CSR Time: " << passed.count() << std::endl;
 #endif
-
 
 #if VERIFY_ENABLED == true
     std::vector<int> res1 = algos1.bfs(2);
