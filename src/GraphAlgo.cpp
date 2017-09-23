@@ -114,8 +114,9 @@ uint64_t GraphAlgo<T>::dijkstra(int from, int to) {
             int to_vertex = *it;
             ++cnt;
             if(distance + cur_weight < dist[to_vertex]){
-                if(min_heap.find(std::make_pair(dist[to_vertex], to_vertex)) != min_heap.end())
-                    min_heap.erase(min_heap.find(std::make_pair(dist[to_vertex], to_vertex)));
+                auto it_find = min_heap.find(std::make_pair(dist[to_vertex], to_vertex));
+                if(it_find != min_heap.end())
+                    min_heap.erase(it_find);
                 dist[to_vertex] = distance + cur_weight;
                 min_heap.insert(std::make_pair(dist[to_vertex], to_vertex));
             }
