@@ -46,21 +46,21 @@ int main() {
     for(int i = 1; i <= 200; ++i)
         algos1->dfs(i);
     auto end = std::chrono::high_resolution_clock::now();
-    auto passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
-    std::cout << "Adjacency list Time: " << passed.count() << std::endl;
+    auto passed1 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
+    //std::cout << "Adjacency list Time: " << passed.count() << std::endl;
     auto begin2 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 200; ++i)
         algos2->dfs(i);
     end = std::chrono::high_resolution_clock::now();
-    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
-    std::cout << "CSR Time: " << passed.count() << std::endl;
+    auto passed2 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
+    //std::cout << "CSR Time: " << passed.count() << std::endl;
 
     auto begin3 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 200; ++i)
         algos3->dfs(i);
     end = std::chrono::high_resolution_clock::now();
-    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin3);
-    std::cout << "Adjacency list Time(V2): " << passed.count() << std::endl<<std::endl;
+    auto passed3 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin3);
+    //std::cout << "Adjacency list Time(V2): " << passed.count() << std::endl<<std::endl;
 
 #endif
 
@@ -69,21 +69,21 @@ int main() {
     for(int i = 1; i <= 200; ++i)
         algos1->bfs(i);
     end = std::chrono::high_resolution_clock::now();
-    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
-    std::cout << "Adjacency list Time: " << passed.count() << std::endl;
+    auto passed4 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
+    //std::cout << "Adjacency list Time: " << passed.count() << std::endl;
     begin2 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 200; ++i)
         algos2->bfs(i);
     end = std::chrono::high_resolution_clock::now();
-    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
-    std::cout << "CSR Time: " << passed.count() << std::endl;
+    auto passed5 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
+    //std::cout << "CSR Time: " << passed.count() << std::endl;
 
     begin3 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 200; ++i)
         algos3->bfs(i);
     end = std::chrono::high_resolution_clock::now();
-    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin3);
-    std::cout << "Adjacency list Time(V2): " << passed.count() << std::endl<<std::endl;
+    auto passed6 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin3);
+    //std::cout << "Adjacency list Time(V2): " << passed.count() << std::endl<<std::endl;
 #endif
 
 #if CMP_DIJIKSTRA_ENABLED == true
@@ -91,21 +91,39 @@ int main() {
     for(int i = 1; i <= 100; ++i)
         algos1->dijkstra(2, i);
     end = std::chrono::high_resolution_clock::now();
-    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
-    std::cout << "Adjacency list Time: " << passed.count() << std::endl;
+    auto passed7 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
+    //std::cout << "Adjacency list Time: " << passed.count() << std::endl;
     begin2 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 100; ++i)
         algos2->dijkstra(2, i);
     end = std::chrono::high_resolution_clock::now();
-    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
-    std::cout << "CSR Time: " << passed.count() << std::endl;
+    auto passed8 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
+    //std::cout << "CSR Time: " << passed.count() << std::endl;
 
     begin3 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 100; ++i)
         algos3->dijkstra(2, i);
     end = std::chrono::high_resolution_clock::now();
-    passed = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin3);
-    std::cout << "Adjacency list Time(V2): " << passed.count() << std::endl <<std::endl;
+    auto passed9 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin3);
+    //std::cout << "Adjacency list Time(V2): " << passed.count() << std::endl <<std::endl;
+#endif
+
+#if CMP_DFS_ENABLED == true
+    std::cout << "DFS Adjacency list Time: " << passed1.count() << std::endl;
+    std::cout << "DFS Adjacency list Time(V2): " << passed3.count() << std::endl;
+    std::cout << "DFS CSR Time: " << passed2.count() << std::endl << std::endl;
+#endif
+
+#if CMP_BFS_ENABLED == true
+    std::cout << "BFS Adjacency list Time: " << passed4.count() << std::endl;
+    std::cout << "BFS Adjacency list Time(V2): " << passed6.count() << std::endl;
+    std::cout << "BFS CSR Time: " << passed5.count() << std::endl << std::endl;
+#endif
+
+#if CMP_DIJIKSTRA_ENABLED == true
+    std::cout << "Dijkstra Adjacency list Time: " << passed7.count() << std::endl;
+    std::cout << "Dijkstra Adjacency list Time(V2): " << passed9.count() << std::endl;
+    std::cout << "Dijkstra CSR Time: " << passed8.count() << std::endl << std::endl;
 #endif
 
 #if VERIFY_ENABLED == true

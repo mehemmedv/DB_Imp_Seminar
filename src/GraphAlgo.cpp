@@ -32,7 +32,7 @@ std::vector<int> GraphAlgo<T>::bfs(int cur_vertex) {
         for(auto it = graph->begin(cur_vertex); it != it_end; ++it, ++it_weight){
             if(!used[*it]){
                 used[*it] = true, q.push(*it), sum += *it_weight;
-                //std::cout<<"sum: "<<sum<<std::endl;
+                std::cout<<"sum: "<<sum<<std::endl;
             }
         }
     }
@@ -56,7 +56,7 @@ template <class T>
         if(!used[*it]){
 #if VERIFY_ENABLED == false
             dfs_recursion(*it), sum += *it_weight;
-            //std::cout<<"sum: "<<sum<<std::endl;
+            std::cout<<"sum: "<<sum<<std::endl;
 #else
             dfs_recursion(*it, res);
 #endif
