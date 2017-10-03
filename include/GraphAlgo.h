@@ -37,7 +37,7 @@ public:
 #if VERIFY_ENABLED == false
     void dfs(int v);
     void bfs(int v);
-    void dfs_recursion(int v);
+    int dfs_recursion(int v);
 #else
     std::vector<int> dfs(int v);
     std::vector<int> bfs(int v);
