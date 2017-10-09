@@ -35,8 +35,8 @@ public:
     void finished();
 
 #if VERIFY_ENABLED == false
-    void dfs(int v);
-    void bfs(int v);
+    int dfs(int v);
+    int bfs(int v);
     int dfs_recursion(int v);
 #else
     std::vector<int> dfs(int v);

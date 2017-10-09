@@ -43,21 +43,28 @@ int main() {
 
 #if CMP_DFS_ENABLED == true
     auto begin1 = std::chrono::high_resolution_clock::now();
+    int sum = 0;
     for(int i = 1; i <= 200; ++i)
-        algos1->dfs(i);
+        sum += algos1->dfs(i);
+    std::cout<<"sum: "<<sum<<std::endl;
+    sum = 0;
     auto end = std::chrono::high_resolution_clock::now();
     auto passed1 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
     //std::cout << "Adjacency list Time: " << passed.count() << std::endl;
     auto begin2 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 200; ++i)
-        algos2->dfs(i);
+         sum += algos2->dfs(i);
+    std::cout<<"sum: "<<sum<<std::endl;
+    sum = 0;
     end = std::chrono::high_resolution_clock::now();
     auto passed2 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
     //std::cout << "CSR Time: " << passed.count() << std::endl;
 
     auto begin3 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 200; ++i)
-        algos3->dfs(i);
+        sum += algos3->dfs(i);
+    std::cout<<"sum: "<<sum<<std::endl;
+    sum = 0;
     end = std::chrono::high_resolution_clock::now();
     auto passed3 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin3);
     //std::cout << "Adjacency list Time(V2): " << passed.count() << std::endl<<std::endl;
@@ -67,20 +74,26 @@ int main() {
 #if CMP_BFS_ENABLED == true
     begin1 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 200; ++i)
-        algos1->bfs(i);
+        sum += algos1->bfs(i);
+    std::cout<<"sum: "<<sum<<std::endl;
+    sum = 0;
     end = std::chrono::high_resolution_clock::now();
     auto passed4 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin1);
     //std::cout << "Adjacency list Time: " << passed.count() << std::endl;
     begin2 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 200; ++i)
-        algos2->bfs(i);
+        sum += algos2->bfs(i);
+    std::cout<<"sum: "<<sum<<std::endl;
+    sum = 0;
     end = std::chrono::high_resolution_clock::now();
     auto passed5 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin2);
     //std::cout << "CSR Time: " << passed.count() << std::endl;
 
     begin3 = std::chrono::high_resolution_clock::now();
     for(int i = 1; i <= 200; ++i)
-        algos3->bfs(i);
+        sum += algos3->bfs(i);
+    std::cout<<"sum: "<<sum<<std::endl;
+    sum = 0;
     end = std::chrono::high_resolution_clock::now();
     auto passed6 = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin3);
     //std::cout << "Adjacency list Time(V2): " << passed.count() << std::endl<<std::endl;

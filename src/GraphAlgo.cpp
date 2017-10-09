@@ -11,7 +11,7 @@
 
 template<class T>
 #if VERIFY_ENABLED == false
-void GraphAlgo<T>::bfs(int cur_vertex) {
+int GraphAlgo<T>::bfs(int cur_vertex) {
 #else
     std::vector<int> GraphAlgo<T>::bfs(int cur_vertex) {
         std::vector<int> res;
@@ -35,7 +35,8 @@ void GraphAlgo<T>::bfs(int cur_vertex) {
             }
         }
     }
-    std::cout << "sum: " << sum << "\n";
+    //std::cout << "sum: " << sum << "\n";
+    return sum;
 #if VERIFY_ENABLED == true
     return res;
 #endif
@@ -55,7 +56,7 @@ int GraphAlgo<T>::dfs_recursion(int cur_vertex) {
     for (auto it = graph->begin(cur_vertex); it != it_end; ++it, ++it_weight) {
         if (!used[*it]) {
 #if VERIFY_ENABLED == false
-            dfs_recursion(*it), sum += *it_weight;
+            sum += dfs_recursion(*it), sum += *it_weight;
 #else
             dfs_recursion(*it, res);
 #endif
@@ -66,14 +67,15 @@ int GraphAlgo<T>::dfs_recursion(int cur_vertex) {
 
 template<class T>
 #if VERIFY_ENABLED == false
-void GraphAlgo<T>::dfs(int cur_vertex) {
+int GraphAlgo<T>::dfs(int cur_vertex) {
 #else
     std::vector<int> GraphAlgo<T>::dfs(int cur_vertex) {
     std::vector<int> res;
 #endif
     memset(used, 0, sizeof(bool) * (v + 2));
 #if VERIFY_ENABLED == false
-    std::cout << "sum: " << dfs_recursion(cur_vertex) << "\n";
+    //std::cout << "sum: " << dfs_recursion(cur_vertex) << "\n";
+    return dfs_recursion(cur_vertex);
 #else
     dfs_recursion(cur_vertex, res);
     return res;
