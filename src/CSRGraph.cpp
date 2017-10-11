@@ -21,18 +21,6 @@ void CSRGraph::finished() {
     offsets[v+1] = e;
 }
 
-uint64_t* CSRGraph::begin(int cur_vertex){
-    return &(edges[offsets[cur_vertex]]);
-}
-
-uint64_t* CSRGraph::end(int cur_vertex){
-    return &(edges[offsets[cur_vertex + 1]]);
-}
-
-uint64_t* CSRGraph::begin_weights(int cur_vertex){
-    return &(weights[offsets[cur_vertex]]);
-}
-
 void CSRGraph::add_edge(int from, int to, int weight) {
     // adding a new edge
     delta_e = new uint64_t[e+1];

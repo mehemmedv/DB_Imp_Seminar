@@ -37,11 +37,17 @@ public:
 
     void finished();
 
-    std::vector<int>::iterator begin(int cur_vertex);
+    inline std::vector<int>::iterator begin(int cur_vertex) {
+        return edges[cur_vertex].begin();
+    }
 
-    std::vector<int>::iterator end(int cur_vertex);
+    inline std::vector<int>::iterator end(int cur_vertex){
+        return edges[cur_vertex].end();
+    }
 
-    std::vector<int>::iterator begin_weights(int cur_vertex);
+    inline std::vector<int>::iterator begin_weights(int cur_vertex) {
+        return weights[cur_vertex].begin();
+    }
 };
 
 

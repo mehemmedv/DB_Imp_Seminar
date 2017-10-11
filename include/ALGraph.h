@@ -36,11 +36,17 @@ public:
 
     void finished();
 
-    std::list<int>::iterator begin(int cur_vertex);
+    inline std::list<int>::iterator begin(int cur_vertex) {
+        return edges[cur_vertex].begin();
+    }
 
-    std::list<int>::iterator end(int cur_vertex);
+    inline std::list<int>::iterator end(int cur_vertex){
+        return edges[cur_vertex].end();
+    }
 
-    std::list<int>::iterator begin_weights(int cur_vertex);
+    inline std::list<int>::iterator begin_weights(int cur_vertex) {
+        return weights[cur_vertex].begin();
+    }
 };
 
 

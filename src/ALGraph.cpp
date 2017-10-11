@@ -15,18 +15,6 @@ void ALGraph::add_edge(int from, std::vector<int>& to, std::vector<int>& w) {
 void ALGraph::finished() {
 }
 
-std::list<int>::iterator ALGraph::begin(int cur_vertex) {
-    return edges[cur_vertex].begin();
-}
-
-std::list<int>::iterator ALGraph::end(int cur_vertex){
-    return edges[cur_vertex].end();
-}
-
-std::list<int>::iterator ALGraph::begin_weights(int cur_vertex) {
-    return weights[cur_vertex].begin();
-}
-
 void ALGraph::add_edge(int from, int to, int weight) {
     edges[from].push_back(to);
     weights[from].push_back(weight);

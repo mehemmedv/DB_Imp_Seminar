@@ -37,11 +37,17 @@ public:
 
     void finished();
 
-    uint64_t* begin(int cur_vertex);
+    inline uint64_t* begin(int cur_vertex){
+        return &(edges[offsets[cur_vertex]]);
+    }
 
-    uint64_t* end(int cur_vertex);
+    inline uint64_t* end(int cur_vertex){
+        return &(edges[offsets[cur_vertex + 1]]);
+    }
 
-    uint64_t* begin_weights(int cur_vertex);
+    inline uint64_t* begin_weights(int cur_vertex){
+        return &(weights[offsets[cur_vertex]]);
+    }
 };
 
 
