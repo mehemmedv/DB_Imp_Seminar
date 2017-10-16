@@ -7,7 +7,7 @@
 
 #define VERIFY_ENABLED false
 
-template <class T>
+template <typename T>
 class GraphAlgo {
     int v, e;
     uint64_t* dist;

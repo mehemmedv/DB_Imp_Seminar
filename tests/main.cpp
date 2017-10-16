@@ -12,7 +12,8 @@
 std::vector<int> edges;
 std::vector<int> weights;
 
-int main() {
+int main(int argc, char** argv) {
+    std::cout<<"cnt: "<<argc<<std::endl;
     freopen("out.txt", "r", stdin);
     int v, ssize, to, e;
     std::cin>>v>>e;
