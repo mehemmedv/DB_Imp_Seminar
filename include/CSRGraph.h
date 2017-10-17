@@ -37,6 +37,8 @@ public:
 
     void finished();
 
+    void sortByEdgesByNodeId();
+
     inline uint64_t* begin(int cur_vertex){
         return &(edges[offsets[cur_vertex]]);
     }

@@ -37,6 +37,8 @@ public:
 
     void finished();
 
+    void sortByEdgesByNodeId();
+
     inline std::vector<int>::iterator begin(int cur_vertex) {
         return edges[cur_vertex].begin();
     }
