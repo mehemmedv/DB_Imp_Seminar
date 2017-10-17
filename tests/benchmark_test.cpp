@@ -1,5 +1,5 @@
 //
-// Created by mahammad on 10/12/17.
+// Created by mahammad on 13.10.2017.
 //
 
 #include <iostream>
@@ -15,7 +15,6 @@
 #define CMP_BFS_ENABLED true // compare bfs latencies
 #define CMP_DIJIKSTRA_ENABLED true // compare dijikstra latencies
 
-std::vector<int> edges;
 std::vector<int> weights;
 
 int main(int argc, char** argv) {
