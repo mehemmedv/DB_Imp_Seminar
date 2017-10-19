@@ -34,6 +34,11 @@ public:
 
     void finished();
 
+    inline void sortByEdgesByNodeId(){
+        graph->sortByEdgesByNodeId();
+    }
+
+
 #if VERIFY_ENABLED == false
     int dfs(int v);
     int bfs(int v);

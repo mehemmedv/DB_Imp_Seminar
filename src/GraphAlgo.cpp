@@ -36,10 +36,13 @@ int GraphAlgo<T>::bfs(int cur_vertex) {
         }
     }
     //std::cout << "sum: " << sum << "\n";
-    return sum;
+
 #if VERIFY_ENABLED == true
     return res;
+#else
+    return sum;
 #endif
+
 }
 
 template<class T>
@@ -62,7 +65,9 @@ int GraphAlgo<T>::dfs_recursion(int cur_vertex) {
 #endif
         }
     }
+#if VERIFY_ENABLED == false
     return sum;
+#endif
 }
 
 template<class T>
