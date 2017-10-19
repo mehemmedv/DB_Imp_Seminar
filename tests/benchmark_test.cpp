@@ -210,7 +210,7 @@ int main(int argc, char **argv) {
 
         if(sorted == "sorted")
             algo->sortByEdgesByNodeId();
-        else if(sorted == "RR"){
+        else if(sorted == "mixed"){
             x = std::atoi(argv[5]);
         }
 
