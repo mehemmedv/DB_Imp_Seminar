@@ -33,17 +33,18 @@ int main(int argc, char **argv) {
                 x = rand() % MAXN + 1;
                 while (x == i)
                     x = rand() % MAXN + 1;
-                for (int j : edges[i])
-                    if (j == x) {
-                        flag = true;
-                        break;
-                    }
-                if (!flag) {
-                    edges[i].push_back(x);
-                    edges[x].push_back(i);
-                    break;
-                }
+                /* for (int j : edges[i])
+                     if (j == x) {
+                         flag = true;
+                         break;
+                     }
+                 if (!flag) {*/
+                edges[i].push_back(x);
+                edges[x].push_back(i);
                 flag = false;
+                break;
+                //}
+
             }
         }
     }
@@ -67,7 +68,7 @@ int main(int argc, char **argv) {
     }
 
     for (int i = 0; i < len2; ++i) {
-        std::cout << rand() % MAXN + 1 << " " << rand() % MAXN + 1 << " " <<  rand() % 50 + 1 << std::endl;
+        std::cout << rand() % MAXN + 1 << " " << rand() % MAXN + 1 << " " << rand() % 50 + 1 << std::endl;
     }
 
     for (int i = 0; i < MAXN + 2; ++i)
