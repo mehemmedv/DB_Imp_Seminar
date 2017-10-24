@@ -27,25 +27,25 @@ int main(int argc, char **argv) {
     for (int i = 1; i <= MAXN; ++i) {
 
         for (int k = edges[i].size() + 1; k <= len; ++k) {
-            bool flag = false;
+            // bool flag = false;
             int x;
-            while (!flag) {
+            //while (!flag) {
+            x = rand() % MAXN + 1;
+            while (x == i)
                 x = rand() % MAXN + 1;
-                while (x == i)
-                    x = rand() % MAXN + 1;
-                /* for (int j : edges[i])
-                     if (j == x) {
-                         flag = true;
-                         break;
-                     }
-                 if (!flag) {*/
-                edges[i].push_back(x);
-                edges[x].push_back(i);
-                flag = false;
-                break;
-                //}
+            /* for (int j : edges[i])
+                 if (j == x) {
+                     flag = true;
+                     break;
+                 }
+             if (!flag) {*/
+            edges[i].push_back(x);
+            edges[x].push_back(i);
+            // flag = false;
+            //   break;
+            //}
 
-            }
+            // }
         }
     }
 
