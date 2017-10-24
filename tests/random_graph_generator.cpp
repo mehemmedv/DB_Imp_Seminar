@@ -11,6 +11,8 @@
 //std::vector<int> edges[maxn + 1];
 
 int main(int argc, char **argv) {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(0);
 
     std::freopen("out.txt", "w", stdout);
 
@@ -60,15 +62,15 @@ int main(int argc, char **argv) {
         std::cout << edges[i].size() << " ";
         for (int j : edges[i])
             std::cout << j << " ";
-        std::cout << std::endl;
+        std::cout << "\n";
         for (int j : edges[i])
             std::cout << rand() % 100 + 20 << " ";
-        std::cout << std::endl;
+        std::cout << "\n";
 
     }
 
     for (int i = 0; i < len2; ++i) {
-        std::cout << rand() % MAXN + 1 << " " << rand() % MAXN + 1 << " " << rand() % 50 + 1 << std::endl;
+        std::cout << rand() % MAXN + 1 << " " << rand() % MAXN + 1 << " " << rand() % 50 + 1 << "\n";
     }
 
     for (int i = 0; i < MAXN + 2; ++i)
