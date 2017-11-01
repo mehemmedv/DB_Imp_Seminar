@@ -13,7 +13,7 @@ do
       ./DB_Benchmark -ALV2 Dijkstra sorted 200 20 >> result.txt
       ./DB_Benchmark -CSR DFS mixed 200 4 >> result.txt
       ./DB_Benchmark -AL BFS mixed 200 4 >> result.txt
-      ./DB_Benchmark -ALV2 mixed sorted 200 4 >> result.txt
+      ./DB_Benchmark -ALV2 Dijkstra mixed 200 4 >> result.txt
       str="out"$i"_"$(($i*$j/100))".txt"
       mv out.txt $str
    done
