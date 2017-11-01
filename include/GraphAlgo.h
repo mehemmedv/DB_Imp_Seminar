@@ -22,7 +22,7 @@ public:
     }
 
     ~GraphAlgo(){
-        std::cout<<"Graph Algo delete"<<std::endl;
+        //std::cout<<"Graph Algo delete"<<std::endl;
         delete[] dist;
         delete[] used;
         delete graph;

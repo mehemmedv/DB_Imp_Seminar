@@ -28,7 +28,7 @@ public:
         delete[] edges;
         delete[] offsets;
         delete[] weights;
-        std::cout<<"CSRGraph delete"<<std::endl;
+        //std::cout<<"CSRGraph delete"<<std::endl;
     }
 
     void add_edge(int from, std::vector<int> &to, std::vector<int>& w);

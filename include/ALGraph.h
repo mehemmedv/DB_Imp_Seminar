@@ -27,7 +27,7 @@ public:
             edges[i].clear(), weights[i].clear();
         delete[] edges;
         delete[] weights;
-        std::cout<<"ALGraph delete"<<std::endl;
+        //std::cout<<"ALGraph delete"<<std::endl;
     }
 
     void add_edge(int from, std::vector<int>& to, std::vector<int>& w);
