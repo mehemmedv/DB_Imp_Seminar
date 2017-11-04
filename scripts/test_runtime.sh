@@ -2,7 +2,7 @@
 
 for i in 100 1000 10000 100000 100000
 do
-   for j in 10 20 30 40
+   for j in 20 40 60 80 
    do
       ./DB_Generator $i $(($i * $j / 100)) 1000000 # Generate a graph
       
@@ -46,8 +46,12 @@ do
       ./DB_Benchmark -AL BFS mixed 200 4 >> result.txt
       ./DB_Benchmark -ALV2 BFS mixed 200 4 >> result.txt
       
-      str="out"$i"_"$(($i*$j/100))".txt"
-      mv out.txt $str
+      str1="out"$i"_"$j".txt"
+      mv out.txt $str1
+      str2="result"$i"_"$j".txt"
+      mv result.txt $str2
+      "" > result.txt
+      
    done
    
 done
