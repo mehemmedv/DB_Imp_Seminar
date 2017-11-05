@@ -7,6 +7,7 @@
 #include <climits>
 #include <set>
 #include <iostream>
+#include <stdint-gcc.h>
 #include "../include/GraphAlgo.h"
 
 template<class T>

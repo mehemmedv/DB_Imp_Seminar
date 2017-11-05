@@ -10,12 +10,12 @@
 
 // Adjacency list implementation of Graph
 class ALGraph{
-    int v, e;
+    uint64_t v, e;
     std::list<int>* edges;
     std::list<int>* weights;
 
 public:
-    ALGraph(int v, int e) : v(v), e(e){
+    ALGraph(uint64_t v, uint64_t e) : v(v), e(e){
         edges = new std::list<int>[v + 2];
         weights = new std::list<int>[v + 2];
         for(int i = 0; i <= v; ++i)

@@ -6,10 +6,11 @@
 #include <string.h>
 #include <iostream>
 #include <algorithm>
+#include <stdint-gcc.h>
 
 void CSRGraph::add_edge(int from, std::vector<int>& to, std::vector<int>& w) {
     offsets[from] = cur_idx;
-    int temp_cur_idx = cur_idx;
+    uint64_t temp_cur_idx = cur_idx;
     for(int i : to){
         edges[cur_idx++] = i;
     }

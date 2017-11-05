@@ -9,13 +9,13 @@
 
 template <typename T>
 class GraphAlgo {
-    int v, e;
+    uint64_t v, e;
     uint64_t* dist;
     bool* used;
     T* graph;
 
 public:
-    GraphAlgo(int v, int e) : v(v), e(e){
+    GraphAlgo(uint64_t v, uint64_t e) : v(v), e(e){
         used = new bool[v + 2];
         graph = new T(v, e);
         dist = new uint64_t[v + 2];

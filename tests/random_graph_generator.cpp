@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <stdint-gcc.h>
 
 #define maxn 100000
 
@@ -52,9 +53,9 @@ int main(int argc, char **argv) {
     }
 
 
-    int sum = 0;
+    uint64_t sum = 0;
     for (int i = 1; i <= MAXN; ++i)
-        sum += edges[i].size();
+        sum = sum + (uint64_t)edges[i].size();
 
     std::cout << MAXN << " " << sum << std::endl;
 

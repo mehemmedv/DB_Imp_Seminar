@@ -9,6 +9,7 @@
 #include "../include/ALGraphV2.h"
 #include <chrono>
 #include <memory>
+#include <stdint-gcc.h>
 
 
 #define CMP_DFS_ENABLED true // compare dfs latencies
@@ -25,7 +26,8 @@ int main(int argc, char **argv) {
     std::string sorted = argv[3];
 
     freopen("out.txt", "r", stdin);
-    int v, ssize, to, e;
+    int v, ssize, to;
+    uint64_t e;
     std::cin >> v >> e;
 
     if (type == "-CSR") { // CSR

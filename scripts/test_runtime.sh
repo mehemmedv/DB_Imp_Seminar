@@ -2,7 +2,7 @@
 
 for i in 100 1000 10000 100000 100000
 do
-   for j in 20 40 60 80 
+   for j in 10 30 50 
    do
       ./DB_Generator $i $(($i * $j / 100)) 1000000 # Generate a graph
       

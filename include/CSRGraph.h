@@ -14,10 +14,10 @@ class CSRGraph {
     uint64_t* weights;
     uint64_t *delta_e;
     uint64_t *delta_w;
-    int cur_idx, v, e;
+    uint64_t cur_idx, v, e;
 
 public:
-    CSRGraph(int v, int e) : v(v), e(e) {
+    CSRGraph(uint64_t v, uint64_t e) : v(v), e(e) {
         edges = new uint64_t[e];
         offsets = new uint64_t[v + 2];
         cur_idx = 0;
