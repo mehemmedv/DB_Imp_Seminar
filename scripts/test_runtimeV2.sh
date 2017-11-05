@@ -1,8 +1,8 @@
 #!/bin/bash
 
-for i in 100000
+for i in 100 1000 10000 100000
 do
-   for j in 10 20 30 
+   for j in 10 30 50 
    do
       ./DB_Generatorv2 $i $(($i * $j / 100)) 1000000 # Generate a graph
       
