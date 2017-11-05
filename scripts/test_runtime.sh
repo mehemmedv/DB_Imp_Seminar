@@ -50,7 +50,7 @@ do
       mv out.txt $str1
       str2="result"$i"_"$j".txt"
       mv result.txt $str2
-      "" > result.txt
+      echo "" > result.txt
       
    done
    
