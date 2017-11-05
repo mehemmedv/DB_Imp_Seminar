@@ -4,7 +4,7 @@ for i in 100 1000 10000 100000
 do
    for j in 10 30 50 
    do
-      ./DB_Generatorv2 $i $(($i * $j / 100)) 1000000 # Generate a graph
+      ./DB_Generatorv2 $i $(($i * $j / 100)) 1000 # Generate a graph
       
       # Test DFS for unsorted graph
       ./DB_Benchmarkv2 -CSR DFS unsorted 200 20 >> result.txt
