@@ -90,7 +90,12 @@ int main(int argc, char **argv) {
                     sum += algo->dfs((i-1) % v + 1);
                 else{
                     int fr_v, to_v, w_v;
-                    std::cin>>fr_v>>to_v>>w_v;
+                    pread(fd, &fr_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &to_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &w_v, sizeof(int), offset);
+                    offset += 4;
                     algo->add_edge(fr_v, to_v, w_v);
                 }
             }
@@ -107,7 +112,12 @@ int main(int argc, char **argv) {
                     sum += algo->bfs((i-1) % v + 1);
                 else{
                     int fr_v, to_v, w_v;
-                    std::cin>>fr_v>>to_v>>w_v;
+                    pread(fd, &fr_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &to_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &w_v, sizeof(int), offset);
+                    offset += 4;
                     algo->add_edge(fr_v, to_v, w_v);
                 }
             }
@@ -124,7 +134,12 @@ int main(int argc, char **argv) {
                     sum += algo->dijkstra(1, (i-1) % v + 1);
                 else{
                     int fr_v, to_v, w_v;
-                    std::cin>>fr_v>>to_v>>w_v;
+                    pread(fd, &fr_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &to_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &w_v, sizeof(int), offset);
+                    offset += 4;
                     algo->add_edge(fr_v, to_v, w_v);
                 }
             }
@@ -186,7 +201,12 @@ int main(int argc, char **argv) {
                     sum += algo->dfs((i-1) % v + 1);
                 else{
                     int fr_v, to_v, w_v;
-                    std::cin>>fr_v>>to_v>>w_v;
+                    pread(fd, &fr_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &to_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &w_v, sizeof(int), offset);
+                    offset += 4;
                     algo->add_edge(fr_v, to_v, w_v);
                 }
             }
@@ -203,7 +223,12 @@ int main(int argc, char **argv) {
                     sum += algo->bfs((i-1) % v + 1);
                 else{
                     int fr_v, to_v, w_v;
-                    std::cin>>fr_v>>to_v>>w_v;
+                    pread(fd, &fr_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &to_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &w_v, sizeof(int), offset);
+                    offset += 4;
                     algo->add_edge(fr_v, to_v, w_v);
                 }
             }
@@ -220,7 +245,12 @@ int main(int argc, char **argv) {
                     sum += algo->dijkstra(1, (i-1) % v + 1);
                 else{
                     int fr_v, to_v, w_v;
-                    std::cin>>fr_v>>to_v>>w_v;
+                    pread(fd, &fr_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &to_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &w_v, sizeof(int), offset);
+                    offset += 4;
                     algo->add_edge(fr_v, to_v, w_v);
                 }
             }
@@ -282,7 +312,14 @@ int main(int argc, char **argv) {
                     sum += algo->dfs((i-1) % v + 1);
                 else{
                     int fr_v, to_v, w_v;
-                    std::cin>>fr_v>>to_v>>w_v;
+                    pread(fd, &fr_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &to_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &w_v, sizeof(int), offset);
+                    offset += 4;
+
+//                    std::cin>>fr_v>>to_v>>w_v;
                     algo->add_edge(fr_v, to_v, w_v);
                 }
             }
@@ -300,7 +337,13 @@ int main(int argc, char **argv) {
                 }
                 else{
                     int fr_v, to_v, w_v;
-                    std::cin>>fr_v>>to_v>>w_v;
+                    pread(fd, &fr_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &to_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &w_v, sizeof(int), offset);
+                    offset += 4;
+
                     algo->add_edge(fr_v, to_v, w_v);
                 }
             }
@@ -317,7 +360,12 @@ int main(int argc, char **argv) {
                     sum += algo->dijkstra(1, (i-1) % v + 1);
                 else{
                     int fr_v, to_v, w_v;
-                    std::cin>>fr_v>>to_v>>w_v;
+                    pread(fd, &fr_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &to_v, sizeof(int), offset);
+                    offset += 4;
+                    pread(fd, &w_v, sizeof(int), offset);
+                    offset += 4;
                     algo->add_edge(fr_v, to_v, w_v);
                 }
             }

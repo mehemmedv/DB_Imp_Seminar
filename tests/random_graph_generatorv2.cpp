@@ -62,6 +62,17 @@ int main(int argc, char **argv) {
         offset = offset + sizeof(int) * len;
     }
 
+    for (int i = 0; i < len2; ++i) {
+        int from = rand() % MAXN + 1, to = rand() % MAXN + 1, www = rand() % 50 + 1;
+        pwrite(fd, &from, sizeof(int), offset);
+        offset += 4;
+        pwrite(fd, &to, sizeof(int), offset);
+        offset += 4;
+        pwrite(fd, &www, sizeof(int), offset);
+        offset += 4;
+        //std::cout <<  << " " << rand() % MAXN + 1 << " " << rand() % 50 + 1 << "\n";
+    }
+
     delete[]edges;
 
     return 0;
