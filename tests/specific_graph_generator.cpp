@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
     for (int i = 1; i <= MAXN; ++i) {
         for (int k = 0; k < len; ++k) {
             // bool flag = false;
-            edges[k] = (i - 1 + k + 1) % MAXN + 1;
+            edges[k] = (i - 1 + len - k) % MAXN + 1;
         }
         pwrite(fd, &len, sizeof(int), offset);
         offset += 4;
