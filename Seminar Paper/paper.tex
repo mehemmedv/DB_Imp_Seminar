@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{a4}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{indentfirst}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\title{How good is CSR really?}
+\author{Mahammad Valiyev}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+  In the last decade, the data size is growing exponentially and processing those data is becoming a difficult problem. Nowadays researchers and industry have been interested in the analysis of the graph to get deep understanding of social networks. Many of these graphs used in industry have become very large, containing hundreds of millions of nodes and edges. In this paper, I propose Compressed Sparse Row(CSR) which is a fast graph container. My CSR implementation supports updates on graph. On a static graph, CSR gives 6-10x better performance over Adjacency List Implementation(AL) on Depth-First-Search(DFS) and Breadth-First-Search(BFS) and 2-3x better performance on Dijkstra algorithm.
+\end{abstract}
+\textbf{Keywords:} Graph databases, Compressed Sparse Row
+
+\section{Introduction}
+\label{introduction}
+Graph analysis have become more popular in the last few years. Graphs are usually used to represent social networks in which vertices indicate users and edges indicate friendship between users. Facebook has 1.39 billion  active users as of 12/2014 with more than 400 billion edges.\cite{fb}.
+
+
+\section{Related Works}
+
+\section{Design choices}
+\label{design}
+
+\section{Implementation}
+ few details about implementation
+
+
+
+\section{Evaluation}
+...
+\subsection{Experimental platform}
+
+\subsection{Algorithm comparisons}
+
+\subsection{Scaling}
+
+\subsection{Complex Scenario}
+
+\subsection{Memory consumption}
+
+\subsection{Cache friendliness}
+
+
+\begin{thebibliography}{}
+\bibitem{fb}
+Ching, A., Edunov, S., Kabiljo, M., Logothetis, D., \and Muthukrishnan, S. (2015). One trillion edges: Graph processing at facebook-scale. Proceedings of the VLDB Endowment, 8(12), 1804-1815
+
+\end{thebibliography}
+
+\end{document}
