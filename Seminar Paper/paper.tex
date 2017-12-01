@@ -7,6 +7,19 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\def\leftbracket{[}
+\def\rightbracket{]}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,calc}
+\newcommand{\data}{data \nodepart{second} \phantom{null}}
+\usetikzlibrary{matrix,positioning,arrows.meta,arrows}
+
+\tikzstyle{ptr}  = [draw, -latex']
+\tikzstyle{head} = [rectangle, draw, text height=3mm, text width=3mm, text centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{data} = [rectangle split, rectangle split parts=2, draw, text centered, minimum height=3em]
+
 
 \title{How good is CSR really?}
 \author{Mahammad Valiyev}
@@ -22,6 +35,9 @@
 \section{Introduction}
 \label{introduction}
 Graph analysis have become more popular in the last few years. Graphs are usually used to represent social networks in which vertices indicate users and edges indicate friendship between users. Facebook has 1.39 billion  active users as of 12/2014 with more than 400 billion edges.\cite{fb}.
+
+
+
 
 
 \section{Related Works}

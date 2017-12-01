@@ -1,0 +1,37 @@
+\tikzset{my arrow/.style={
+  blue!60!black,
+  -latex
+  }
+}
+
+\begin{tikzpicture}
+\matrix[matrix of math nodes, row sep=4mm] (M) {
+\leftbracket & a_1 & a_2 & a_3 & a_4 & \rightbracket \\
+\leftbracket & a_1 & a_2 & a_4 & a_3 & \rightbracket \\
+\leftbracket & a_1 & a_4 & a_2 & a_3 & \rightbracket \\
+};
+
+\draw[my arrow] (M-3-3) to (M-2-4);
+\end{tikzpicture}
+
+
+//new version
+
+
+\tikzset{my arrow/.style={
+  blue!60!black,
+  -latex
+  }
+}
+
+\begin{tikzpicture}
+\matrix[matrix of math nodes, row sep=1mm] (M) {
+edges \leftbracket & 0 & 1 & 0 & 1 & 4 & 5 & 6 & 7 & \rightbracket \\
+offsets \leftbracket & 0 & 2 & 3 & \rightbracket \\
+};
+\draw[my arrow] (M-2-2) to (M-1-2);
+\draw[my arrow] (M-2-3) to (M-1-4);
+\draw[my arrow] (M-2-4) to (M-1-5);
+
+\end{tikzpicture}
+

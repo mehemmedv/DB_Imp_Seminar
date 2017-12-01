@@ -124,6 +124,8 @@ int main(int argc, char **argv) {
         if (algo_type == "DFS") {
             int sum = 0;
             auto begin = std::chrono::high_resolution_clock::now();
+            auto total_update = 0LL;
+            int cnt_updates = 0;
             for (int i = 1; i <= cnt_rounds; ++i) {
                 if (x == -1 || i % x != 0)
                     sum += algo->dfs((i - 1) % v + 1);
@@ -135,7 +137,11 @@ int main(int argc, char **argv) {
                     offset += 4;
                     pread(fd, &w_v, sizeof(int), offset);
                     offset += 4;
+                    ++cnt_updates;
+                    auto begin_update = std::chrono::high_resolution_clock::now();
                     algo->add_edge(fr_v, to_v, w_v);
+                    auto end_update = std::chrono::high_resolution_clock::now();
+                    total_update += (std::chrono::duration_cast<std::chrono::milliseconds>(end_update - begin_update)).count();
                 }
             }
             auto end = std::chrono::high_resolution_clock::now();
@@ -144,9 +150,12 @@ int main(int argc, char **argv) {
             //std::cout<<"CSR Graph DFS time: "<<passed.count()<<std::endl;
             std::cout << type << " " << algo_type << " " << sorted << " " << cnt_rounds << " " << x << "   nodes = "
                       << v << "  time:  " << passed.count() << std::endl;
+            std::cout<<"Average update time: "<<total_update * 1.0 / (cnt_updates*1.0)<<std::endl;
         } else if (algo_type == "BFS") {
             int sum = 0;
             auto begin = std::chrono::high_resolution_clock::now();
+            auto total_update = 0LL;
+            int cnt_updates = 0;
             for (int i = 1; i <= cnt_rounds; ++i) {
                 if (x == -1 || i % x != 0)
                     sum += algo->bfs((i - 1) % v + 1);
@@ -158,7 +167,11 @@ int main(int argc, char **argv) {
                     offset += 4;
                     pread(fd, &w_v, sizeof(int), offset);
                     offset += 4;
+                    ++cnt_updates;
+                    auto begin_update = std::chrono::high_resolution_clock::now();
                     algo->add_edge(fr_v, to_v, w_v);
+                    auto end_update = std::chrono::high_resolution_clock::now();
+                    total_update += (std::chrono::duration_cast<std::chrono::milliseconds>(end_update - begin_update)).count();
                 }
             }
             auto end = std::chrono::high_resolution_clock::now();
@@ -167,9 +180,12 @@ int main(int argc, char **argv) {
             //std::cout<<"CSR Graph BFS time: "<<passed.count()<<std::endl;
             std::cout << type << " " << algo_type << " " << sorted << " " << cnt_rounds << " " << x << "   nodes = "
                       << v << "  time:  " << passed.count() << std::endl;
+            std::cout<<"Average update time: "<<total_update * 1.0 / (cnt_updates*1.0)<<std::endl;
         } else {
             int sum = 0;
             auto begin = std::chrono::high_resolution_clock::now();
+            auto total_update = 0LL;
+            int cnt_updates = 0;
             for (int i = 1; i <= cnt_rounds; ++i) {
                 if (x == -1 || i % x != 0)
                     sum += algo->dijkstra(1, (i - 1) % v + 1);
@@ -181,7 +197,11 @@ int main(int argc, char **argv) {
                     offset += 4;
                     pread(fd, &w_v, sizeof(int), offset);
                     offset += 4;
+                    ++cnt_updates;
+                    auto begin_update = std::chrono::high_resolution_clock::now();
                     algo->add_edge(fr_v, to_v, w_v);
+                    auto end_update = std::chrono::high_resolution_clock::now();
+                    total_update += (std::chrono::duration_cast<std::chrono::milliseconds>(end_update - begin_update)).count();
                 }
             }
             auto end = std::chrono::high_resolution_clock::now();
@@ -190,6 +210,7 @@ int main(int argc, char **argv) {
             //std::cout<<"CSR Graph Dijkstra time: "<<passed.count()<<std::endl;
             std::cout << type << " " << algo_type << " " << sorted << " " << cnt_rounds << " " << x << "   nodes = "
                       << v << "  time:  " << passed.count() << std::endl;
+            std::cout<<"Average update time: "<<total_update * 1.0 / (cnt_updates*1.0)<<std::endl;
         }
         print_mem_usage();
 
@@ -240,6 +261,8 @@ int main(int argc, char **argv) {
         if (algo_type == "DFS") {
             int sum = 0;
             auto begin = std::chrono::high_resolution_clock::now();
+            auto total_update = 0LL;
+            int cnt_updates = 0;
             for (int i = 1; i <= cnt_rounds; ++i) {
                 if (x == -1 || i % x != 0)
                     sum += algo->dfs((i - 1) % v + 1);
@@ -251,7 +274,11 @@ int main(int argc, char **argv) {
                     offset += 4;
                     pread(fd, &w_v, sizeof(int), offset);
                     offset += 4;
+                    ++cnt_updates;
+                    auto begin_update = std::chrono::high_resolution_clock::now();
                     algo->add_edge(fr_v, to_v, w_v);
+                    auto end_update = std::chrono::high_resolution_clock::now();
+                    total_update += (std::chrono::duration_cast<std::chrono::milliseconds>(end_update - begin_update)).count();
                 }
             }
             auto end = std::chrono::high_resolution_clock::now();
@@ -260,9 +287,12 @@ int main(int argc, char **argv) {
             //std::cout<<"ALGraph Graph DFS time: "<<passed.count()<<std::endl;
             std::cout << type << " " << algo_type << " " << sorted << " " << cnt_rounds << " " << x << "   nodes = "
                       << v << "  time:  " << passed.count() << std::endl;
+            std::cout<<"Average update time: "<<total_update * 1.0 / (cnt_updates*1.0)<<std::endl;
         } else if (algo_type == "BFS") {
             int sum = 0;
             auto begin = std::chrono::high_resolution_clock::now();
+            auto total_update = 0LL;
+            int cnt_updates = 0;
             for (int i = 1; i <= cnt_rounds; ++i) {
                 if (x == -1 || i % x != 0)
                     sum += algo->bfs((i - 1) % v + 1);
@@ -274,7 +304,11 @@ int main(int argc, char **argv) {
                     offset += 4;
                     pread(fd, &w_v, sizeof(int), offset);
                     offset += 4;
+                    ++cnt_updates;
+                    auto begin_update = std::chrono::high_resolution_clock::now();
                     algo->add_edge(fr_v, to_v, w_v);
+                    auto end_update = std::chrono::high_resolution_clock::now();
+                    total_update += (std::chrono::duration_cast<std::chrono::milliseconds>(end_update - begin_update)).count();
                 }
             }
             auto end = std::chrono::high_resolution_clock::now();
@@ -283,9 +317,12 @@ int main(int argc, char **argv) {
             //std::cout<<"ALGraph Graph BFS time: "<<passed.count()<<std::endl;
             std::cout << type << " " << algo_type << " " << sorted << " " << cnt_rounds << " " << x << "   nodes = "
                       << v << "  time:  " << passed.count() << std::endl;
+            std::cout<<"Average update time: "<<total_update * 1.0 / (cnt_updates*1.0)<<std::endl;
         } else {
             int sum = 0;
             auto begin = std::chrono::high_resolution_clock::now();
+            auto total_update = 0LL;
+            int cnt_updates = 0;
             for (int i = 1; i <= cnt_rounds; ++i) {
                 if (x == -1 || i % x != 0)
                     sum += algo->dijkstra(1, (i - 1) % v + 1);
@@ -297,7 +334,11 @@ int main(int argc, char **argv) {
                     offset += 4;
                     pread(fd, &w_v, sizeof(int), offset);
                     offset += 4;
+                    ++cnt_updates;
+                    auto begin_update = std::chrono::high_resolution_clock::now();
                     algo->add_edge(fr_v, to_v, w_v);
+                    auto end_update = std::chrono::high_resolution_clock::now();
+                    total_update += (std::chrono::duration_cast<std::chrono::milliseconds>(end_update - begin_update)).count();
                 }
             }
             auto end = std::chrono::high_resolution_clock::now();
@@ -306,6 +347,7 @@ int main(int argc, char **argv) {
             //std::cout<<"ALGraph Graph Dijkstra time: "<<passed.count()<<std::endl;
             std::cout << type << " " << algo_type << " " << sorted << " " << cnt_rounds << " " << x << "   nodes = "
                       << v << "  time:  " << passed.count() << std::endl;
+            std::cout<<"Average update time: "<<total_update * 1.0 / (cnt_updates*1.0)<<std::endl;
         }
         print_mem_usage();
         delete algo;
@@ -355,6 +397,8 @@ int main(int argc, char **argv) {
         if (algo_type == "DFS") {
             int sum = 0;
             auto begin = std::chrono::high_resolution_clock::now();
+            auto total_update = 0LL;
+            int cnt_updates = 0;
             for (int i = 1; i <= cnt_rounds; ++i) {
                 if (x == -1 || i % x != 0)
                     sum += algo->dfs((i - 1) % v + 1);
@@ -368,7 +412,11 @@ int main(int argc, char **argv) {
                     offset += 4;
 
 //                    std::cin>>fr_v>>to_v>>w_v;
+                    ++cnt_updates;
+                    auto begin_update = std::chrono::high_resolution_clock::now();
                     algo->add_edge(fr_v, to_v, w_v);
+                    auto end_update = std::chrono::high_resolution_clock::now();
+                    total_update += (std::chrono::duration_cast<std::chrono::milliseconds>(end_update - begin_update)).count();
                 }
             }
             auto end = std::chrono::high_resolution_clock::now();
@@ -377,9 +425,12 @@ int main(int argc, char **argv) {
             //std::cout<<"ALGraphV2 Graph DFS time: "<<passed.count()<<std::endl;
             std::cout << type << " " << algo_type << " " << sorted << " " << cnt_rounds << " " << x << "   nodes = "
                       << v << "  time:  " << passed.count() << std::endl;
+            std::cout<<"Average update time: "<<total_update * 1.0 / (cnt_updates*1.0)<<std::endl;
         } else if (algo_type == "BFS") {
             int sum = 0;
             auto begin = std::chrono::high_resolution_clock::now();
+            auto total_update = 0LL;
+            int cnt_updates = 0;
             for (int i = 1; i <= cnt_rounds; ++i) {
                 if (x == -1 || i % x != 0) {
                     sum += algo->bfs((i - 1) % v + 1);
@@ -392,7 +443,11 @@ int main(int argc, char **argv) {
                     pread(fd, &w_v, sizeof(int), offset);
                     offset += 4;
 
+                    ++cnt_updates;
+                    auto begin_update = std::chrono::high_resolution_clock::now();
                     algo->add_edge(fr_v, to_v, w_v);
+                    auto end_update = std::chrono::high_resolution_clock::now();
+                    total_update += (std::chrono::duration_cast<std::chrono::milliseconds>(end_update - begin_update)).count();
                 }
             }
             auto end = std::chrono::high_resolution_clock::now();
@@ -401,9 +456,12 @@ int main(int argc, char **argv) {
             //std::cout<<"ALGraphV2 Graph BFS time: "<<passed.count()<<std::endl;
             std::cout << type << " " << algo_type << " " << sorted << " " << cnt_rounds << " " << x << "   nodes = "
                       << v << "  time:  " << passed.count() << std::endl;
+            std::cout<<"Average update time: "<<total_update * 1.0 / (cnt_updates*1.0)<<std::endl;
         } else {
             int sum = 0;
             auto begin = std::chrono::high_resolution_clock::now();
+            auto total_update = 0LL;
+            int cnt_updates = 0;
             for (int i = 1; i <= cnt_rounds; ++i) {
                 if (x == -1 || i % x != 0)
                     sum += algo->dijkstra(1, (i - 1) % v + 1);
@@ -415,7 +473,11 @@ int main(int argc, char **argv) {
                     offset += 4;
                     pread(fd, &w_v, sizeof(int), offset);
                     offset += 4;
+                    ++cnt_updates;
+                    auto begin_update = std::chrono::high_resolution_clock::now();
                     algo->add_edge(fr_v, to_v, w_v);
+                    auto end_update = std::chrono::high_resolution_clock::now();
+                    total_update += (std::chrono::duration_cast<std::chrono::milliseconds>(end_update - begin_update)).count();
                 }
             }
             auto end = std::chrono::high_resolution_clock::now();
@@ -424,6 +486,7 @@ int main(int argc, char **argv) {
             //std::cout<<"ALGraphV2 Graph Dijkstra time: "<<passed.count()<<std::endl;
             std::cout << type << " " << algo_type << " " << sorted << " " << cnt_rounds << " " << x << "   nodes = "
                       << v << "  time:  " << passed.count() << std::endl;
+            std::cout<<"Average update time: "<<total_update * 1.0 / (cnt_updates*1.0)<<std::endl;
         }
         print_mem_usage();
         delete algo;
