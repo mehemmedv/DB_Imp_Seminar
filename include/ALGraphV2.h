@@ -39,15 +39,15 @@ public:
 
     void sortByEdgesByNodeId();
 
-    inline std::vector<int>::iterator begin(int cur_vertex) {
+    inline std::vector<uint64_t>::iterator begin(int cur_vertex) {
         return edges[cur_vertex].begin();
     }
 
-    inline std::vector<int>::iterator end(int cur_vertex){
+    inline std::vector<uint64_t>::iterator end(int cur_vertex){
         return edges[cur_vertex].end();
     }
 
-    inline std::vector<int>::iterator begin_weights(int cur_vertex) {
+    inline std::vector<uint64_t>::iterator begin_weights(int cur_vertex) {
         return weights[cur_vertex].begin();
     }
 };
