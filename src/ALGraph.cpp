@@ -7,17 +7,17 @@
 
 void ALGraph::add_edge(int from, std::vector<int>& to, std::vector<int>& w) {
     for(int i : to)
-        edges[from].push_back(i);
+        edges[from].push_back((uint64_t)i);
     for(int i : w)
-        weights[from].push_back(i);
+        weights[from].push_back((uint64_t)i);
 }
 
 void ALGraph::finished() {
 }
 
 void ALGraph::add_edge(int from, int to, int weight) {
-    edges[from].push_back(to);
-    weights[from].push_back(weight);
+    edges[from].push_back((uint64_t)to);
+    weights[from].push_back((uint64_t)weight);
 }
 
 void ALGraph::sortByEdgesByNodeId() {
