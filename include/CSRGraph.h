@@ -10,18 +10,18 @@
 
 // 'Compressed sparse row' implementation of Graph
 class CSRGraph {
-    uint64_t *edges, *offsets;
-    uint64_t* weights;
-    uint64_t *delta_e;
-    uint64_t *delta_w;
+    int *edges, *offsets;
+    int* weights;
+    int *delta_e;
+    int *delta_w;
     uint64_t cur_idx, v, e;
 
 public:
     CSRGraph(uint64_t v, uint64_t e) : v(v), e(e) {
-        edges = new uint64_t[e];
-        offsets = new uint64_t[v + 2];
+        edges = new int[e];
+        offsets = new int[v + 2];
         cur_idx = 0;
-        weights = new uint64_t[e];
+        weights = new int[e];
     }
 
     ~CSRGraph(){
@@ -39,15 +39,15 @@ public:
 
     void sortByEdgesByNodeId();
 
-    inline uint64_t* begin(int cur_vertex){
+    inline int* begin(int cur_vertex){
         return &(edges[offsets[cur_vertex]]);
     }
 
-    inline uint64_t* end(int cur_vertex){
+    inline int* end(int cur_vertex){
         return &(edges[offsets[cur_vertex + 1]]);
     }
 
-    inline uint64_t* begin_weights(int cur_vertex){
+    inline int* begin_weights(int cur_vertex){
         return &(weights[offsets[cur_vertex]]);
     }
 };

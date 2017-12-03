@@ -11,13 +11,13 @@
 // Adjacency list implementation of Graph
 class ALGraph{
     uint64_t v, e;
-    std::list<uint64_t>* edges;
-    std::list<uint64_t>* weights;
+    std::list<int>* edges;
+    std::list<int>* weights;
 
 public:
     ALGraph(uint64_t v, uint64_t e) : v(v), e(e){
-        edges = new std::list<uint64_t>[v + 2];
-        weights = new std::list<uint64_t>[v + 2];
+        edges = new std::list<int>[v + 2];
+        weights = new std::list<int>[v + 2];
         for(int i = 0; i <= v; ++i)
             edges[i].clear(), weights[i].clear();
     }
@@ -38,15 +38,15 @@ public:
 
     void sortByEdgesByNodeId();
 
-    inline std::list<uint64_t>::iterator begin(int cur_vertex) {
+    inline std::list<int>::iterator begin(int cur_vertex) {
         return edges[cur_vertex].begin();
     }
 
-    inline std::list<uint64_t>::iterator end(int cur_vertex){
+    inline std::list<int>::iterator end(int cur_vertex){
         return edges[cur_vertex].end();
     }
 
-    inline std::list<uint64_t>::iterator begin_weights(int cur_vertex) {
+    inline std::list<int>::iterator begin_weights(int cur_vertex) {
         return weights[cur_vertex].begin();
     }
 };

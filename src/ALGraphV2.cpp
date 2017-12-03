@@ -9,17 +9,17 @@
 
 void ALGraphV2::add_edge(int from, std::vector<int>& to, std::vector<int>& w) {
     for(int i : to)
-        edges[from].push_back((uint64_t)i);
+        edges[from].push_back(i);
     for(int i : w)
-        weights[from].push_back((uint64_t)i);
+        weights[from].push_back(i);
 }
 
 void ALGraphV2::finished() {
 }
 
 void ALGraphV2::add_edge(int from, int to, int weight) {
-    edges[from].push_back((uint64_t)to);
-    weights[from].push_back((uint64_t)weight);
+    edges[from].push_back(to);
+    weights[from].push_back(weight);
 }
 
 void ALGraphV2::sortByEdgesByNodeId() {
