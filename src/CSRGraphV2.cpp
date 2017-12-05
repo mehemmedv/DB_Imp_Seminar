@@ -31,7 +31,7 @@ void CSRGraphV2::add_edge(int from, int to, int weight) {
 
     if(e == current_size){
         isFull = true;
-        current_size += 10;
+        current_size += additional_space;
     }
     if(!isFull) {
         memmove(dest_edges + offsets[from + 1] + 1, edges + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));

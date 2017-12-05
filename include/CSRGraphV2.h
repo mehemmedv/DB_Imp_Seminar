@@ -14,11 +14,12 @@ class CSRGraphV2 {
     int *edges, *offsets;
     int* weights;
     uint64_t cur_idx, v, e;
+    uint64_t additional_space = 100;
     uint64_t current_size = 0;
 
 public:
     CSRGraphV2(uint64_t v, uint64_t e) : v(v), e(e) {
-        current_size = e + 10;
+        current_size = e + additional_space;
         edges = new int[current_size];
         offsets = new int[v + 2];
         cur_idx = 0;
