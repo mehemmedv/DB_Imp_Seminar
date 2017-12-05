@@ -1,0 +1,13 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Related Works}{}% 2
+\BOOKMARK [1][-]{section.3}{Implementation}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Compressed Sparse Row}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Ajdacency List with std::list}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Ajdacency List with std::vector}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Evaluation}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Experimental platform}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.2}{Algorithm comparisons}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.3}{Complex Scenario}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.4}{Memory consumption}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.5}{Cache friendliness}{section.4}% 12
+\BOOKMARK [1][-]{section.5}{Conclusion}{}% 13
