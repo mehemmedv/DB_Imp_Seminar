@@ -300,7 +300,7 @@ give infor about this
 \subsubsection*{Dijkstra Algorithm}
 Dijkstra algorithm solves the shortest path problem between two nodes in the graph. The complexity of the algorithm is \textit{O(nlogn)}. Despite the fact that it heavily reads the data from main memory, the most time consuming operation is insertion into priority queue which takes \textit{O(logn)}. Thus in the evaluation of Dijkstra, it is difficult to interpret anything from the result.\\
 \begin{center}
-\includegraphics[scale = 0.6]{DFS}\\
+\includegraphics[scale = 0.6]{Dijkstra}\\
 \textbf{Figure 6}: Results of Dijkstra for the graph with 1,000,000 nodes.
 \end{center}
 
@@ -311,24 +311,23 @@ give infor about this
  I have implemented two different update structures for CSR. As it is seen from the structure of Adjacency List on Section 3, updates on Adjacency List is super fast operation which just appends the newly added edge to the corresponding. It takes much less than a milli second. For CSR, it is too heavy operation to handle. In the following subsection, I will explain how both update structures works and how fast they are.
  
  \subsubsection*{Simple Update}
-   Assume that the directed graph has \textit{V} nodes and \textit{E} edges. To keep the structure of CSR, we need to allocate a new array with \textit{E}+\textit{1} edges for each newly added edge. Let's call the new array as \texttt{edges'} and the new edge is \textit{e=(v,u)}. First of all, I copy all the content of the array \texttt{edges} from \texttt{offsets[1]} to \texttt{offsets[v+1]}. Then I set \texttt{edges'[offsets[v+1]]=u}. At the end I copy the rest content of the array \texttt{edges} to the array \texttt{edges'} starting from \texttt{offsets[v+1] + 1} index. Then I increment all the elements from \texttt{offsets[v+1]} to \texttt{offsets[V+1]}. To copy the content of array, I use \texttt{std::memcpy} function which is better than \texttt{std::memmove} function.\\
- 
-results\\
-
-give info about results. 
- 
+   Assume that the directed graph has \textit{V} nodes and \textit{E} edges. To keep the structure of CSR, we need to allocate a new array with \textit{E}+\textit{1} edges for each newly added edge. Let's call the new array as \texttt{edges'} and the new edge is \textit{e=(v,u)}. First of all, I copy all the content of the array \texttt{edges} from \texttt{offsets[1]} to \texttt{offsets[v+1]}. Then I set \texttt{edges'[offsets[v+1]]=u}. At the end I copy the rest content of the array \texttt{edges} to the array \texttt{edges'} starting from \texttt{offsets[v+1] + 1} index. Then I increment all the elements from \texttt{offsets[v+1]} to \texttt{offsets[V+1]}. To copy the content of array, I use \texttt{std::memcpy} function which is better than \texttt{std::memmove} function. 
  \subsubsection*{Light Update}
- As it is shown from the results of \textbf{\textit{Simple Update}}, it is the most time consuming operation for CSR format. A new update structure -\textbf{\textit{Light Update}}- is a fast update method which is up to 13x faster than the previous update.
- \\
- 
- results\\
- 
- give some info about the result \\
- 
- The new approach is built on top of the previous approach. As an addition, the structure of CSR format should be modified in this method. Assume that we are given a directed graph which has \textit{V} nodes and \textit{E} edges. \texttt{edges} array should have more than |\textit{E}|, which I call it as \textit{additional space}. For each new upcoming edge, CSR doesn't need to allocate a new big \texttt{edges} array to store a new one. Let's call the new edge as \textit{e=(v,u)}. It does a new allocation whenever \texttt{edges} array hits the capacity. If it is already full, the update is exactly the same as in \textbf{\textit{Simple Update}}. If the \texttt{edges} array still has some space to store new edges, I copy all the array elements from \texttt{offsets[v+1]} into \texttt{edges} array starting from \texttt{offsets[v+1] + 1} index. As there is intersection between source and destination, I use \texttt{std::memmove} function to do this copy operation. Then I set the corresponding element to \texttt{u} and increment corresponding elements of \texttt{offsets} array as it is in \textbf{\textit{Simple Update}}. As it is shown, CSR doesn't do new allocation and copy all the array for each update. The speed-up comes along with having very few new allocations and copying.
+ As it is shown from the results of \textbf{\textit{Simple Update}}, it is the most time consuming operation for CSR format. A new update structure -\textbf{\textit{Light Update}}- is a much faster update method compared to \textbf{\textit{Simple Update}}.\\
+ The new approach is built on top of the previous approach. As an addition, the structure of CSR format should be modified in this method. Assume that we are given a directed graph which has \textit{V} nodes and \textit{E} edges. \texttt{edges} array should have more than |\textit{E}|, which I call it as \textit{additional space}. For each new upcoming edge, CSR doesn't need to allocate a new big \texttt{edges} array to store a new one. Let's call the new edge as \textit{e=(v,u)}. It does a new allocation whenever \texttt{edges} array hits the capacity. If it is already full, the update is exactly the same as in \textbf{\textit{Simple Update}}. If the \texttt{edges} array still has some space to store new edges, I copy all the array elements from \texttt{offsets[v+1]} into \texttt{edges} array starting from \texttt{offsets[v+1] + 1} index. As there is intersection between source and destination, I use \texttt{std::memmove} function to do this copy operation. Then I set the corresponding element to \texttt{u} and increment corresponding elements of \texttt{offsets} array as it is in \textbf{\textit{Simple Update}}. As it is shown, CSR doesn't do new allocation and copy all the array for each update. The speed-up comes along with having very few new allocations and copying.\\
+\begin{center}
+\includegraphics[scale = 0.5]{time_per_update}\\
+\textbf{Figure 7}: Latencies of both updates for the graph with 1,000,000 nodes.
+\end{center}
+
+ As it is shown from Figure 7, \textbf{\textit{Light Update}} always performs ~13-15x faster than \textbf{\textit{Simple Update}}. This gives us a possibility to use CSR for temporal graphs as well.
  
  \subsubsection*{Mixed Workload}
- I evaulate the system in a mixed workload in which every 20th operation of queries is an update query which adds a new edge to the graph. Therefore, it gives us an overview of how good CSR is really on temporal graphs.
+ I evaulate the system in a mixed workload in which every 20th operation of queries is an update query(\textbf{\textit{Light Update}}) which adds a new edge to the graph. Therefore, it gives us an overview of how good CSR is really on temporal graphs.
+ \begin{center}
+\includegraphics[scale = 0.5]{mixed_workload}\\
+\textbf{Figure 8}: Latencies of both updates for the graph with 1,000,000 nodes.
+\end{center}
 
 \subsection{Memory consumption}
 
