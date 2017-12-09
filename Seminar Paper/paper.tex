@@ -36,7 +36,7 @@
 \textbf{Keywords:} Graph databases, Compressed Sparse Row
 
 \section{Introduction}
-Graph analysis have become more popular in the last few years. Graphs are usually used to represent social networks in which vertices indicate users and edges indicate friendship between users. Facebook has 1.39 billion  active users as of 12/2014 with more than 400 billion edges\cite{fb}. Therefore, processing big graphs is consuming more time as the number of users and relationships significantly increased. The proposed approach(CSR) gives slightly better performance over the other two approaches on DFS algorithm. BFS algorithm in general is faster than DFS as it doesn't have an additional overhead of recursion. CSR gives a bit much better on BFS. In the following subsections, I will give some details about CSR and two variants of AL. In the following, I will give some details about existing approaches in Section 2, then followed by implementation details(Section 3) and an evaluation(Section 4). In Section 5 I will give conclusion about how good CSR is really.
+Graph analysis have become more popular in the last few years. Graphs are usually used to represent social networks in which vertices indicate users and edges indicate friendship between users. Facebook has 1.39 billion  active users as of 12/2014 with more than 400 billion edges\cite{fb}. Therefore, processing big graphs is consuming more time as the number of users and relationships significantly increased. The proposed approach(CSR) gives slightly better performance over the other approach on DFS algorithm. BFS algorithm in general is faster than DFS as it doesn't have an additional overhead of recursion. CSR gives a bit much better on BFS. In the following subsections, I will give some details about CSR and two variants of AL. In the following, I will give some details about existing approaches in Section 2, then followed by implementation details(Section 3) and an evaluation(Section 4). In Section 5 I will give conclusion about how good CSR is really.
 
 \section{Related Works}
 STINGER\cite{stinger} is a mutable graph container which is capable of handling updates which can be inserted parallel. it uses a fixed-size chained buckets to keep edges. Due to its loosely synchronized parallel updates that only maintains physical consistency of the data structure, a query may see the graph in a state that never existed. Each bucket contains only edges of the same type.\\
@@ -44,7 +44,7 @@ LLAMA\cite{llama} is a new extention to CSR with the support of versioning. It p
 ASGraph\cite{asgraph} is also a new extention to which reduce update time to very small latency by breaking up the edge list of CSR into multiple chunks and that support efficient mutation and employing an append-only scheme for updates.
  
 \section{Implementation}
- I have implemented a nice graph interface for all of three graph containers in which graph algorithms can easily be built upon on that. Thus, graph algorithms are independent of the type of graph container. Moreover, modifications on graph containers don't affect the algorithms. For the future work, new algorithms can easily be implemented using the methods of graph containers. In the following subsections, I will briefly explain all three graph containers and show how the edges are actually stored in the memory for sample graph in Figure 1.
+ I have implemented a nice graph interface for CSR graph container and two variants of AL in which graph algorithms can easily be built upon on that. Thus, graph algorithms are independent of the type of graph container. Moreover, modifications on graph containers don't affect the algorithms. For the future work, new algorithms can easily be implemented using the methods of graph containers. In the following subsections, I will briefly explain all three graph containers and show how the edges are actually stored in the memory for sample graph in Figure 1.
 \begin{center} 
  
  \begin {tikzpicture}[-latex ,node distance =3 cm and 3cm ,on grid ,
@@ -293,9 +293,8 @@ DFS is a mainly read-only graph search algorithm which usually reads them sequen
 \caption{Result for BFS}\label{fig:figB}
 \end{subfigure}
 \caption*{\textbf{Figure 5}: Results of DFS and BFS for the graph with 1,000,000 nodes.}
-\end{figure} 
-
-give infor about this
+\end{figure} \\
+ I test the system with 200 DFS and BFS in which it starts from a random node. CSR is up to 3 times faster than \texttt{std::list} approach. For \texttt{std::vector}, CSR finishes it at least 15 secs earlier.
 
 \subsubsection*{Dijkstra Algorithm}
 Dijkstra algorithm solves the shortest path problem between two nodes in the graph. The complexity of the algorithm is \textit{O(nlogn)}. Despite the fact that it heavily reads the data from main memory, the most time consuming operation is insertion into priority queue which takes \textit{O(logn)}. Thus in the evaluation of Dijkstra, it is difficult to interpret anything from the result.\\
@@ -303,15 +302,12 @@ Dijkstra algorithm solves the shortest path problem between two nodes in the gra
 \includegraphics[scale = 0.6]{Dijkstra}\\
 \textbf{Figure 6}: Results of Dijkstra for the graph with 1,000,000 nodes.
 \end{center}
-
-
-give infor about this
-
+ CSR is still better on Dijkstra algorithm than \texttt{std::list} approach. It is difficult to say whether CSR or \texttt{std::vector} is better than the other one.
 \subsection{Complex Scenario}
- I have implemented two different update structures for CSR. As it is seen from the structure of Adjacency List on Section 3, updates on Adjacency List is super fast operation which just appends the newly added edge to the corresponding. It takes much less than a milli second. For CSR, it is too heavy operation to handle. In the following subsection, I will explain how both update structures works and how fast they are.
+ I have implemented two different update structures for CSR. As it is seen from the structure of Adjacency List on Section 3, updates on Adjacency List is super fast operation which just appends the newly added edge to the corresponding list. It takes much less than a milli second. For CSR, it is too heavy operation to handle. In the following subsection, I will explain how both update structures works and how fast they are.
  
  \subsubsection*{Simple Update}
-   Assume that the directed graph has \textit{V} nodes and \textit{E} edges. To keep the structure of CSR, we need to allocate a new array with \textit{E}+\textit{1} edges for each newly added edge. Let's call the new array as \texttt{edges'} and the new edge is \textit{e=(v,u)}. First of all, I copy all the content of the array \texttt{edges} from \texttt{offsets[1]} to \texttt{offsets[v+1]}. Then I set \texttt{edges'[offsets[v+1]]=u}. At the end I copy the rest content of the array \texttt{edges} to the array \texttt{edges'} starting from \texttt{offsets[v+1] + 1} index. Then I increment all the elements from \texttt{offsets[v+1]} to \texttt{offsets[V+1]}. To copy the content of array, I use \texttt{std::memcpy} function which is better than \texttt{std::memmove} function. 
+   Assume that the directed graph has \textit{V} nodes and \textit{E} edges. To keep the structure of CSR, we need to allocate a new array with \textit{E}+\textit{1} edges for each newly added edge. Let's call the new array as \texttt{edges'} and the new edge is \textit{e=(v,u)}. First of all, I copy all the content of the array \texttt{edges} from \texttt{offsets[1]} to \texttt{offsets[v+1]} and the rest content of the array \texttt{edges} to the array \texttt{edges'} starting from \texttt{offsets[v+1] + 1} index. Then I set \texttt{edges'[offsets[v+1]]=u}. At the end, I increment all the elements from \texttt{offsets[v+1]} to \texttt{offsets[V+1]}. To copy the content of array, I use \texttt{std::memcpy} function which is better than \texttt{std::memmove} function. 
  \subsubsection*{Light Update}
  As it is shown from the results of \textbf{\textit{Simple Update}}, it is the most time consuming operation for CSR format. A new update structure -\textbf{\textit{Light Update}}- is a much faster update method compared to \textbf{\textit{Simple Update}}.\\
  The new approach is built on top of the previous approach. As an addition, the structure of CSR format should be modified in this method. Assume that we are given a directed graph which has \textit{V} nodes and \textit{E} edges. \texttt{edges} array should have more than |\textit{E}|, which I call it as \textit{additional space}. For each new upcoming edge, CSR doesn't need to allocate a new big \texttt{edges} array to store a new one. Let's call the new edge as \textit{e=(v,u)}. It does a new allocation whenever \texttt{edges} array hits the capacity. If it is already full, the update is exactly the same as in \textbf{\textit{Simple Update}}. If the \texttt{edges} array still has some space to store new edges, I copy all the array elements from \texttt{offsets[v+1]} into \texttt{edges} array starting from \texttt{offsets[v+1] + 1} index. As there is intersection between source and destination, I use \texttt{std::memmove} function to do this copy operation. Then I set the corresponding element to \texttt{u} and increment corresponding elements of \texttt{offsets} array as it is in \textbf{\textit{Simple Update}}. As it is shown, CSR doesn't do new allocation and copy all the array for each update. The speed-up comes along with having very few new allocations and copying.\\
@@ -326,12 +322,16 @@ give infor about this
  I evaulate the system in a mixed workload in which every 20th operation of queries is an update query(\textbf{\textit{Light Update}}) which adds a new edge to the graph. Therefore, it gives us an overview of how good CSR is really on temporal graphs.
  \begin{center}
 \includegraphics[scale = 0.5]{mixed_workload}\\
-\textbf{Figure 8}: Latencies of both updates for the graph with 1,000,000 nodes.
+\textbf{Figure 8}: Latencies for mixed workload for the graph with 1,000,000 nodes.
 \end{center}
- Figure 8 shows that CSR is still performing better in the case of having every 20th operation as update. 
+ Figure 8 shows that CSR is still performing better in the case of having every 20th operation as update. Thus, CSR can be an option for temporal graphs. However, \textbf{\textit{Light Update}} is too heavy operation for much bigger graphs. Further investigation should be done on bigger graphs.
 \subsection{Memory consumption}
-
-\subsection{Cache friendliness}
+  So far we only compared CSR with other two approaches in terms of latency. For the real world use, memory consumption should be considered as one of the main property. 
+ \begin{center}
+\includegraphics[scale = 0.48]{mem_ratio}\\
+\textbf{Figure 9}: Ratio of memory consumption of CSR with other approaches.
+\end{center}
+\texttt{std::list} is usually implemented as doubly linked list. Because of this structure it uses much more memory. But according to the structure of \texttt{std::vector}, each of them is at least half full for each node, whereas there are some empty places. However CSR has only one memory overhead which is \texttt{offsets} array. As shown from Figure 9. CSR is always using less memory than the other approaches, at least 7 times less than \texttt{std::list} and around 1.15 times less than \texttt{std::vector}.
 
 \section{Conclusion}
 As it is shown from the results, CSR is not that superior to other two approaches. But considering the fact that social networks are growing so fast nowadays, a slight better approach significantly matters. While most analysis still focuses on static graphs, in the future there will be huge demand on temporal graphs. As CSR itself is not update-friendly, more investigation should be done on the variants of CSR. The CSR library, together with two Adjacency List implementation and generation of graphs, is available online at \texttt{https://github.com/mehemmedv/DB\_Imp\_Seminar}\\
