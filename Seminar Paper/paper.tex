@@ -318,20 +318,58 @@ Dijkstra algorithm solves the shortest path problem between two nodes in the gra
 
  As it is shown from Figure 7, \textbf{\textit{Light Update}} always performs ~13-15x faster than \textbf{\textit{Simple Update}}. This gives us a possibility to use CSR for temporal graphs as well.
  
- \subsubsection*{Mixed Workload}
+ \subsubsection*{Real World Example}
  I evaulate the system in a mixed workload in which every 20th operation of queries is an update query(\textbf{\textit{Light Update}}) which adds a new edge to the graph. Therefore, it gives us an overview of how good CSR is really on temporal graphs.
  \begin{center}
 \includegraphics[scale = 0.5]{mixed_workload}\\
 \textbf{Figure 8}: Latencies for mixed workload for the graph with 1,000,000 nodes.
 \end{center}
  Figure 8 shows that CSR is still performing better in the case of having every 20th operation as update. Thus, CSR can be an option for temporal graphs. However, \textbf{\textit{Light Update}} is too heavy operation for much bigger graphs. Further investigation should be done on bigger graphs.
+ 
+\subsubsection*{An Interesting Approach to Real World Example} 
+ Real-world graphs are usually clustered. Therefore, the likelihood that a neighbor is already in the cache is higher if you access them in a sorted manner. One might label nodes in such a way that neighbors have similar ids. I have generated a graph with 1,000,000 nodes in which each node has neighbors between 50 and 200 and all neighbors have similar ids. 
+ \begin{figure}[h]
+\begin{subfigure}[h]{0.5\textwidth}
+\includegraphics[scale = 0.45]{DFS_sorted}
+\caption{Result for DFS}\label{fig:figA}
+\end{subfigure}
+\begin{subfigure}[h]{0.6\textwidth}
+\includegraphics[scale = 0.45]{BFS_sorted}
+\caption{Result for BFS}\label{fig:figB}
+\end{subfigure}
+\caption*{\textbf{Figure 9}: Results of DFS and BFS for the graph stores neighbors in sorted.}
+\end{figure} \\
+ For DFS, keeping neighbors in sorted way gives us 1.6-2.1x less latency. However, for BFS it doesn't really decrease the time. One can interpret from here that it is always better to keep neighbors sorted in CSR. In order to keep sorted structure, additional overhead is just to do binary search to find the corresponding index for new edge which is just \textit{O(logn)}. 
+ 
 \subsection{Memory consumption}
   So far we only compared CSR with other two approaches in terms of latency. For the real world use, memory consumption should be considered as one of the main property. 
- \begin{center}
-\includegraphics[scale = 0.48]{mem_ratio}\\
-\textbf{Figure 9}: Ratio of memory consumption of CSR with other approaches.
+
+
+
+\begin{center}
+\begin{tabular}{ |p{2cm}||p{4cm}|p{4.5cm}|}
+ \hline
+\# neighrbors per node & mem(std:list)$\div$mem(CSR) & mem(std:vector)$\div$mem(CSR)\\
+ \hline
+ 50   & 7.33&1.41\\
+ 65&   7.46  & 2.01  \\
+ 80 &7.55 & 1.66\\
+ 95    &7.62 & 1.42\\
+ 110&   7.67  & 1.23\\
+ 125& 7.7  & 1.15 \\
+ 140& 7.73  & 1.85\\
+ 155& 7.76  & 1.68\\
+ 170& 7.78  & 1.54\\
+ 185& 7.79  & 1.42\\
+ 200& 7.81  & 1.31\\
+ \hline
+\end{tabular}\\
+\textbf{Table 1}: Ratio of memory consumption of CSR with other approaches.
 \end{center}
-\texttt{std::list} is usually implemented as doubly linked list. Because of this structure it uses much more memory. But according to the structure of \texttt{std::vector}, each of them is at least half full for each node, whereas there are some empty places. However CSR has only one memory overhead which is \texttt{offsets} array. As shown from Figure 9. CSR is always using less memory than the other approaches, at least 7 times less than \texttt{std::list} and around 1.15 times less than \texttt{std::vector}.
+
+
+
+\texttt{std::list} is usually implemented as doubly linked list. Because of this structure it uses much more memory. But according to the structure of \texttt{std::vector}, each of them is at least half full for each node, whereas there are some empty places. However CSR has only one memory overhead which is \texttt{offsets} array. As shown from Table 1, CSR is always using less memory than the other approaches, at least 7 times less than \texttt{std::list} and around 1.15 times less than \texttt{std::vector}.
 
 \section{Conclusion}
 As it is shown from the results, CSR is not that superior to other two approaches. But considering the fact that social networks are growing so fast nowadays, a slight better approach significantly matters. While most analysis still focuses on static graphs, in the future there will be huge demand on temporal graphs. As CSR itself is not update-friendly, more investigation should be done on the variants of CSR. The CSR library, together with two Adjacency List implementation and generation of graphs, is available online at \texttt{https://github.com/mehemmedv/DB\_Imp\_Seminar}\\

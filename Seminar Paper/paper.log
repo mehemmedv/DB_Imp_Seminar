@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.10.29)  9 DEC 2017 01:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.10.29)  9 DEC 2017 11:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1006,7 +1006,20 @@ Package caption Info: hyperref package is loaded.
 )
 \c@subfigure=\count139
 \c@subtable=\count140
-) (./paper.aux)
+) (./paper.aux
+
+LaTeX Warning: Label `fig:figA' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:figA' multiply defined.
+
+
+LaTeX Warning: Label `fig:figB' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:figB' multiply defined.
+
+)
 \openout1 = `paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
@@ -1025,8 +1038,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 30.
 LaTeX Font Info:    ... okay on input line 30.
 \AtBeginShipoutBox=\box61
 Package hyperref Info: Link coloring OFF on input line 30.
-
-(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -1154,32 +1166,52 @@ File: mixed_workload.png Graphic file (type png)
 Package pdftex.def Info: mixed_workload.png used on input line 324.
 (pdftex.def)             Requested size: 240.8994pt x 180.67456pt.
 
-[6 <./time_per_update.png (PNG copy)> <./mixed_workload.png (PNG copy)>]
-<mem_ratio.png, id=109, 481.8pt x 361.35pt>
-File: mem_ratio.png Graphic file (type png)
- <use mem_ratio.png>
-Package pdftex.def Info: mem_ratio.png used on input line 331.
-(pdftex.def)             Requested size: 231.26137pt x 173.44603pt.
+<DFS_sorted.png, id=104, 399.74344pt x 240.14719pt>
+File: DFS_sorted.png Graphic file (type png)
+ <use DFS_sorted.png>
+Package pdftex.def Info: DFS_sorted.png used on input line 333.
+(pdftex.def)             Requested size: 179.88287pt x 108.06522pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 337--338
+<BFS_sorted.png, id=105, 399.74344pt x 240.14719pt>
+File: BFS_sorted.png Graphic file (type png)
+ <use BFS_sorted.png>
+Package pdftex.def Info: BFS_sorted.png used on input line 337.
+(pdftex.def)             Requested size: 179.88287pt x 108.06522pt.
+
+Overfull \hbox (38.35887pt too wide) in paragraph at lines 332--340
+[]$[]$ $[]$ 
+ []
+
+[6 <./time_per_update.png (PNG copy)> <./mixed_workload.png (PNG copy)>]
+Overfull \hbox (1.41277pt too wide) in paragraph at lines 352--352
+[]\T1/cmr/m/n/10 mem(std:list)$\OMS/cmsy/m/n/10 ^^D$\T1/cmr/m/n/10 mem(CSR)| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 375--376
 
  []
 
-[7 <./mem_ratio.png (PNG copy)>] [8]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 351.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 351.
- (./paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 351.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 351.
+[7 <./DFS_sorted.png (PNG copy)> <./BFS_sorted.png (PNG copy)>] [8]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 389.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 389.
+
+(./paper.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 389.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 389.
 Package rerunfilecheck Info: File `paper.out' has not changed.
 (rerunfilecheck)             Checksum: 6721C6A837EAF58444439B61F74C53DE;666.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 351.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 389.
  ) 
 Here is how much of TeX's memory you used:
- 21136 strings out of 493029
- 417268 string characters out of 6136233
- 506331 words of memory out of 5000000
- 24252 multiletter control sequences out of 15000+600000
+ 21143 strings out of 493029
+ 417388 string characters out of 6136233
+ 506332 words of memory out of 5000000
+ 24256 multiletter control sequences out of 15000+600000
  18928 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,18n,78p,1322b,1015s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1195,10 +1227,10 @@ exmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/pub
 lic/cm-super/sfrm1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti100
 0.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb></usr/share/te
 xmf/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on paper.pdf (8 pages, 441289 bytes).
+Output written on paper.pdf (8 pages, 466053 bytes).
 PDF statistics:
- 176 PDF objects out of 1000 (max. 8388607)
- 144 compressed objects within 2 object streams
- 31 named destinations out of 1000 (max. 500000)
- 131 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 179 PDF objects out of 1000 (max. 8388607)
+ 146 compressed objects within 2 object streams
+ 33 named destinations out of 1000 (max. 500000)
+ 136 words of extra memory for PDF output out of 10000 (max. 10000000)
 
