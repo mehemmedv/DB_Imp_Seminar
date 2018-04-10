@@ -16,6 +16,11 @@ class ALGraphV2{
     std::vector<int>* weights;
 
 public:
+
+    std::vector<int> get_neighbors(int idx){
+        return edges[idx];
+    }
+
     ALGraphV2(uint64_t v, uint64_t e) : v(v), e(e){
         edges = new std::vector<int>[v + 2];
         weights = new std::vector<int>[v + 2];

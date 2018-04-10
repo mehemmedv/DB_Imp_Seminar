@@ -11,6 +11,24 @@
 
 // 'Compressed sparse row' implementation of Graph
 class CSRGraphV2 {
+    class EdgeIter{
+        class iterator {
+        public:
+            iterator(int* ptr): ptr(ptr){}
+            iterator operator++() { ++ptr; return *this; }
+            bool operator!=(const iterator & other) { return ptr != other.ptr; }
+            const int& operator*() const { return *ptr; }
+        private:
+            int* ptr;
+        };
+    private:
+        int *begin_ptr, *end_ptr;
+    public:
+        EdgeIter(int* begin_ptr, int* end_ptr) : begin_ptr(begin_ptr), end_ptr(end_ptr) {}
+        iterator begin() const { return iterator(begin_ptr); }
+        iterator end() const { return iterator(end_ptr); }
+    };
+
     int *edges, *offsets;
     int* weights;
     uint64_t cur_idx, v, e;
@@ -18,6 +36,10 @@ class CSRGraphV2 {
     uint64_t current_size = 0;
 
 public:
+    EdgeIter get_neighbors(int idx){
+        return EdgeIter(begin(idx), end(idx));
+    }
+
     CSRGraphV2(uint64_t v, uint64_t e) : v(v), e(e) {
         current_size = e + additional_space;
         edges = new int[current_size];

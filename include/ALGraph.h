@@ -15,6 +15,11 @@ class ALGraph{
     std::list<int>* weights;
 
 public:
+
+    std::list<int> get_neighbors(int idx){
+        return edges[idx];
+    }
+
     ALGraph(uint64_t v, uint64_t e) : v(v), e(e){
         edges = new std::list<int>[v + 2];
         weights = new std::list<int>[v + 2];
