@@ -28,12 +28,12 @@ int GraphAlgo<T>::bfs(int cur_vertex) {
         res.push_back(cur_vertex);
 #endif
         q.pop();
-        auto it_end = graph->end(cur_vertex);
         auto it_weight = graph->begin_weights(cur_vertex);
-        for (auto it = graph->begin(cur_vertex); it != it_end; ++it, ++it_weight) {
-            if (!used[*it]) {
-                used[*it] = true, q.push(*it), sum += *it_weight;
+        for (int to : graph->get_neighbors(cur_vertex)) {
+            if (!used[to]) {
+                used[to] = true, q.push(to), graph->get_weight(cur_vertex, to, it_weight);
             }
+            ++it_weight;
         }
     }
     //std::cout << "sum: " << sum << "\n";
@@ -57,14 +57,15 @@ int GraphAlgo<T>::dfs_recursion(int cur_vertex) {
     used[cur_vertex] = true;
     auto it_end = graph->end(cur_vertex);
     auto it_weight = graph->begin_weights(cur_vertex);
-    for (auto it = graph->begin(cur_vertex); it != it_end; ++it, ++it_weight) {
-        if (!used[*it]) {
+    for (int to : graph->get_neighbors(cur_vertex)) {
+        if (!used[to]) {
 #if VERIFY_ENABLED == false
-            sum += dfs_recursion(*it), sum += *it_weight;
+            sum += dfs_recursion(to), sum += graph->get_weight(cur_vertex, to, it_weight);
 #else
             dfs_recursion(*it, res);
 #endif
         }
+        ++it_weight;
     }
 #if VERIFY_ENABLED == false
     return sum;
