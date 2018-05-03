@@ -35,6 +35,10 @@ public:
         //std::cout<<"ALGraph delete"<<std::endl;
     }
 
+    int get_weight(uint32_t from, uint32_t to, std::list<int>::iterator ptr){
+        return *ptr;
+    }
+
     void add_edge(int from, std::vector<int>& to, std::vector<int>& w);
 
     void add_edge(int from, int to, int weight = 0);

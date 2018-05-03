@@ -56,6 +56,10 @@ public:
 
     void add_edge(int from, std::vector<int> &to, std::vector<int>& w);
 
+    int get_weight(uint32_t from, uint32_t to, int* ptr){
+        return *ptr;
+    }
+
     void add_edge(int from, int to, int weight = 0);
 
     void finished();
