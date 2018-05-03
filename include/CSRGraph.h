@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <iostream>
+#include <string.h>
 
 // 'Compressed sparse row' implementation of Graph
 class CSRGraph {
@@ -43,6 +44,9 @@ public:
     CSRGraph(uint64_t v, uint64_t e) : v(v), e(e) {
         edges = new int[e];
         offsets = new int[v + 2];
+        memset(offsets, 0, sizeof(int) * (v + 1));
+        //std::cout << v << " " << (offsets[0]) << " " << offsets[1] << " " << offsets[2] << " " << offsets[3] << " " << offsets[4] << std::endl;
+
         cur_idx = 0;
         weights = new int[e];
     }
