@@ -11,13 +11,10 @@
 
 std::vector<int> edges;
 std::vector<int> weights;
-
+int f[10];
 int main(int argc, char** argv) {
 
-    int* t = new int[100];
-
-    memset(t, 0, sizeof(int) * 2);
-    std::cout<<t[0] << " " <<t[1] << " " << t[2] << " " << t[90] << std::endl;
+    std::cout<<sizeof(f)<< std::endl;
 
     return 0;
 }

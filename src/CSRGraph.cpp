@@ -43,7 +43,6 @@ void CSRGraph::add_edge(int from, int to, int weight) {
     ++e;
     for(int i = from + 1; i <= v + 1; ++i) // offset for the vertices (from + 1 .. v + 1) is one index shifted
         ++offsets[i];
-
 }
 
 void CSRGraph::sortByEdgesByNodeId() {

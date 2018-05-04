@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <iostream>
+#include <string.h>
 
 // 'Compressed sparse row' implementation of Graph
 class CSRGraphV2 {
@@ -44,6 +45,7 @@ public:
         current_size = e + additional_space;
         edges = new int[current_size];
         offsets = new int[v + 2];
+        memset(offsets, 0, sizeof(int) * (v + 2));
         cur_idx = 0;
         weights = new int[current_size];
     }
