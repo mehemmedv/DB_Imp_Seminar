@@ -9,6 +9,7 @@
 #include <cstring>
 #include <emmintrin.h>
 #include <vector>
+#include <iostream>
 
 // Constants for the node types
 static const int8_t NodeType4=0;
@@ -85,6 +86,11 @@ private:
 
     Node* tree;
 
+    uint64_t edgeId;
+
+    std::vector<int> weights;
+
+    std::vector<int> edges;
 
     inline Node* makeLeaf(uintptr_t tid) {
         // Create a pseudo-leaf
@@ -627,8 +633,67 @@ private:
         }
     }
 
-    uint64_t edgeId;
-    std::vector<int> weights;
+    void find_all_neighbors(std::vector<int> &res, Node *current_node){
+
+        if(current_node == NULL) {
+            std::cout << "Some Bug existed !!!" << std::endl;
+            return;
+        }
+
+        if(isLeaf(current_node)){
+           // std::cout<<"tapildi"<<std::endl;
+            uint8_t leafKey[8];
+            loadKey(getLeafValue(current_node),leafKey);
+            //std::cout<<"Leaf value: " << getLeafValue(current_node)<<std::endl;
+            int pow_256 = 1; // 256^0
+            int to = 0;
+
+            int from = 0;
+
+            for(int i = 4; i < 8; ++i){
+                to = to << 8;
+                from = from << 8;
+                from |= leafKey[i - 4];
+                to |= leafKey[i];
+            }
+
+            //std::cout <<"From: "<< from << std::endl;
+            res.push_back(edges[to]);
+            return;
+        }
+
+        switch (current_node->type) {
+            case NodeType4: {
+                Node4* node=static_cast<Node4*>(current_node);
+                for (unsigned i=0;i<node->count;i++)
+                    find_all_neighbors(res, node->child[i]);
+                return;
+            }
+            case NodeType16: {
+                Node16* node=static_cast<Node16*>(current_node);
+                for (unsigned i=0;i<node->count;i++)
+                    find_all_neighbors(res, node->child[i]);
+                return;
+            }
+            case NodeType48: {
+                Node48* node=static_cast<Node48*>(current_node);
+                //std::cout<<"node48: "<<node->count<<std::endl;
+                for (unsigned i=0;i<node->count;i++)
+                    find_all_neighbors(res, node->child[i]);
+                return;
+            }
+            case NodeType256: {
+                Node256* node=static_cast<Node256*>(current_node);
+                //std::cout<<"node256: "<<node->count<<std::endl;
+                for (unsigned i=0; i < 256; i++){
+                    if (node->child[i] != NULL)
+                        find_all_neighbors(res, node->child[i]);
+                }
+                return;
+            }
+        }
+        throw; // Unreachable
+    }
 
 public:
 
@@ -639,13 +704,94 @@ public:
     inline void add_edge(int from, int to, int weight = 0) {
         uint8_t key[8];
         int temp_key[2];
-        temp_key[0] = from;
-        temp_key[1] = to;
+        temp_key[0] = to;
+        temp_key[1] = from;
         uint64_t key64[1];
         reinterpret_cast<uint64_t*>(key64)[0] = reinterpret_cast<uint64_t*>(temp_key)[0];
         loadKey(key64[0], key);
+        /*
+        std::cout<<from<<" " << to << " ";
+        for(int i = 0; i < 8; ++i)
+            std::cout<<(int)key[i]<<" ";
+        std::cout<<std::endl;
+        */
         insert(tree,&tree,key,0,edgeId++,8);
         weights.push_back(weight);
+        edges.push_back(to);
+    }
+
+    std::vector<int> get_neighbors(int idx){
+        std::vector<int> res;
+        int maxKeyLength = 8;
+        int depth = 0; // length
+        int keyLength = 8;
+
+        // to find first 4 8-bits for node idx
+        uint8_t key[8];
+        int temp_key[2];
+        temp_key[0] = 0;
+        temp_key[1] = idx;
+        uint64_t key64[1];
+        reinterpret_cast<uint64_t*>(key64)[0] = reinterpret_cast<uint64_t*>(temp_key)[0];
+        loadKey(key64[0], key);
+        /*
+        for(int i = 0; i < 8; ++i)
+            std::cout<<(int)key[i]<<" ";
+        std::cout<<std::endl;
+        */
+        Node* node = tree; // root
+
+        bool skippedPrefix=false; // Did we optimistically skip some prefix without checking it?
+
+        while (node!=NULL && depth < 4) {
+            if (isLeaf(node)) {
+                /*
+                if (!skippedPrefix&&depth==keyLength) // No check required
+                    return node;
+
+                if (depth!=keyLength) {
+                    // Check leaf
+                    uint8_t leafKey[maxKeyLength];
+                    loadKey(getLeafValue(node),leafKey);
+                    for (unsigned i=(skippedPrefix?0:depth);i<keyLength;i++)
+                        if (leafKey[i]!=key[i])
+                            return res;
+                }
+                return node;
+                */
+                std::cout<< "Leaf case existed !!!" << std::endl;
+                return res;
+            }
+
+            if (node->prefixLength) {
+                if (node->prefixLength<maxPrefixLength) {
+                    for (unsigned pos=0;(pos<node->prefixLength) && (depth + pos < 4);pos++)
+                        if (key[depth+pos]!=node->prefix[pos]){
+                            std::cout << "No match from beginning !!!" << std::endl;
+                            return res;
+                        }
+                } else
+                    skippedPrefix=true;
+                depth+=node->prefixLength;
+            }
+            //std::cout<<"Current depth: "<<depth<<std::endl;
+            if(depth < 3){
+                node=*findChild(node,key[depth]);
+                depth++;
+            } else{
+                break;
+            }
+        }
+
+        if(node == NULL){
+            std::cout << "NULL case was hit" << std::endl;
+            return res;
+        }
+
+        //std::cout<<"Depth: "<<depth<<std::endl;
+        find_all_neighbors(res, node);
+
+        return res;
     }
 
     void finished() {}

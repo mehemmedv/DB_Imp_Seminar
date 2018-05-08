@@ -5,7 +5,7 @@
 #include <iostream>
 #include "../include/ALGraph.h"
 #include "../include/CSRGraph.h"
-#include "../src/GraphAlgo.cpp"
+#include "../include/GraphAlgo.h"
 #include "../include/ALGraphV2.h"
 #include <chrono>
 #include <memory>

@@ -10,4 +10,3 @@ void ARTGraph::add_edge(int from, std::vector<int> &to, std::vector<int> &w) {
         ++it;
     }
 }
-
