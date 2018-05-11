@@ -12,24 +12,30 @@
 #define CMP_BFS_ENABLED false // compare bfs latencies
 #define CMP_DIJIKSTRA_ENABLED false // compare dijikstra latencies
 
-std::vector<int> edges;
+std::vector<uint32_t > edges;
 
 int main(int argc, char** argv) {
 
+    srand(time(NULL));
+
     ARTGraph* graph = new ARTGraph(5, 0);
-    uint64_t ttime = 0;
-    for(int i = 0; i <= 1000000; ++i){
-        edges.push_back(i);
-        graph->add_edge(1, i, 1);
+
+    for(uint32_t j = 1; j <= 10; ++j){
+        edges.push_back(j);
+        graph->add_edge(1, j, 100);
     }
-    std::vector<int> res = graph->get_neighbors(1);
+
+    std::vector<uint32_t > res = graph->get_neighbors(1);
 
     std::sort(res.begin(), res.end());
+    std::sort(edges.begin(), edges.end());
+    //std::cout<<i<<" : ";
+    for(int j : res)
+        std::cout<<j<<" ";
+    std::cout<<std::endl;
+    if(res != edges)
+        std::cout << 1 << " : Different result "<< std::endl;
 
-    if(res == edges)
-        std::cout << "Same result" << std::endl;
-    else
-        std::cout << "Different result" << std::endl;
 
 
     return 0;
