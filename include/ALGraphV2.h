@@ -36,7 +36,7 @@ public:
         //std::cout<<"ALGraphV2 delete"<<std::endl;
     }
 
-    int get_weight(uint32_t from, uint32_t to, std::vector<int>::iterator ptr){
+    inline int get_weight(uint32_t from, uint32_t to, std::vector<int>::iterator ptr){
         return *ptr;
     }
 

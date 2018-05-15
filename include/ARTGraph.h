@@ -119,15 +119,7 @@ private:
         return keyByte^128;
     }
 
-    void loadKey(uintptr_t tid,uint8_t key[]) {
-        // Store the key of the tuple into the key vector
-        // Implementation is database specific
-        reinterpret_cast<uint64_t*>(key)[0]=__builtin_bswap64(tid);
-        // std::cout<<"Key: "<< tid<< "    ";
-        // for(int i = 0; i < 8; ++i)
-        //    std::cout<<" "<<(int)key[i];
-        // std::cout<<std::endl;
-    }
+
 
 
     static inline unsigned ctz(uint16_t x) {
@@ -653,7 +645,7 @@ private:
 
         if(isLeaf(current_node)){
             uint32_t to = getLeafValue(current_node);
-            std::cout <<"To: "<< edges[to].to << std::endl;
+            //std::cout <<"To: "<< edges[to].to << std::endl;
             res.push_back(edges[to].to);
             return;
         }
@@ -662,7 +654,6 @@ private:
             case NodeType4: {
                 Node4* node=static_cast<Node4*>(current_node);
                 for (unsigned i=0;i<node->count;i++){
-                    std::cout<<"turn: "<<(int)(node->key[i])<<std::endl;
                     find_all_neighbors(res, node->child[i]);
                 }
                 return;
@@ -670,21 +661,18 @@ private:
             case NodeType16: {
                 Node16* node=static_cast<Node16*>(current_node);
                 for (unsigned i=0;i<node->count;i++){
-                    std::cout<<"turn: "<<(int)(node->key[i])<<std::endl;
                     find_all_neighbors(res, node->child[i]);
                 }
                 return;
             }
             case NodeType48: {
                 Node48* node=static_cast<Node48*>(current_node);
-                //std::cout<<"node48: "<<node->count<<std::endl;
                 for (unsigned i=0;i<node->count;i++)
                     find_all_neighbors(res, node->child[i]);
                 return;
             }
             case NodeType256: {
                 Node256* node=static_cast<Node256*>(current_node);
-                //std::cout<<"node256: "<<node->count<<std::endl;
                 for (unsigned i=0; i < 256; i++){
                     if (node->child[i] != NULL)
                         find_all_neighbors(res, node->child[i]);
@@ -695,6 +683,32 @@ private:
         throw; // Unreachable
     }
 
+    inline uint64_t getKey(int from, int to){
+        return ((from * 1ULL) << 32) + to;
+    }
+
+    void loadKey(uintptr_t tid,uint8_t key[]) {
+        // Store the key of the tuple into the key vector
+        // Implementation is database specific
+        reinterpret_cast<uint64_t*>(key)[0]=__builtin_bswap64(getKey(edges[tid].from, edges[tid].to));
+        /*
+        std::cout<<"LoadKey: "<< tid<< "    ";
+        for(int i = 0; i < 8; ++i)
+           std::cout<<" "<<(int)key[i];
+        std::cout<<std::endl;
+        */
+    }
+
+    void convertKey(uintptr_t tid,uint8_t key[]) {
+        reinterpret_cast<uint64_t*>(key)[0]=__builtin_bswap64(tid);
+        /*
+        std::cout<<"ConvertKey: "<< tid<< "    ";
+        for(int i = 0; i < 8; ++i)
+            std::cout<<" "<<(int)key[i];
+        std::cout<<std::endl;
+        */
+    }
+
 public:
 
     ARTGraph(uint64_t v, uint64_t e) : tree(NULL), edgeId(0){}
@@ -703,40 +717,9 @@ public:
 
     inline void add_edge(uint32_t from, uint32_t to, int weight = 0) {
         uint8_t key[8];
-
-        //int temp_key[2];
-        //temp_key[0] = from;
-        //temp_key[1] = to;
-        //uint64_t key64[1];
-        //reinterpret_cast<uint8_t*>(key)[0] = reinterpret_cast<uint64_t*>(temp_key)[0];
-        //loadKey(key64[0], key);
-
-        //uint64_t key64 = from << 32 + to;
-        //loadKey(key64, key);
-
-        //std::cout<<from << " " << to<< " ";
-        //std::cout<<key64<<std::endl;
-        //loadKey(key64, key);
-        /*
-        uint64_t key64 = (from << 32)+ to;
-        for(int i = 7; i >= 0; --i){
-            key[i] = key64 % 256;
-            key64 = key64 >> 8;
-        }
-        */
-
         Edge edge = {from, to, weight};
         edges.push_back(edge);
-
-        uint8_t* key_ptr = edge.getKey();
-        for(int i = 0; i < 8; ++i)
-            key[i] = key_ptr[i];
-
-        //std::cout<<from<<" " << to << " ";
-        for(int i = 0; i < 8; ++i)
-            std::cout<<(int)key[i]<<" ";
-        std::cout<<std::endl;
-
+        convertKey(getKey(from, to), key);
 
         insert(tree,&tree,key,0,edgeId++,8);
         // weights.push_back(weight);
@@ -768,6 +751,13 @@ public:
 
     }
 
+    inline int get_weight(uint32_t from, uint32_t to, int* ptr){
+        uint8_t key[8];
+        convertKey(getKey(from, to), key);
+        Node* leafnode = lookup(tree, key, 8, 0, 8);
+        return edges[getLeafValue(leafnode)].weight;
+    }
+
     std::vector<uint32_t > get_neighbors(uint64_t idx){
         std::vector<uint32_t> res;
         int maxKeyLength = 8;
@@ -777,30 +767,7 @@ public:
         // to find first 4 8-bits for node idx
         uint8_t key[8];
 
-        //int temp_key[2];
-        //temp_key[0] = idx;
-        //temp_key[1] = 5;
-        //uint64_t key64[1];
-        // reinterpret_cast<uint8_t*>(key)[0] = reinterpret_cast<uint64_t*>(temp_key)[0];
-        //loadKey(key64[0], key);
-
-        //std::cout<<key64<<std::endl;
-        //loadKey(key64, key);
-        /*
-        uint64_t key64 = (idx << 32) + 0;
-        for(int i = 7; i >= 0; --i){
-            key[i] = key64 % 256;
-            key64 = key64 >> 8;
-        }
-         */
-        Edge edge = {idx, 0, 5};
-        uint8_t* key_ptr = edge.getKey();
-        for(int i = 0; i < 8; ++i)
-            key[i] = key_ptr[i];
-
-        for(int i = 0; i < 8; ++i)
-            std::cout<<(int)key[i]<<" ";
-        std::cout<<std::endl;
+        convertKey(getKey(idx, 0), key);
 
         Node* node = tree; // root
 
@@ -828,37 +795,29 @@ public:
             }
 
             if (node->prefixLength) {
-                std::cout<<"here "<<depth << " " << node->prefixLength <<std::endl;
                 if (node->prefixLength<maxPrefixLength) {
                     for (unsigned pos=0;(pos<node->prefixLength) && (depth + pos < 4);pos++){
                         if (key[depth+pos]!=node->prefix[pos]){
-                            std::cout << "No match from beginning !!!" << std::endl;
                             return res;
                         }
-                        std::cout<<" "<<(int)(node->prefix[pos]);
                     }
-                    std::cout<<std::endl;
                 } else
                     skippedPrefix=true;
                 depth+=node->prefixLength;
             }
-            //std::cout<<"Current depth: "<<depth<<std::endl;
             if(depth < 4){
-                std::cout<<"burda: "<<depth<< " "<<(int)key[depth]<<std::endl;
-                print(node);
                 node=*findChild(node,key[depth]);
                 depth++;
             } else{
                 break;
             }
         }
-        //std::cout<<depth<<std::endl;
+
         if(node == NULL){
             std::cout << "NULL case was hit" << std::endl;
             return res;
         }
 
-        //std::cout<<"Depth: "<<depth<<std::endl;
         find_all_neighbors(res, node, 5);
 
         return res;

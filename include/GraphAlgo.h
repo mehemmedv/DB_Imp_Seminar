@@ -115,10 +115,10 @@ public:
             auto it_end = graph->end(cur_vertex);
             auto it_w = graph->begin_weights(cur_vertex);
             int cnt = 0;
-            for (auto it = graph->begin(cur_vertex); it != it_end; ++it, ++it_w) {
+            for (int to_vertex : graph->get_neighbors(cur_vertex)) {
                 //int cur_weight = *it_w;
-                int cur_weight = graph->get_weight(cur_vertex, to, it_w);
-                int to_vertex = *it;
+                int cur_weight = graph->get_weight(cur_vertex, to_vertex, it_w);
+                //int to_vertex = *it;
                 ++cnt;
                 if (distance + cur_weight < dist[to_vertex]) {
                     auto it_find = min_heap.find(std::make_pair(dist[to_vertex], to_vertex));
@@ -127,6 +127,7 @@ public:
                     dist[to_vertex] = distance + cur_weight;
                     min_heap.insert(std::make_pair(dist[to_vertex], to_vertex));
                 }
+                ++it_w;
             }
         }
 
