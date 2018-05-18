@@ -12,32 +12,42 @@
 // 'Compressed sparse row' implementation of Graph
 class CSRGraph {
 
-    class EdgeIter{
+    class EdgeIter {
         class iterator {
         public:
-            iterator(int* ptr): ptr(ptr){}
-            iterator operator++() { ++ptr; return *this; }
-            bool operator!=(const iterator & other) { return ptr != other.ptr; }
-            const int& operator*() const { return *ptr; }
+            iterator(int *ptr) : ptr(ptr) {}
+
+            iterator operator++() {
+                ++ptr;
+                return *this;
+            }
+
+            bool operator!=(const iterator &other) { return ptr != other.ptr; }
+
+            const int &operator*() const { return *ptr; }
+
         private:
-            int* ptr;
+            int *ptr;
         };
+
     private:
         int *begin_ptr, *end_ptr;
     public:
-        EdgeIter(int* begin_ptr, int* end_ptr) : begin_ptr(begin_ptr), end_ptr(end_ptr) {}
+        EdgeIter(int *begin_ptr, int *end_ptr) : begin_ptr(begin_ptr), end_ptr(end_ptr) {}
+
         iterator begin() const { return iterator(begin_ptr); }
+
         iterator end() const { return iterator(end_ptr); }
     };
 
     int *edges, *offsets;
-    int* weights;
+    int *weights;
     int *delta_e;
     int *delta_w;
     uint64_t cur_idx, v, e;
 
 public:
-    EdgeIter get_neighbors(int idx){
+    EdgeIter get_neighbors(int idx) {
         return EdgeIter(begin(idx), end(idx));
     }
 
@@ -50,16 +60,16 @@ public:
         cur_idx = 0;
     }
 
-    ~CSRGraph(){
+    ~CSRGraph() {
         delete[] edges;
         delete[] offsets;
         delete[] weights;
         //std::cout<<"CSRGraph delete"<<std::endl;
     }
 
-    void add_edge(int from, std::vector<int> &to, std::vector<int>& w);
+    void add_edge(int from, std::vector<int> &to, std::vector<int> &w);
 
-    inline int get_weight(uint32_t from, uint32_t to, int* ptr){
+    inline int get_weight(uint32_t from, uint32_t to, int *ptr) {
         return *ptr;
     }
 
@@ -69,15 +79,15 @@ public:
 
     void sortByEdgesByNodeId();
 
-    inline int* begin(int cur_vertex){
+    inline int *begin(int cur_vertex) {
         return &(edges[offsets[cur_vertex]]);
     }
 
-    inline int* end(int cur_vertex){
+    inline int *end(int cur_vertex) {
         return &(edges[offsets[cur_vertex + 1]]);
     }
 
-    inline int* begin_weights(int cur_vertex){
+    inline int *begin_weights(int cur_vertex) {
         return &(weights[offsets[cur_vertex]]);
     }
 };

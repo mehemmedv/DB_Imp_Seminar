@@ -12,34 +12,34 @@
 
 #define VERIFY_ENABLED false
 
-template <typename T>
+template<typename T>
 class GraphAlgo {
     uint64_t v, e;
-    uint64_t* dist;
-    bool* used;
-    T* graph;
+    uint64_t *dist;
+    bool *used;
+    T *graph;
 
 public:
-    GraphAlgo(uint64_t v, uint64_t e) : v(v), e(e){
+    GraphAlgo(uint64_t v, uint64_t e) : v(v), e(e) {
         used = new bool[v + 2];
         graph = new T(v, e);
         dist = new uint64_t[v + 2];
     }
 
-    ~GraphAlgo(){
+    ~GraphAlgo() {
         //std::cout<<"Graph Algo delete"<<std::endl;
         delete[] dist;
         delete[] used;
         delete graph;
     }
 
-   // void add_edge(int v, std::vector<int>& to, std::vector<int>& weights);
+    // void add_edge(int v, std::vector<int>& to, std::vector<int>& weights);
 
-   // void add_edge(int from, int to, int weight);
+    // void add_edge(int from, int to, int weight);
 
-   // void finished();
+    // void finished();
 
-    inline void sortByEdgesByNodeId(){
+    inline void sortByEdgesByNodeId() {
         graph->sortByEdgesByNodeId();
     }
 
@@ -108,11 +108,10 @@ public:
         min_heap.insert(std::make_pair(0, from));
 
         while (!min_heap.empty()) {
-            std::pair<long long, int> temp = *(min_heap.begin());
+            std::pair<uint64_t , int> temp = *(min_heap.begin());
             min_heap.erase(min_heap.begin());
-            long long distance = temp.first;
+            uint64_t distance = temp.first;
             int cur_vertex = temp.second;
-            auto it_end = graph->end(cur_vertex);
             auto it_w = graph->begin_weights(cur_vertex);
             int cnt = 0;
             for (int to_vertex : graph->get_neighbors(cur_vertex)) {

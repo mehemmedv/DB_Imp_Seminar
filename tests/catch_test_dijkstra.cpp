@@ -14,7 +14,7 @@
 #include "../include/ARTGraph.h"
 
 
-TEST_CASE( "Adjacency List Graph Dijkstra test", "[single-file]" ) {
+TEST_CASE("Adjacency List Graph Dijkstra test", "[single-file]") {
     auto algo = new GraphAlgo<ALGraph>(5, 0);
     algo->add_edge(1, 2, 2);
     algo->add_edge(2, 3, 4);
@@ -54,7 +54,7 @@ TEST_CASE( "Adjacency List Graph Dijkstra test", "[single-file]" ) {
     delete algo;
 }
 
-TEST_CASE( "Adjacency List(std::vector) Graph Dijkstra test", "[single-file]" ) {
+TEST_CASE("Adjacency List(std::vector) Graph Dijkstra test", "[single-file]") {
     auto algo = new GraphAlgo<ALGraphV2>(5, 0);
     algo->add_edge(1, 2, 2);
     algo->add_edge(2, 3, 4);
@@ -93,7 +93,7 @@ TEST_CASE( "Adjacency List(std::vector) Graph Dijkstra test", "[single-file]" ) 
     delete algo;
 }
 
-TEST_CASE( "CSR Graph Dijkstra test", "[single-file]" ) {
+TEST_CASE("CSR Graph Dijkstra test", "[single-file]") {
     auto algo = new GraphAlgo<CSRGraph>(5, 0);
     algo->add_edge(1, 2, 2);
     algo->add_edge(2, 3, 4);
@@ -132,7 +132,7 @@ TEST_CASE( "CSR Graph Dijkstra test", "[single-file]" ) {
     delete algo;
 }
 
-TEST_CASE( "CSR GraphV2 Dijkstra test", "[single-file]" ) {
+TEST_CASE("CSR GraphV2 Dijkstra test", "[single-file]") {
     auto algo = new GraphAlgo<CSRGraphV2>(5, 0);
     algo->add_edge(1, 2, 2);
     algo->add_edge(2, 3, 4);
@@ -172,7 +172,7 @@ TEST_CASE( "CSR GraphV2 Dijkstra test", "[single-file]" ) {
 }
 
 
-TEST_CASE( "ART Graph Dijkstra test", "[single-file]" ) {
+TEST_CASE("ART Graph Dijkstra test", "[single-file]") {
     auto algo = new GraphAlgo<ARTGraph>(5, 0);
     algo->add_edge(1, 2, 2);
     algo->add_edge(2, 3, 4);
