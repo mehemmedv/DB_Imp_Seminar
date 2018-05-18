@@ -4,6 +4,7 @@
 
 #ifndef DB_IMP_SEMINAR_ARTGRAPH_H
 #define DB_IMP_SEMINAR_ARTGRAPH_H
+#define neighbors_size 10000
 
 #include <stdint-gcc.h>
 #include <cstring>
@@ -96,7 +97,7 @@ private:
             iterator(int *ptr, EdgeIter *edgeiter) : ptr(ptr), edgeiter(edgeiter) {
             }
 
-            iterator operator++() {
+            inline iterator operator++() {
                 ++ptr;
                 if (ptr == edgeiter->get_end()) {
                     if (ptr == edgeiter->get_last()) {
@@ -113,7 +114,7 @@ private:
                 return *this;
             }
 
-            bool operator!=(const iterator &other) {
+            inline bool operator!=(const iterator &other) {
                 //std::cout<<(int)(other.ptr - ptr)<<std::endl;
                 return ptr != other.ptr;
             }
@@ -126,14 +127,17 @@ private:
         };
 
     private:
+        // int neighbors_size = 1000;
         std::vector<Edge> *edges;
         ARTGraph *graph;
         Node *tree;
         bool done;
         bool full;
         int *begin_ptr, *end_ptr, *first_end;
-        std::vector<std::pair<Node *, int> > path;
-        int neighbors[1001], cnt;
+        //std::vector<std::pair<Node *, int> > path;
+        Node* path_node[100];
+        int path_start_idx[100], path_size;
+        int neighbors[neighbors_size], cnt;
 
         void findBeginNode(int from) {
             int maxKeyLength = 8;
@@ -178,14 +182,17 @@ private:
             if (node == NULL) {
                 return;
             }
-            path.push_back(std::make_pair(node, -1));
+            //path.push_back(std::make_pair(node, -1));
+            path_node[0] = node;
+            path_start_idx[0] = -1;
+            path_size = 1;
             recurse();
             first_end = neighbors + cnt;
         }
 
     public:
         EdgeIter(Node *tree_root, int from, std::vector<Edge> *edge_ptr, ARTGraph *graph) {
-            path.clear();
+            path_size = 0;
             this->graph = graph;
             edges = edge_ptr;
             cnt = 0;
@@ -209,19 +216,19 @@ private:
         }
 
         inline int *get_last() {
-            return begin_ptr + 1000;
+            return begin_ptr + neighbors_size;
         }
 
         void recurse() {
             cnt = 0;
-            while (cnt < 1000 && !path.empty()) {
-                std::pair<Node *, int> lastNodePair = path[path.size() - 1];
-                Node *current_node = lastNodePair.first;
-                int start_idx = lastNodePair.second;
+            while (cnt < neighbors_size && path_size != 0) {
+                //std::pair<Node *, int> lastNodePair = path[path.size() - 1];
+                Node *current_node = path_node[path_size-1];
+                int start_idx = path_start_idx[path_size-1];
                 if (graph->isLeaf(current_node)) {
                     uint32_t to = graph->getLeafValue(current_node);
                     neighbors[cnt++] = (edges->at(to).to);
-                    path.pop_back();
+                    --path_size;
                     continue;
                 }
 
@@ -229,24 +236,32 @@ private:
                     Node4 *node = static_cast<Node4 *>(current_node);
                     ++start_idx;
                     if (start_idx < node->count) {
-                        path[path.size() - 1].second = start_idx;
-                        path.push_back(std::make_pair(node->child[start_idx], -1));
+                        //path[path.size() - 1].second = start_idx;
+                        //path.push_back(std::make_pair(node->child[start_idx], -1));
+                        path_start_idx[path_size - 1] = start_idx;
+                        path_node[path_size] = node->child[start_idx];
+                        path_start_idx[path_size] = -1;
+                        ++path_size;
                         continue;
                     }
                 } else if (current_node->type == NodeType16) {
                     Node16 *node = static_cast<Node16 *>(current_node);
                     ++start_idx;
                     if (start_idx < node->count) {
-                        path[path.size() - 1].second = start_idx;
-                        path.push_back(std::make_pair(node->child[start_idx], -1));
+                        path_start_idx[path_size - 1] = start_idx;
+                        path_node[path_size] = node->child[start_idx];
+                        path_start_idx[path_size] = -1;
+                        ++path_size;
                         continue;
                     }
                 } else if (current_node->type == NodeType48) {
                     Node48 *node = static_cast<Node48 *>(current_node);
                     ++start_idx;
                     if (start_idx < node->count) {
-                        path[path.size() - 1].second = start_idx;
-                        path.push_back(std::make_pair(node->child[start_idx], -1));
+                        path_start_idx[path_size - 1] = start_idx;
+                        path_node[path_size] = node->child[start_idx];
+                        path_start_idx[path_size] = -1;
+                        ++path_size;
                         continue;
                     }
                 } else if (current_node->type == NodeType256) {
@@ -259,12 +274,18 @@ private:
                         }
                     }
                     if (idx != -1) {
-                        path[path.size() - 1].second = idx;
-                        path.push_back(std::make_pair(node->child[idx], -1));
+                        //path[path.size() - 1].second = idx;
+                        //path.push_back(std::make_pair(node->child[idx], -1));
+
+                        path_start_idx[path_size - 1] = idx;
+                        path_node[path_size] = node->child[idx];
+                        path_start_idx[path_size] = -1;
+                        ++path_size;
                         continue;
                     }
                 }
-                path.pop_back();
+                //path.pop_back();
+                path_size--;
             }
             //std::cout<<cnt<<" "<<path.size()<<std::endl;
             end_ptr = neighbors + cnt;
