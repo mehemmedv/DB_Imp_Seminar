@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
 project(DB_Imp_Seminar)
 
+# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:10000000")
+
 set(CMAKE_CXX_STANDARD 14)
 SET(CMAKE_C_COMPILER gcc)
 SET(CMAKE_CXX_COMPILER g++)
@@ -13,7 +15,7 @@ set(SOURCE_FILES tests/main.cpp src/GraphAlgo.cpp src/ALGraph.cpp src/CSRGraph.c
 set(GENERATOR_FILES tests/random_graph_generator.cpp)
 set(BENCHMARK_FILES tests/benchmark_test.cpp src/GraphAlgo.cpp src/ALGraph.cpp src/CSRGraph.cpp src/ALGraphV2.cpp src/CSRGraphV2.cpp)
 set(GENERATOR_FILESV2 tests/random_graph_generatorv2.cpp)
-set(BENCHMARK_FILESV2 tests/benchmark_testv2.cpp src/GraphAlgo.cpp src/ALGraph.cpp src/CSRGraph.cpp src/ALGraphV2.cpp src/CSRGraphV2.cpp)
+set(BENCHMARK_FILESV2 tests/benchmark_testv2.cpp src/GraphAlgo.cpp src/ALGraph.cpp src/CSRGraph.cpp src/ALGraphV2.cpp src/CSRGraphV2.cpp include/ARTGraph.h src/ARTGraph.cpp)
 set(GENERATOR_FILESV3 tests/specific_graph_generator.cpp src/GraphAlgo.cpp src/ALGraph.cpp src/CSRGraph.cpp src/ALGraphV2.cpp src/CSRGraphV2.cpp)
 set(CATCH_DIJKSTRA tests/catch_test_dijkstra.cpp include/catch.hpp src/CSRGraph.cpp include/GraphAlgo.h src/ALGraphV2.cpp src/ALGraph.cpp src/CSRGraphV2.cpp)
 

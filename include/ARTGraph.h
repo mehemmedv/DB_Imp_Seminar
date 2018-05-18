@@ -969,11 +969,11 @@ public:
         return edges[getLeafValue(leafnode)].weight;
     }
 
-    EdgeIter get_neighbors(uint32_t from) {
+    EdgeIter get_neighbors_previous(uint32_t from) {
         return EdgeIter(tree, from, &(edges), this);
     }
 
-    std::vector<uint32_t> get_neighbors_previous(uint32_t idx) {
+    std::vector<uint32_t> get_neighbors(uint32_t idx) {
         std::vector<uint32_t> res;
         int maxKeyLength = 8;
         int depth = 0; // length

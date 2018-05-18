@@ -67,10 +67,8 @@ public:
     }
 
     int dfs_recursion(int cur_vertex) {
-
         uint64_t sum = 0;
         used[cur_vertex] = true;
-        auto it_end = graph->end(cur_vertex);
         auto it_weight = graph->begin_weights(cur_vertex);
         for (int to : graph->get_neighbors(cur_vertex)) {
             if (!used[to]) {
@@ -79,7 +77,6 @@ public:
             ++it_weight;
         }
         return sum;
-
     }
 
     int dfs(int cur_vertex) {
