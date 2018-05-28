@@ -4,7 +4,7 @@
 
 #ifndef DB_IMP_SEMINAR_ARTGRAPH_H
 #define DB_IMP_SEMINAR_ARTGRAPH_H
-#define neighbors_size 10000
+#define neighbors_size 1000
 
 #include <stdint-gcc.h>
 #include <cstring>
@@ -94,7 +94,7 @@ private:
     class EdgeIter { // ARTGraph new Iterator using limited memory (1000 size)
         class iterator {
         public:
-            iterator(int *ptr, EdgeIter *edgeiter) : ptr(ptr), edgeiter(edgeiter) {
+            iterator(std::pair<uint32_t, uint32_t > *ptr, EdgeIter *edgeiter) : ptr(ptr), edgeiter(edgeiter) {
             }
 
             inline iterator operator++() {
@@ -119,71 +119,27 @@ private:
                 return ptr != other.ptr;
             }
 
-            const int &operator*() const { return *ptr; }
+            const std::pair<uint32_t, uint32_t > &operator*() const { return *ptr;}
 
         private:
             EdgeIter *edgeiter;
-            int *ptr;
+            std::pair<uint32_t, uint32_t > *ptr;
         };
 
     private:
-        // int neighbors_size = 1000;
         std::vector<Edge> *edges;
         ARTGraph *graph;
-        Node *tree;
-        bool done;
-        bool full;
-        int *begin_ptr, *end_ptr, *first_end;
+        // Node *tree;
+        std::pair<uint32_t, uint32_t > *begin_ptr, *end_ptr, *first_end;
         //std::vector<std::pair<Node *, int> > path;
-        Node* path_node[100];
-        int path_start_idx[100], path_size;
-        int neighbors[neighbors_size], cnt;
+        Node* path_node[5];
+        int path_start_idx[5], path_size, cnt;
+        std::pair<uint32_t, uint32_t > neighbors[neighbors_size];
 
-        void findBeginNode(int from) {
-            int maxKeyLength = 8;
-            int depth = 0; // length
-            int keyLength = 8;
-
-            uint8_t key[8];
-
-            graph->convertKey(graph->getKey(from, 0), key);
-
-            Node *node = tree; // root
-
-            bool skippedPrefix = false; // Did we optimistically skip some prefix without checking it?
-
-            while (node != NULL && depth < 4) {
-                if (graph->isLeaf(node)) {
-                    // std::cout<<"Leaf case existed!!!"<<std::endl;
-                    neighbors[0] = edges->at(graph->getLeafValue(node)).to;
-                    cnt = 1;
-                    end_ptr = neighbors + cnt;
-                    return;
-                }
-
-                if (node->prefixLength) {
-                    if (node->prefixLength < maxPrefixLength) {
-                        for (unsigned pos = 0; (pos < node->prefixLength) && (depth + pos < 4); pos++) {
-                            if (key[depth + pos] != node->prefix[pos]) {
-                                return;
-                            }
-                        }
-                    } else
-                        skippedPrefix = true;
-                    depth += node->prefixLength;
-                }
-                if (depth < 4) {
-                    node = *(graph->findChild(node, key[depth]));
-                    depth++;
-                } else {
-                    break;
-                }
-            }
-            if (node == NULL) {
+        void init(Node* firstMatchingNode) {
+            if (firstMatchingNode == NULL)
                 return;
-            }
-            //path.push_back(std::make_pair(node, -1));
-            path_node[0] = node;
+            path_node[0] = firstMatchingNode;
             path_start_idx[0] = -1;
             path_size = 1;
             recurse();
@@ -191,31 +147,31 @@ private:
         }
 
     public:
-        EdgeIter(Node *tree_root, int from, std::vector<Edge> *edge_ptr, ARTGraph *graph) {
+        EdgeIter(Node *firstMatchingNode, std::vector<Edge> *edge_ptr, ARTGraph *graph) {
             path_size = 0;
             this->graph = graph;
             edges = edge_ptr;
             cnt = 0;
-            this->tree = tree_root;
-            done = false;
-            full = false;
+            //this->tree = tree_root;
             begin_ptr = end_ptr = neighbors;
-            findBeginNode(from);
+
+            // calculate the firstMatchingNode
+            init(firstMatchingNode);
         }
 
-        inline int *get_begin() {
+        inline std::pair<uint32_t, uint32_t > *get_begin() {
             return begin_ptr;
         }
 
-        inline int *get_first_end() {
+        inline std::pair<uint32_t, uint32_t > *get_first_end() {
             return first_end;
         }
 
-        inline int *get_end() {
+        inline std::pair<uint32_t, uint32_t > *get_end() {
             return end_ptr;
         }
 
-        inline int *get_last() {
+        inline std::pair<uint32_t, uint32_t > *get_last() {
             return begin_ptr + neighbors_size;
         }
 
@@ -227,7 +183,7 @@ private:
                 int start_idx = path_start_idx[path_size-1];
                 if (graph->isLeaf(current_node)) {
                     uint32_t to = graph->getLeafValue(current_node);
-                    neighbors[cnt++] = (edges->at(to).to);
+                    neighbors[cnt++] = std::make_pair((edges->at(to).to), edges->at(to).weight);
                     --path_size;
                     continue;
                 }
@@ -437,7 +393,7 @@ private:
 
         bool skippedPrefix = false; // Did we optimistically skip some prefix without checking it?
 
-        while (node != NULL) {
+        while (node != NULL && depth < 4) {
             if (isLeaf(node)) {
                 if (!skippedPrefix && depth == keyLength) // No check required
                     return node;
@@ -466,8 +422,43 @@ private:
             node = *findChild(node, key[depth]);
             depth++;
         }
+        return node;
+        //return NULL;
+    }
 
-        return NULL;
+    Node **findChild(Node *n, uint8_t keyByte) {
+        // Find the next child for the keyByte
+        switch (n->type) {
+            case NodeType4: {
+                Node4 *node = static_cast<Node4 *>(n);
+                for (unsigned i = 0; i < node->count; i++)
+                    if (node->key[i] == keyByte)
+                        return &node->child[i];
+                return &nullNode;
+            }
+            case NodeType16: {
+                Node16 *node = static_cast<Node16 *>(n);
+                __m128i cmp = _mm_cmpeq_epi8(_mm_set1_epi8(flipSign(keyByte)),
+                                             _mm_loadu_si128(reinterpret_cast<__m128i *>(node->key)));
+                unsigned bitfield = _mm_movemask_epi8(cmp) & ((1 << node->count) - 1);
+                if (bitfield)
+                    return &node->child[ctz(bitfield)];
+                else
+                    return &nullNode;
+            }
+            case NodeType48: {
+                Node48 *node = static_cast<Node48 *>(n);
+                if (node->childIndex[keyByte] != emptyMarker)
+                    return &node->child[node->childIndex[keyByte]];
+                else
+                    return &nullNode;
+            }
+            case NodeType256: {
+                Node256 *node = static_cast<Node256 *>(n);
+                return &(node->child[keyByte]);
+            }
+        }
+        throw; // Unreachable
     }
 
     Node *lookupPessimistic(Node *node, uint8_t key[], unsigned keyLength, unsigned depth, unsigned maxKeyLength) {
@@ -816,7 +807,7 @@ private:
         }
     }
 
-    void find_all_neighbors(std::vector<uint32_t> &res, Node *current_node) {
+    void find_all_neighbors(std::vector<std::pair<uint32_t, uint32_t>> &res, Node *current_node, int height = 0) {
 
         if (current_node == NULL) {
             std::cout << "Some Bug existed !!!" << std::endl;
@@ -824,9 +815,11 @@ private:
         }
 
         if (isLeaf(current_node)) {
+            if(height > 5)
+                std::cout<<"here: "<<height<<std::endl;
             uint32_t to = getLeafValue(current_node);
             //std::cout <<"To: "<< edges[to].to << std::endl;
-            res.push_back(edges[to].to);
+            res.push_back(std::make_pair(edges[to].to, edges[to].weight));
             return;
         }
 
@@ -834,28 +827,28 @@ private:
             case NodeType4: {
                 Node4 *node = static_cast<Node4 *>(current_node);
                 for (unsigned i = 0; i < node->count; i++) {
-                    find_all_neighbors(res, node->child[i]);
+                    find_all_neighbors(res, node->child[i], height + 1);
                 }
                 return;
             }
             case NodeType16: {
                 Node16 *node = static_cast<Node16 *>(current_node);
                 for (unsigned i = 0; i < node->count; i++) {
-                    find_all_neighbors(res, node->child[i]);
+                    find_all_neighbors(res, node->child[i], height + 1);
                 }
                 return;
             }
             case NodeType48: {
                 Node48 *node = static_cast<Node48 *>(current_node);
                 for (unsigned i = 0; i < node->count; i++)
-                    find_all_neighbors(res, node->child[i]);
+                    find_all_neighbors(res, node->child[i], height + 1);
                 return;
             }
             case NodeType256: {
                 Node256 *node = static_cast<Node256 *>(current_node);
                 for (unsigned i = 0; i < 256; i++) {
                     if (node->child[i] != NULL)
-                        find_all_neighbors(res, node->child[i]);
+                        find_all_neighbors(res, node->child[i], height + 1);
                 }
                 return;
             }
@@ -889,41 +882,6 @@ public:
     inline bool isLeaf(Node *node) {
         // Is the node a leaf?
         return reinterpret_cast<uintptr_t>(node) & 1;
-    }
-
-    Node **findChild(Node *n, uint8_t keyByte) {
-        // Find the next child for the keyByte
-        switch (n->type) {
-            case NodeType4: {
-                Node4 *node = static_cast<Node4 *>(n);
-                for (unsigned i = 0; i < node->count; i++)
-                    if (node->key[i] == keyByte)
-                        return &node->child[i];
-                return &nullNode;
-            }
-            case NodeType16: {
-                Node16 *node = static_cast<Node16 *>(n);
-                __m128i cmp = _mm_cmpeq_epi8(_mm_set1_epi8(flipSign(keyByte)),
-                                             _mm_loadu_si128(reinterpret_cast<__m128i *>(node->key)));
-                unsigned bitfield = _mm_movemask_epi8(cmp) & ((1 << node->count) - 1);
-                if (bitfield)
-                    return &node->child[ctz(bitfield)];
-                else
-                    return &nullNode;
-            }
-            case NodeType48: {
-                Node48 *node = static_cast<Node48 *>(n);
-                if (node->childIndex[keyByte] != emptyMarker)
-                    return &node->child[node->childIndex[keyByte]];
-                else
-                    return &nullNode;
-            }
-            case NodeType256: {
-                Node256 *node = static_cast<Node256 *>(n);
-                return &(node->child[keyByte]);
-            }
-        }
-        throw; // Unreachable
     }
 
     void add_edge(int from, std::vector<int> &to, std::vector<int> &w);
@@ -962,19 +920,15 @@ public:
 
     }
 
-    inline int get_weight(uint32_t from, uint32_t to, int *ptr) {
+    EdgeIter get_neighbors(uint32_t from) {
         uint8_t key[8];
-        convertKey(getKey(from, to), key);
-        Node *leafnode = lookup(tree, key, 8, 0, 8);
-        return edges[getLeafValue(leafnode)].weight;
+        convertKey(getKey(from, 0), key);
+        Node* firstMatchingNode = lookup(tree, key, 4, 0, 8);
+        return EdgeIter(firstMatchingNode, &(edges), this);
     }
 
-    EdgeIter get_neighbors_previous(uint32_t from) {
-        return EdgeIter(tree, from, &(edges), this);
-    }
-
-    std::vector<uint32_t> get_neighbors(uint32_t idx) {
-        std::vector<uint32_t> res;
+    std::vector<std::pair<uint32_t, uint32_t>> get_neighbors_pre(uint32_t idx) {
+        std::vector<std::pair<uint32_t, uint32_t>> res;
         int maxKeyLength = 8;
         int depth = 0; // length
         int keyLength = 8;
@@ -990,25 +944,12 @@ public:
 
         while (node != NULL && depth < 4) {
             if (isLeaf(node)) {
-                /*
-                if (!skippedPrefix&&depth==keyLength) // No check required
-                    return node;
 
-                if (depth!=keyLength) {
-                    // Check leaf
-                    uint8_t leafKey[maxKeyLength];
-                    loadKey(getLeafValue(node),leafKey);
-                    for (unsigned i=(skippedPrefix?0:depth);i<keyLength;i++)
-                        if (leafKey[i]!=key[i])
-                            return res;
-                }
-                return node;
-                */
                 std::cout << "Leaf case existed !!!" << std::endl;
                 //find_all_neighbors(res, node);
                 uint32_t to = getLeafValue(node);
                 //std::cout <<"To: "<< edges[to].to << std::endl;
-                res.push_back(edges[to].to);
+                res.push_back(std::make_pair(edges[to].to, edges[to].weight));
                 return res;
             }
 
@@ -1036,7 +977,7 @@ public:
             return res;
         }
 
-        find_all_neighbors(res, node);
+        find_all_neighbors(res, node, 1);
 
         return res;
     }
