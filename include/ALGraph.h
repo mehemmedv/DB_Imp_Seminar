@@ -7,22 +7,59 @@
 
 #include <list>
 #include <vector>
+#include <functional>
 
 // Adjacency list implementation of Graph
 class ALGraph{
+
+    class EdgeIter {
+        class iterator {
+        public:
+            iterator(std::list<uint32_t>::iterator ptr, std::list<uint32_t>::iterator begin_w_ptr) : ptr(ptr), begin_w_ptr(begin_w_ptr) {}
+
+            iterator operator++() {
+                ++ptr;
+                ++begin_w_ptr;
+                return *this;
+            }
+
+            bool operator!=(const iterator &other) { return ptr != other.ptr; }
+
+            const std::pair<uint32_t, uint32_t> &operator*() {
+                current.first = *ptr;
+                current.second = *begin_w_ptr;
+                return current;
+            };
+
+        private:
+            std::list<uint32_t>::iterator ptr, begin_w_ptr;
+            std::pair<uint32_t, uint32_t > current;
+        };
+
+    private:
+        std::list<uint32_t>::iterator begin_ptr, end_ptr, begin_w_ptr;
+    public:
+        EdgeIter(std::list<uint32_t>::iterator begin_ptr, std::list<uint32_t>::iterator end_ptr, std::list<uint32_t>::iterator begin_w_ptr) : begin_ptr(begin_ptr), end_ptr(end_ptr), begin_w_ptr(begin_w_ptr) {}
+
+        iterator begin() const { return iterator(begin_ptr, begin_w_ptr); }
+
+        iterator end() const { return iterator(end_ptr, begin_w_ptr); }
+    };
+
     uint64_t v, e;
-    std::list<int>* edges;
-    std::list<int>* weights;
+    std::list<uint32_t>* edges;
+    std::list<uint32_t>* weights;
 
 public:
 
-    std::list<int> get_neighbors(int idx){
-        return edges[idx];
+    EdgeIter get_neighbors(int idx){
+        return EdgeIter(begin(idx), end(idx), begin_weights(idx));
+        //return edges[idx];
     }
 
     ALGraph(uint64_t v, uint64_t e) : v(v), e(e){
-        edges = new std::list<int>[v + 2];
-        weights = new std::list<int>[v + 2];
+        edges = new std::list<uint32_t>[v + 2];
+        weights = new std::list<uint32_t>[v + 2];
         for(int i = 0; i <= v; ++i)
             edges[i].clear(), weights[i].clear();
     }
@@ -35,27 +72,34 @@ public:
         //std::cout<<"ALGraph delete"<<std::endl;
     }
 
-    int get_weight(uint32_t from, uint32_t to, std::list<int>::iterator ptr){
-        return *ptr;
-    }
+    void add_edge(int from, std::vector<uint32_t>& to, std::vector<uint32_t>& w);
 
-    void add_edge(int from, std::vector<int>& to, std::vector<int>& w);
-
-    void add_edge(int from, int to, int weight = 0);
+    void add_edge(int from, uint32_t to, uint32_t weight = 0);
 
     void finished();
 
     void sortByEdgesByNodeId();
 
-    inline std::list<int>::iterator begin(int cur_vertex) {
+    template<typename CB>
+    void applyAllEdges(uint32_t from, CB lambdaCallback){
+        std::list<uint32_t>::iterator begin_edges, end_edges, begin_weights_ptr;
+        begin_edges = begin(from);
+        end_edges = end(from);
+        begin_weights_ptr = begin_weights(from);
+
+        for(; begin_edges != end_edges; ++begin_edges, ++begin_weights_ptr)
+            lambdaCallback(*begin_edges, *begin_weights_ptr);
+    };
+
+    inline std::list<uint32_t>::iterator begin(int cur_vertex) {
         return edges[cur_vertex].begin();
     }
 
-    inline std::list<int>::iterator end(int cur_vertex){
+    inline std::list<uint32_t>::iterator end(int cur_vertex){
         return edges[cur_vertex].end();
     }
 
-    inline std::list<int>::iterator begin_weights(int cur_vertex) {
+    inline std::list<uint32_t>::iterator begin_weights(int cur_vertex) {
         return weights[cur_vertex].begin();
     }
 };

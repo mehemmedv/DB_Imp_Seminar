@@ -3,10 +3,12 @@
 //
 #include "../include/ARTGraph.h"
 
-void ARTGraph::add_edge(int from, std::vector<int> &to, std::vector<int> &w) {
-    std::vector<int>::iterator it = w.begin();
-    for(int i : to){
+void ARTGraph::add_edge(uint32_t from, std::vector<uint32_t> &to, std::vector<uint32_t> &w) {
+    std::vector<uint32_t>::iterator it = w.begin();
+    int cnt = 0;
+    for(uint32_t i : to){
         add_edge(from, i, *it);
         ++it;
+        std::cout<<"done: "<<++cnt<<std::endl;
     }
 }

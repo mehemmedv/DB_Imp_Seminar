@@ -11,12 +11,16 @@
 #include <emmintrin.h>
 #include <vector>
 #include <iostream>
+#include <functional>
+#include <queue>
 
 // Constants for the node types
 static const int8_t NodeType4 = 0;
 static const int8_t NodeType16 = 1;
 static const int8_t NodeType48 = 2;
 static const int8_t NodeType256 = 3;
+static const int8_t NodeType65536 = 4;
+
 
 // The maximum prefix length for compressed paths stored in the
 // header, if the path is longer it is loaded from the database on
@@ -89,6 +93,14 @@ struct Node256 : Node {
     }
 };
 
+struct Node65536 : Node {
+    Node *child[65536];
+
+    Node65536() : Node(NodeType65536) {
+        memset(child, 0, sizeof(child));
+    }
+};
+
 class ARTGraph {
 private:
     class EdgeIter { // ARTGraph new Iterator using limited memory (1000 size)
@@ -119,7 +131,7 @@ private:
                 return ptr != other.ptr;
             }
 
-            const std::pair<uint32_t, uint32_t > &operator*() const { return *ptr;}
+            inline const std::pair<uint32_t, uint32_t > &operator*() const { return *ptr;}
 
         private:
             EdgeIter *edgeiter;
@@ -256,6 +268,8 @@ private:
     Node *nullNode = NULL;
 
     Node *tree;
+
+    Node65536 *tree65536;
 
     uint64_t edgeId;
 
@@ -862,9 +876,57 @@ private:
         reinterpret_cast<uint64_t *>(key)[0] = __builtin_bswap64(getKey(edges[tid].from, edges[tid].to));
     }
 
+    template<typename CB>
+    void find_all_neighbors_lambda(Node *current_node, CB &lambdaCallback) {
+        //if (current_node == NULL) {
+            // std::cout << "Some Bug existed !!!" << std::endl;
+        //    return;
+        //}
+
+        if (isLeaf(current_node)) {
+            uint32_t to = getLeafValue(current_node);
+            //std::cout <<"To: "<< edges[to].to << std::endl;
+            lambdaCallback(edges[to].to, edges[to].weight);
+            //res.push_back(std::make_pair(edges[to].to, edges[to].weight));
+            return;
+        }
+
+        switch (current_node->type) {
+            case NodeType4: {
+                Node4 *node = static_cast<Node4 *>(current_node);
+                for (unsigned i = 0; i < node->count; ++i) {
+                    find_all_neighbors_lambda(node->child[i], lambdaCallback);
+                }
+                return;
+            }
+            case NodeType16: {
+                Node16 *node = static_cast<Node16 *>(current_node);
+                for (unsigned i = 0; i < node->count; ++i) {
+                    find_all_neighbors_lambda(node->child[i], lambdaCallback);
+                }
+                return;
+            }
+            case NodeType48: {
+                Node48 *node = static_cast<Node48 *>(current_node);
+                for (unsigned i = 0; i < node->count; ++i)
+                    find_all_neighbors_lambda(node->child[i], lambdaCallback);
+                return;
+            }
+            case NodeType256: {
+                Node256 *node = static_cast<Node256 *>(current_node);
+                for (unsigned i = 0; i < 256; ++i) {
+                    if (node->child[i] != NULL)
+                        find_all_neighbors_lambda(node->child[i], lambdaCallback);
+                }
+                return;
+            }
+        }
+        throw; // Unreachable
+    }
+
 public:
 
-    ARTGraph(uint64_t v, uint64_t e) : tree(NULL), edgeId(0) {}
+    ARTGraph(uint64_t v, uint64_t e) : tree(NULL), edgeId(0), tree65536(new Node65536()) {}
 
     inline uint64_t getKey(int from, int to) {
         return ((from * 1ULL) << 32) + to;
@@ -872,6 +934,10 @@ public:
 
     void convertKey(uintptr_t tid, uint8_t key[]) {
         reinterpret_cast<uint64_t *>(key)[0] = __builtin_bswap64(tid);
+    }
+
+    void convertKey_32(uintptr_t tid, uint8_t key[]) {
+        reinterpret_cast<uint64_t *>(key)[0] = __builtin_bswap32(tid);
     }
 
     inline uintptr_t getLeafValue(Node *node) {
@@ -884,15 +950,56 @@ public:
         return reinterpret_cast<uintptr_t>(node) & 1;
     }
 
-    void add_edge(int from, std::vector<int> &to, std::vector<int> &w);
+    void add_edge(uint32_t from, std::vector<uint32_t> &to, std::vector<uint32_t> &w);
 
     inline void add_edge(uint32_t from, uint32_t to, int weight = 0) {
+        uint8_t key[4];
+        Edge edge = {from, to, weight};
+        edges.push_back(edge);
+        //convertKey(getKey(from, to), key);
+
+        convertKey_32(to, key);
+        //std::cout<<"to = "<<to<<" : ";
+        //for(int i = 0; i < 4; ++i)
+        //    std::cout<<(int)key[i]<<" ";
+        //std::cout<<std::endl;
+        Node65536 *current = static_cast<Node65536 *>(tree65536);
+        //std::cout<<from<<" : "<<(from >> 16)<<std::endl;
+        if(current->child[from >> 16] == NULL){
+            current->child[from >> 16] = new Node65536();
+            //std::cout<<"created"<<std::endl;
+        }
+        current = static_cast<Node65536 *>(current->child[from >> 16]);
+        //Node* next_node = current->child[from >> 16];
+        //current = static_cast<Node65536 *>(next_node);
+        //std::cout<<(from & 65535)<<std::endl;
+
+        //std::cout<<"here1"<<std::endl;
+        insert(current->child[from & 65535], &(current->child[from & 65535]), key, 0, edgeId++, 4);
+        //std::cout<<"here2"<<std::endl;
+        // insert(tree, &tree, key, 0, edgeId++, 8);
+    }
+
+    inline void add_edge_old(uint32_t from, uint32_t to, int weight = 0) {
         uint8_t key[8];
         Edge edge = {from, to, weight};
         edges.push_back(edge);
         convertKey(getKey(from, to), key);
 
         insert(tree, &tree, key, 0, edgeId++, 8);
+    }
+
+    void _print(){
+        int cnt = 0;
+        Node65536 *current = static_cast<Node65536*>(tree65536);
+        for(int i = 0; i < 65536; ++i){
+            if(current->child[i] != NULL)
+                std::cout<<" "<<i;
+                ++cnt;
+        }
+        std::cout<<std::endl;
+        std::cout<<"cnt: "<<cnt<<std::endl;
+        std::cout<<"sizeof 65536: "<<sizeof(Node65536) << " " << sizeof(int)<<std::endl;
     }
 
     void print(Node *current_node) {
@@ -920,12 +1027,46 @@ public:
 
     }
 
-    EdgeIter get_neighbors(uint32_t from) {
+    template<typename CB>
+    void applyAllEdges(uint32_t from,  CB &lambdaCallback){
+        Node65536 *current = static_cast<Node65536 *>(tree65536);
+        Node* firstMatchingNode = current->child[from >> 16];
+        current = static_cast<Node65536 *>(firstMatchingNode);
+        firstMatchingNode = current->child[from & 65535];
+
+        find_all_neighbors_lambda(firstMatchingNode, lambdaCallback);
+    };
+
+    template<typename CB>
+    void applyAllEdges_old(uint32_t from,  CB &lambdaCallback){
+        uint8_t key[8];
+        convertKey(getKey(from, 0), key);
+        Node* firstMatchingNode = lookup(tree, key, 4, 0, 8);
+        find_all_neighbors_lambda(firstMatchingNode, lambdaCallback);
+    };
+
+    EdgeIter get_neighbors_iter(uint32_t from) {
         uint8_t key[8];
         convertKey(getKey(from, 0), key);
         Node* firstMatchingNode = lookup(tree, key, 4, 0, 8);
         return EdgeIter(firstMatchingNode, &(edges), this);
     }
+
+    std::vector<std::pair<uint32_t, uint32_t>> get_neighbors(uint32_t from) {
+        std::vector<std::pair<uint32_t, uint32_t>> res;
+        Node65536 *current = static_cast<Node65536 *>(tree65536);
+        //std::cout<<from<<" : "<<(from >> 16)<<std::endl;
+        if(current->child[from >> 16] == NULL){
+            current->child[from >> 16] = new Node65536();
+            //std::cout<<"created"<<std::endl;
+        }
+        current = static_cast<Node65536 *>(current->child[from >> 16]);
+
+        find_all_neighbors(res, current->child[from & 65535], 1);
+
+        return res;
+    }
+
 
     std::vector<std::pair<uint32_t, uint32_t>> get_neighbors_pre(uint32_t idx) {
         std::vector<std::pair<uint32_t, uint32_t>> res;

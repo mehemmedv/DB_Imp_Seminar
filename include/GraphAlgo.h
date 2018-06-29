@@ -43,22 +43,27 @@ public:
         graph->sortByEdgesByNodeId();
     }
 
-    int bfs(int cur_vertex) {
+    uint64_t bfs(uint32_t cur_vertex) {
         uint64_t sum = 0;
+        bool* temp_used = used;
         memset(used, 0, sizeof(bool) * (v + 2));
-        std::queue<int> q;
+        std::queue<uint32_t > q;
         q.push(cur_vertex);
-        used[cur_vertex] = true;
+        temp_used[cur_vertex] = true;
+        auto lambdaFunction = [&sum, &q, &temp_used] (uint32_t edge, uint32_t weight){
+            if (!temp_used[edge]) {
+                sum = sum + weight;
+                temp_used[edge] = true;
+                q.push(edge);
+            }
+        };
+
         while (!q.empty()) {
             cur_vertex = q.front();
             q.pop();
-            auto it_weight = graph->begin_weights(cur_vertex);
-            for (int to : graph->get_neighbors(cur_vertex)) {
-                if (!used[to]) {
-                    used[to] = true, q.push(to), graph->get_weight(cur_vertex, to, it_weight);
-                }
-                ++it_weight;
-            }
+            // auto it_weight = graph->begin_weights(cur_vertex);
+
+            graph->applyAllEdges(cur_vertex, lambdaFunction);
         }
         //std::cout << "sum: " << sum << "\n";
 
@@ -66,29 +71,49 @@ public:
 
     }
 
-    int dfs_recursion(int cur_vertex) {
+    uint64_t bfs_prev(uint32_t cur_vertex) {
+        uint64_t sum = 0;
+        memset(used, 0, sizeof(bool) * (v + 2));
+        std::queue<uint32_t > q;
+        q.push(cur_vertex);
+        used[cur_vertex] = true;
+        while (!q.empty()) {
+            cur_vertex = q.front();
+            q.pop();
+            // auto it_weight = graph->begin_weights(cur_vertex);
+
+            for (auto& to : graph->get_neighbors(cur_vertex)) {
+                if (!used[to.first]) {
+                    used[to.first] = true, q.push(to.first), sum = sum + to.second;
+                }
+            }
+        }
+        //std::cout << "sum: " << sum << "\n";
+        return sum;
+
+    }
+
+    uint64_t dfs_recursion(int cur_vertex) {
         uint64_t sum = 0;
         used[cur_vertex] = true;
-        auto it_weight = graph->begin_weights(cur_vertex);
-        for (int to : graph->get_neighbors(cur_vertex)) {
-            if (!used[to]) {
-                sum += dfs_recursion(to), sum += graph->get_weight(cur_vertex, to, it_weight);
+        for (auto& to : graph->get_neighbors(cur_vertex)) {
+            if (!used[to.first]) {
+                sum += dfs_recursion(to.first), sum = sum + to.second;
             }
-            ++it_weight;
         }
         return sum;
     }
 
-    int dfs(int cur_vertex) {
+    uint64_t dfs(int cur_vertex) {
         memset(used, 0, sizeof(bool) * (v + 2));
         return dfs_recursion(cur_vertex);
     }
 
-    void add_edge(int v, std::vector<int> &to, std::vector<int> &weights) {
+    void add_edge(int v, std::vector<uint32_t > &to, std::vector<uint32_t> &weights) {
         graph->add_edge(v, to, weights);
     }
 
-    void add_edge(int from, int to, int weight) {
+    void add_edge(uint32_t from, uint32_t to, uint32_t weight) {
         graph->add_edge(from, to, weight);
     }
 
@@ -109,13 +134,9 @@ public:
             min_heap.erase(min_heap.begin());
             uint64_t distance = temp.first;
             int cur_vertex = temp.second;
-            auto it_w = graph->begin_weights(cur_vertex);
-            int cnt = 0;
-            for (int to_vertex : graph->get_neighbors(cur_vertex)) {
-                //int cur_weight = *it_w;
-                int cur_weight = graph->get_weight(cur_vertex, to_vertex, it_w);
-                //int to_vertex = *it;
-                ++cnt;
+            for (auto& to_pair : graph->get_neighbors(cur_vertex)) {
+                uint32_t to_vertex = to_pair.first;
+                uint32_t cur_weight = to_pair.second;
                 if (distance + cur_weight < dist[to_vertex]) {
                     auto it_find = min_heap.find(std::make_pair(dist[to_vertex], to_vertex));
                     if (it_find != min_heap.end())
@@ -123,7 +144,6 @@ public:
                     dist[to_vertex] = distance + cur_weight;
                     min_heap.insert(std::make_pair(dist[to_vertex], to_vertex));
                 }
-                ++it_w;
             }
         }
 

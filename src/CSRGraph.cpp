@@ -8,13 +8,13 @@
 #include <algorithm>
 #include <stdint-gcc.h>
 
-void CSRGraph::add_edge(int from, std::vector<int>& to, std::vector<int>& w) {
+void CSRGraph::add_edge(int from, std::vector<uint32_t>& to, std::vector<uint32_t>& w) {
     offsets[from] = cur_idx;
     uint64_t temp_cur_idx = cur_idx;
-    for(int i : to){
+    for(uint32_t i : to){
         edges[cur_idx++] = i;
     }
-    for(int i : w){
+    for(uint32_t i : w){
         weights[temp_cur_idx++] = i;
     }
 }
@@ -25,7 +25,7 @@ void CSRGraph::finished() {
 
 void CSRGraph::add_edge(int from, int to, int weight) {
     // adding a new edge
-    delta_e = new int[e+1];
+    delta_e = new uint32_t[e+1];
     memcpy(delta_e, edges, sizeof(int) * offsets[from + 1]);
     delta_e[offsets[from + 1]] = to;
     memcpy(delta_e + offsets[from + 1] + 1, edges + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
@@ -33,7 +33,7 @@ void CSRGraph::add_edge(int from, int to, int weight) {
     edges = delta_e;
 
     // adding weight for the new edge
-    delta_w = new int[e+1];
+    delta_w = new uint32_t[e+1];
     memcpy(delta_w, weights, sizeof(int) * offsets[from + 1]);
     delta_w[offsets[from + 1]] = weight;
     memcpy(delta_w + offsets[from + 1] + 1, weights + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));

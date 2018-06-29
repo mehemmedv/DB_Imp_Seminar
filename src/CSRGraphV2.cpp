@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <stdint-gcc.h>
 
-void CSRGraphV2::add_edge(int from, std::vector<int>& to, std::vector<int>& w) {
+void CSRGraphV2::add_edge(int from, std::vector<uint32_t >& to, std::vector<uint32_t>& w) {
     offsets[from] = cur_idx;
     uint64_t temp_cur_idx = cur_idx;
     for(int i : to){
@@ -27,28 +27,28 @@ void CSRGraphV2::finished() {
 void CSRGraphV2::add_edge(int from, int to, int weight) {
     // adding a new edge
     bool isFull = false;
-    int *dest_edges = edges, *dest_weights = weights;
+    uint32_t *dest_edges = edges, *dest_weights = weights;
 
     if(e == current_size){
         isFull = true;
         current_size += additional_space;
     }
     if(!isFull) {
-        memmove(dest_edges + offsets[from + 1] + 1, edges + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
+        memmove(dest_edges + offsets[from + 1] + 1, edges + offsets[from + 1], sizeof(uint32_t) * (e - offsets[from + 1]));
         dest_edges[offsets[from + 1]] = to;
-        memmove(dest_weights + offsets[from + 1] + 1, weights + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
+        memmove(dest_weights + offsets[from + 1] + 1, weights + offsets[from + 1], sizeof(uint32_t) * (e - offsets[from + 1]));
         dest_weights[offsets[from + 1]] = weight;
     } else {
-        dest_edges = new int[current_size];
+        dest_edges = new uint32_t[current_size];
         memcpy(dest_edges, edges, sizeof(int) * offsets[from + 1]);
         dest_edges[offsets[from + 1]] = to;
-        memcpy(dest_edges + offsets[from + 1] + 1, edges + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
+        memcpy(dest_edges + offsets[from + 1] + 1, edges + offsets[from + 1], sizeof(uint32_t) * (e - offsets[from + 1]));
         delete[] edges;
         edges = dest_edges;
-        dest_weights = new int[current_size];
+        dest_weights = new uint32_t[current_size];
         memcpy(dest_weights, weights, sizeof(int) * offsets[from + 1]);
         dest_weights[offsets[from + 1]] = weight;
-        memcpy(dest_weights + offsets[from + 1] + 1, weights + offsets[from + 1], sizeof(int) * (e - offsets[from + 1]));
+        memcpy(dest_weights + offsets[from + 1] + 1, weights + offsets[from + 1], sizeof(uint32_t) * (e - offsets[from + 1]));
         delete[] weights;
         weights = dest_weights;
     }

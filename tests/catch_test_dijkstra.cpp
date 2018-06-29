@@ -13,7 +13,7 @@
 #include "../include/CSRGraphV2.h"
 #include "../include/ARTGraph.h"
 
-
+/*
 TEST_CASE("Adjacency List Graph Dijkstra test", "[single-file]") {
     auto algo = new GraphAlgo<ALGraph>(5, 0);
     algo->add_edge(1, 2, 2);
@@ -92,6 +92,7 @@ TEST_CASE("Adjacency List(std::vector) Graph Dijkstra test", "[single-file]") {
     REQUIRE(algo->dijkstra(5, 4) == 12);
     delete algo;
 }
+ */
 
 TEST_CASE("CSR Graph Dijkstra test", "[single-file]") {
     auto algo = new GraphAlgo<CSRGraph>(5, 0);
